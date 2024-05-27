@@ -4,8 +4,7 @@ FROM gradle:7.5.1-jdk21 AS build
 
 
 
-FROM openjdk:21-jre AS runtime
-
+FROM ubuntu/jre:17-22.04_44
 #COPY --from=build ./ ./
 
 CMD ["/bin/sh"]
