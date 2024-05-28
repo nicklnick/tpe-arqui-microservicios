@@ -141,6 +141,8 @@ deliver-dockerhub:
   stage: deliver
   image: r.j3ss.co/img:latest
   script:
+    - export $(cat context.env | xargs)
+
     - docker login -u $CI_REGISTRY_USER --password $CI_JOB_TOKEN $CI_REGISTRY
     - docker login -u $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
 
@@ -173,5 +175,6 @@ deploy-prod:
     - echo "im the deploy stage"
     # - docker login -u $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
   needs:
+    - job: deliver-dockerhub
     - job: preparation
       artifacts: true
