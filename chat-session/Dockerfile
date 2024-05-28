@@ -2,8 +2,6 @@
 
 # Proceso de buildeo
 
-
-
 #FROM ubuntu/jre:17-22.04_44
 FROM busybox
 #COPY --from=build ./ ./
