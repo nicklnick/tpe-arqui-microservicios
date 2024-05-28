@@ -159,7 +159,12 @@ deliver-dockerhub:
     #- docker push $DOCKER_HUB_MESSAGE_HISTORY_IMAGE_NAME
     #- docker push $DOCKER_HUB_ROLE_MANAGER_IMAGE_NAME
   needs:
-    - job: test
+    - job: unit-test
+    - job: integration-test
+    - job: functional-test
+    - job: component-test
+    - job: contract-test
+    - job: e2e-test
     - job: preparation
       artifacts: true
 
@@ -170,8 +175,7 @@ deploy-prod:
 
     - echo "im the deploy stage"
     # - docker login -u $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
-
   needs:
-    - job: deliver
+    - job: deliver-dockerhub
     - job: preparation
       artifacts: true
