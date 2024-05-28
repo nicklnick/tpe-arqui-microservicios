@@ -89,36 +89,48 @@ unit-test:
   script:
     - echo "Running unit tests"
     - echo "Successful unit tests"
+  needs:
+    - job: build
 
 integration-test:
   stage: test
   script:
     - echo "Running integration tests"
     - echo "Successful integration tests"
+  needs:
+    - job: build
 
 functional-test:
   stage: test
   script:
     - echo "Running functional tests"
     - echo "Successful functional tests"
+  needs:
+    - job: build
 
 component-test:
   stage: test
   script:
     - echo "Running component tests"
     - echo "Successful component tests"
+  needs:
+    - job: build
 
 contract-test:
   stage: test
   script:
     - echo "Running contract tests"
     - echo "Successful contract tests"
+  needs:
+    - job: build
 
 e2e-test:
   stage: test
   script:
     - echo "Running e2e tests"
     - echo "Successful e2e tests"
+  needs:
+    - job: build
 
 deliver-dockerhub:
   stage: deliver
@@ -147,6 +159,7 @@ deliver-dockerhub:
     #- docker push $DOCKER_HUB_MESSAGE_HISTORY_IMAGE_NAME
     #- docker push $DOCKER_HUB_ROLE_MANAGER_IMAGE_NAME
   needs:
+    - job: test
     - job: preparation
       artifacts: true
 
@@ -159,5 +172,6 @@ deploy-prod:
     # - docker login -u $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
 
   needs:
+    - job: deliver
     - job: preparation
       artifacts: true
