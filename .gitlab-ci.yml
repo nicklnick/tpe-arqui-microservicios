@@ -19,8 +19,8 @@ preparation:
 
     # Set Gitlab image names
     - echo "API_GATEWAY_IMAGE_NAME=${IMAGE_BASE}/api-gateway:prod-${BUILD_ID}" >> context.env
-    - echo "CHAT_SESSION_IMAGE_NAME=${IMAGE_BASE}/chat-session:prod-${BUILD_ID}" >> context.env"
-    - echo "CHATS_IMAGE_NAME=${IMAGE_BASE}/chats:prod-${BUILD_ID}" >> context.env"
+    - echo "CHAT_SESSION_IMAGE_NAME=${IMAGE_BASE}/chat-session:prod-${BUILD_ID}" >> context.env
+    - echo "CHATS_IMAGE_NAME=${IMAGE_BASE}/chats:prod-${BUILD_ID}" >> context.env
     - echo "DOCUMENT_MANAGER_IMAGE_NAME=${IMAGE_BASE}/document-manager:prod-${BUILD_ID}" >> context.env
     - echo "EMBEDDINGS_IMAGE_NAME=${IMAGE_BASE}/embeddings:prod-${BUILD_ID}" >> context.env
     - echo "LLM_MANAGER_IMAGE_NAME=${IMAGE_BASE}/llm-manager:prod-${BUILD_ID}" >> context.env
@@ -29,8 +29,8 @@ preparation:
 
     # Set Dockerhub image names
     - echo "DOCKER_HUB_API_GATEWAY_IMAGE_NAME=${DOCKER_HUB_USER}/api-gateway:prod-${BUILD_ID}" >> context.env
-    - echo "DOCKER_HUB_CHAT_SESSION_IMAGE_NAME=${DOCKER_HUB_USER}/chat-session:prod-${BUILD_ID}" >> context.env"
-    - echo "DOCKER_HUB_CHATS_IMAGE_NAME=${DOCKER_HUB_USER}/chats:prod-${BUILD_ID}" >> context.env"
+    - echo "DOCKER_HUB_CHAT_SESSION_IMAGE_NAME=${DOCKER_HUB_USER}/chat-session:prod-${BUILD_ID}" >> context.env
+    - echo "DOCKER_HUB_CHATS_IMAGE_NAME=${DOCKER_HUB_USER}/chats:prod-${BUILD_ID}" >> context.env
     - echo "DOCKER_HUB_DOCUMENT_MANAGER_IMAGE_NAME=${DOCKER_HUB_USER}/document-manager:prod-${BUILD_ID}" >> context.env
     - echo "DOCKER_HUB_EMBEDDINGS_IMAGE_NAME=${DOCKER_HUB_USER}/embeddings:prod-${BUILD_ID}" >> context.env
     - echo "DOCKER_HUB_LLM_MANAGER_IMAGE_NAME=${DOCKER_HUB_USER}/llm-manager:prod-${BUILD_ID}" >> context.env
