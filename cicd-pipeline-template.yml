@@ -1,0 +1,144 @@
+spec:
+  inputs:
+    image-name:
+      type: string
+    env-image-name:
+      type: string
+    environment:
+      type: string
+    directory-name:
+      type: string
+
+---
+
+image: "docker:latest"
+
+variables:
+  IMAGE_BASE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
+  DOCKER_BUILDKIT: 1
+
+stages:
+  - prep
+  - build
+  - test
+  - deliver
+  - deploy
+
+preparation:
+  stage: prep
+  script:
+    - export BUILD_ID=$(date +%Y%m%d%H%M)
+    - echo "BUILD_ID=${BUILD_ID}" > context.env
+
+    #Set Gitlab image names
+    - echo "$[[ inputs.env-image-name ]]_IMAGE_NAME=${IMAGE_BASE}/$[[ inputs.image-name ]]:$[[ inputs.environment ]]-${BUILD_ID}" >> context.env
+
+    #Set Dockerhub image names
+    - echo "DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME=${DOCKER_HUB_USER}/$[[ inputs.image-name ]]:$[[ inputs.environment ]]-${BUILD_ID}" >> context.env
+
+  artifacts:
+    paths:
+      - context.env
+
+build:
+  stage: build
+  image:
+    name: "gcr.io/kaniko-project/executor:v1.14.0-debug"
+    entrypoint: [""]  #https://docs.gitlab.com/ee/ci/docker/using_kaniko.htmlbuilding-a-docker-image-with-kaniko
+  script:
+    - export $(cat context.env | xargs)
+
+    - /kaniko/executor
+      --dockerfile=$[[ inputs.directory-name ]]/Dockerfile
+      --context=./$[[ inputs.directory-name ]]
+      --destination=${$[[ inputs.env-image-name ]]_IMAGE_NAME}
+  needs:
+    - job: preparation
+      artifacts: true
+
+unit-test:
+  stage: test
+  script:
+    - echo "Running unit tests"
+    - echo "Successful unit tests"
+  needs:
+    - job: build
+
+integration-test:
+  stage: test
+  script:
+    - echo "Running integration tests"
+    - echo "Successful integration tests"
+  needs:
+    - job: unit-test
+    - job: build
+
+functional-test:
+  stage: test
+  script:
+    - echo "Running functional tests"
+    - echo "Successful functional tests"
+  needs:
+    - job: integration-test
+    - job: build
+
+component-test:
+  stage: test
+  script:
+    - echo "Running component tests"
+    - echo "Successful component tests"
+  needs:
+    - job: functional-test
+    - job: build
+
+contract-test:
+  stage: test
+  script:
+    - echo "Running contract tests"
+    - echo "Successful contract tests"
+  needs:
+    - job: component-test
+    - job: build
+
+e2e-test:
+  stage: test
+  script:
+    - echo "Running e2e tests"
+    - echo "Successful e2e tests"
+  needs:
+    - job: contract-test
+    - job: build
+
+deliver-dockerhub:
+  stage: deliver
+  image:
+    name: jess/img:latest
+    entrypoint: [""]
+  script:
+    - export $(cat context.env | xargs)
+
+    - echo "$CI_JOB_TOKEN" | img login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - echo "$DOCKER_HUB_PASS" | img login -u $DOCKER_HUB_USER --password-stdin
+
+    - img pull $$[[ inputs.env-image-name ]]_IMAGE_NAME
+
+    - img tag $$[[ inputs.env-image-name ]]_IMAGE_NAME $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
+
+    - img push $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
+
+  needs:
+    - job: e2e-test
+    - job: preparation
+      artifacts: true
+
+deploy-prod:
+  stage: deploy
+  script:
+    - export $(cat context.env | xargs)
+
+    - echo "Im the deploy stage"
+    - docker login -u $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
+  needs:
+    - job: deliver-dockerhub
+    - job: preparation
+      artifacts: true

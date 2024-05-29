@@ -1,0 +1,7 @@
+include:
+  - local: 'cicd-pipeline-template.yml'
+    inputs:
+      image-name: 'llm-manager'
+      env-image-name: 'LLM_MANAGER'
+      environment: 'prod'
+      directory-name: 'llm-manager'
