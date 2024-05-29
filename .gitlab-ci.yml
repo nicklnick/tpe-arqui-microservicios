@@ -139,7 +139,9 @@ e2e-test:
 
 deliver-dockerhub:
   stage: deliver
-  image: r.j3ss.co/img:latest
+  image:
+    name: jess/img:latest
+    entrypoint: [""]
   script:
     - export $(cat context.env | xargs)
 
