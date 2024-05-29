@@ -5,7 +5,7 @@ variables:
   DOCKER_BUILDKIT: 1
 
   stages:
-    - deploy-prod
+    - deploy
 
 # stages:
 #   - prep
@@ -195,7 +195,7 @@ variables:
 
 
 
-deploy-prod:
+deploy:
   stage: deploy
   image:
     name: alpine:latest
