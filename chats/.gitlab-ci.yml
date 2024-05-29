@@ -1,0 +1,7 @@
+include:
+  - local: 'cicd-pipeline-template.yml'
+    inputs:
+      image-name: 'chats'
+      env-image-name: 'CHATS'
+      environment: 'prod'
+      directory-name: 'chats'

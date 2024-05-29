@@ -1,0 +1,7 @@
+include:
+  - local: 'cicd-pipeline-template.yml'
+    inputs:
+      image-name: 'role-manager'
+      env-image-name: 'ROLE_MANAGER'
+      environment: 'prod'
+      directory-name: 'role-manager'

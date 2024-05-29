@@ -1,0 +1,7 @@
+include:
+  - local: 'cicd-pipeline-template.yml'
+    inputs:
+      image-name: 'k8s'
+      env-image-name: 'K8S'
+      environment: 'prod'
+      directory-name: 'k8s'
