@@ -4,8 +4,8 @@ variables:
   IMAGE_BASE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
   DOCKER_BUILDKIT: 1
 
-  stages:
-    - deploy
+stages:
+  - deploy
 
 # stages:
 #   - prep
