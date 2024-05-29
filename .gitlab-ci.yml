@@ -1,0 +1,212 @@
+image: "docker:latest"
+
+variables:
+  IMAGE_BASE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
+  DOCKER_BUILDKIT: 1
+
+stages:
+  - prep
+  - build
+  - test
+  - deliver
+  - deploy
+
+preparation:
+  stage: prep
+  script:
+    - export BUILD_ID=$(date +%Y%m%d%H%M)
+    - echo "BUILD_ID=${BUILD_ID}" > context.env
+
+    # Set Gitlab image names
+    - echo "API_GATEWAY_IMAGE_NAME=${IMAGE_BASE}/api-gateway:prod-${BUILD_ID}" >> context.env
+    - echo "CHAT_SESSION_IMAGE_NAME=${IMAGE_BASE}/chat-session:prod-${BUILD_ID}" >> context.env
+    - echo "CHATS_IMAGE_NAME=${IMAGE_BASE}/chats:prod-${BUILD_ID}" >> context.env
+    - echo "DOCUMENT_MANAGER_IMAGE_NAME=${IMAGE_BASE}/document-manager:prod-${BUILD_ID}" >> context.env
+    - echo "EMBEDDINGS_IMAGE_NAME=${IMAGE_BASE}/embeddings:prod-${BUILD_ID}" >> context.env
+    - echo "LLM_MANAGER_IMAGE_NAME=${IMAGE_BASE}/llm-manager:prod-${BUILD_ID}" >> context.env
+    - echo "MESSAGE_HISTORY_IMAGE_NAME=${IMAGE_BASE}/message-history:prod-${BUILD_ID}" >> context.env
+    - echo "ROLE_MANAGER_IMAGE_NAME=${IMAGE_BASE}/role-manager:prod-${BUILD_ID}" >> context.env
+
+    # Set Dockerhub image names
+    - echo "DOCKER_HUB_API_GATEWAY_IMAGE_NAME=${DOCKER_HUB_USER}/api-gateway:prod-${BUILD_ID}" >> context.env
+    - echo "DOCKER_HUB_CHAT_SESSION_IMAGE_NAME=${DOCKER_HUB_USER}/chat-session:prod-${BUILD_ID}" >> context.env
+    - echo "DOCKER_HUB_CHATS_IMAGE_NAME=${DOCKER_HUB_USER}/chats:prod-${BUILD_ID}" >> context.env
+    - echo "DOCKER_HUB_DOCUMENT_MANAGER_IMAGE_NAME=${DOCKER_HUB_USER}/document-manager:prod-${BUILD_ID}" >> context.env
+    - echo "DOCKER_HUB_EMBEDDINGS_IMAGE_NAME=${DOCKER_HUB_USER}/embeddings:prod-${BUILD_ID}" >> context.env
+    - echo "DOCKER_HUB_LLM_MANAGER_IMAGE_NAME=${DOCKER_HUB_USER}/llm-manager:prod-${BUILD_ID}" >> context.env
+    - echo "DOCKER_HUB_MESSAGE_HISTORY_IMAGE_NAME=${DOCKER_HUB_USER}/message-history:prod-${BUILD_ID}" >> context.env
+    - echo "DOCKER_HUB_ROLE_MANAGER_IMAGE_NAME=${DOCKER_HUB_USER}/role-manager:prod-${BUILD_ID}" >> context.env
+  artifacts:
+    paths:
+      - context.env
+
+build:
+  stage: build
+  image:
+    name: "gcr.io/kaniko-project/executor:v1.14.0-debug"
+    entrypoint: [""] # https://docs.gitlab.com/ee/ci/docker/using_kaniko.html#building-a-docker-image-with-kaniko
+  script:
+    - export $(cat context.env | xargs)
+
+    - /kaniko/executor
+      --dockerfile=api-gateway/Dockerfile
+      --context=./api-gateway
+      --destination=${API_GATEWAY_IMAGE_NAME}
+    - /kaniko/executor
+      --dockerfile=chat-session/Dockerfile
+      --context=./chat-session
+      --destination=${CHAT_SESSION_IMAGE_NAME}
+    - /kaniko/executor
+      --dockerfile=chats/Dockerfile
+      --context=./chats
+      --destination=${CHATS_IMAGE_NAME}
+    - /kaniko/executor
+      --dockerfile=document-manager/Dockerfile
+      --context=./document-manager
+      --destination=${DOCUMENT_MANAGER_IMAGE_NAME}
+    - /kaniko/executor
+      --dockerfile=embeddings/Dockerfile
+      --context=./embeddings
+      --destination=${EMBEDDINGS_IMAGE_NAME}
+    - /kaniko/executor
+      --dockerfile=llm-manager/Dockerfile
+      --context=./llm-manager
+      --destination=${LLM_MANAGER_IMAGE_NAME}
+    - /kaniko/executor
+      --dockerfile=message-history/Dockerfile
+      --context=./message-history
+      --destination=${MESSAGE_HISTORY_IMAGE_NAME}
+    - /kaniko/executor
+      --dockerfile=role-manager/Dockerfile
+      --context=./role-manager
+      --destination=${ROLE_MANAGER_IMAGE_NAME}
+  needs:
+    - job: preparation
+      artifacts: true
+
+unit-test:
+  stage: test
+  script:
+    - echo "Running unit tests"
+    - echo "Successful unit tests"
+  needs:
+    - job: build
+
+integration-test:
+  stage: test
+  script:
+    - echo "Running integration tests"
+    - echo "Successful integration tests"
+  needs:
+    - job: unit-test
+    - job: build
+
+functional-test:
+  stage: test
+  script:
+    - echo "Running functional tests"
+    - echo "Successful functional tests"
+  needs:
+    - job: integration-test
+    - job: build
+
+component-test:
+  stage: test
+  script:
+    - echo "Running component tests"
+    - echo "Successful component tests"
+  needs:
+    - job: functional-test
+    - job: build
+
+contract-test:
+  stage: test
+  script:
+    - echo "Running contract tests"
+    - echo "Successful contract tests"
+  needs:
+    - job: component-test
+    - job: build
+
+e2e-test:
+  stage: test
+  script:
+    - echo "Running e2e tests"
+    - echo "Successful e2e tests"
+  needs:
+    - job: contract-test
+    - job: build
+
+deliver-dockerhub:
+  stage: deliver
+  image:
+    name: jess/img:latest
+    entrypoint: [""]
+  script:
+    - export $(cat context.env | xargs)
+
+    - echo "$CI_JOB_TOKEN" | img login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - echo "$DOCKER_HUB_PASS" | img login -u $DOCKER_HUB_USER --password-stdin
+
+    - img pull $API_GATEWAY_IMAGE_NAME
+    - img pull $CHAT_SESSION_IMAGE_NAME
+    - img pull $CHATS_IMAGE_NAME
+    - img pull $DOCUMENT_MANAGER_IMAGE_NAME
+    - img pull $EMBEDDINGS_IMAGE_NAME
+    - img pull $LLM_MANAGER_IMAGE_NAME
+    - img pull $MESSAGE_HISTORY_IMAGE_NAME
+    - img pull $ROLE_MANAGER_IMAGE_NAME
+
+    - img tag $API_GATEWAY_IMAGE_NAME $DOCKER_HUB_API_GATEWAY_IMAGE_NAME
+    - img tag $CHAT_SESSION_IMAGE_NAME $DOCKER_HUB_CHAT_SESSION_IMAGE_NAME
+    - img tag $CHATS_IMAGE_NAME $DOCKER_HUB_CHATS_IMAGE_NAME
+    - img tag $DOCUMENT_MANAGER_IMAGE_NAME $DOCKER_HUB_DOCUMENT_MANAGER_IMAGE_NAME
+    - img tag $EMBEDDINGS_IMAGE_NAME $DOCKER_HUB_EMBEDDINGS_IMAGE_NAME
+    - img tag $LLM_MANAGER_IMAGE_NAME $DOCKER_HUB_LLM_MANAGER_IMAGE_NAME
+    - img tag $MESSAGE_HISTORY_IMAGE_NAME $DOCKER_HUB_MESSAGE_HISTORY_IMAGE_NAME
+    - img tag $ROLE_MANAGER_IMAGE_NAME $DOCKER_HUB_ROLE_MANAGER_IMAGE_NAME
+
+    - img push $DOCKER_HUB_CHAT_SESSION_IMAGE_NAME
+    - img push $DOCKER_HUB_CHATS_IMAGE_NAME
+    - img push $DOCKER_HUB_DOCUMENT_MANAGER_IMAGE_NAME
+    - img push $DOCKER_HUB_EMBEDDINGS_IMAGE_NAME
+    - img push $DOCKER_HUB_LLM_MANAGER_IMAGE_NAME
+    - img push $DOCKER_HUB_MESSAGE_HISTORY_IMAGE_NAME
+    - img push $DOCKER_HUB_ROLE_MANAGER_IMAGE_NAME
+  needs:
+    - job: e2e-test
+    - job: preparation
+      artifacts: true
+
+deploy-prod:
+  stage: deploy
+  script:
+    - export $(cat context.env | xargs)
+
+    - echo "Im the deploy stage"
+    # - docker login -u $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
+  needs:
+    - job: deliver-dockerhub
+    - job: preparation
+      artifacts: true
+
+
+
+deploy-prod:
+  stage: deploy
+  image:
+    name: alpine:latest
+    entrypoint: [""]
+  before_script:
+    - apk update && apk add openssh
+    - mkdir -p ~/.ssh
+    - echo "$EC2_MASTER_SSH_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+  script:
+    - export $(cat context.env | xargs)
+    - scp -o StrictHostKeyChecking=no k8s/* ubuntu@$EC2_HOST:/
+  needs:
+    - job: deliver-dockerhub
+    - job: preparation
+      artifacts: true
