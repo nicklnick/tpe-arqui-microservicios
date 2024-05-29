@@ -178,17 +178,17 @@ deliver-dockerhub:
     - job: preparation
       artifacts: true
 
-deploy-prod:
-  stage: deploy
-  script:
-    - export $(cat context.env | xargs)
+# deploy-prod:
+#   stage: deploy
+#   script:
+#     - export $(cat context.env | xargs)
 
-    - echo "Im the deploy stage"
-    # - docker login -u $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
-  needs:
-    - job: deliver-dockerhub
-    - job: preparation
-      artifacts: true
+#     - echo "Im the deploy stage"
+#     # - docker login -u $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
+#   needs:
+#     - job: deliver-dockerhub
+#     - job: preparation
+#       artifacts: true
 
 
 
