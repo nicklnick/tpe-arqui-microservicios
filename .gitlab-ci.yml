@@ -209,7 +209,7 @@ deploy:
   script:
     - export $(cat context.env | xargs)
     - sudo scp -o StrictHostKeyChecking=no k8s/* ubuntu@$EC2_HOST:/
-  needs:
-    - job: deliver-dockerhub
-    - job: preparation
-      artifacts: true
+  # needs:
+  #   - job: deliver-dockerhub
+  #   - job: preparation
+  #     artifacts: true
