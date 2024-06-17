@@ -3,89 +3,89 @@ version: '3'
 
 services:
   #
-  chat-session:
-    build:
-      context: ./chat-session
-    env_file:
-      - ./chat-session/.env.prod
-    profiles:
-      - all
-      - chat-session
+  # chat-session:
+  #   build:
+  #     context: ./chat-session
+  #   env_file:
+  #     - ./chat-session/.env.prod
+  #   profiles:
+  #     - all
+  #     - chat-session
 
-  api-gateway:
-    build:
-      context: ./api-gateway
-    profiles:
-      - all
-      - api-gateway
-  #OK
-  chats:
-    build:
-      context: ./chats
-    env_file:
-      - ./chats/.env.prod
-    profiles:
-      - all
-      - chats
-    depends_on:
-      db-chats:
-        condition: service_healthy
+  # api-gateway:
+  #   build:
+  #     context: ./api-gateway
+  #   profiles:
+  #     - all
+  #     - api-gateway
+  # #OK
+  # chats:
+  #   build:
+  #     context: ./chats
+  #   env_file:
+  #     - ./chats/.env.prod
+  #   profiles:
+  #     - all
+  #     - chats
+  #   depends_on:
+  #     db-chats:
+  #       condition: service_healthy
 
-  db-chats:
-    image: "postgres:13"
-    env_file:
-      - ./chats/.env.prod
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d db_chats -U postgres"]
-      interval: 1s
-      timeout: 5s
-      retries: 10
-    profiles:
-      - all
-      - chats
+  # db-chats:
+  #   image: "postgres:13"
+  #   env_file:
+  #     - ./chats/.env.prod
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -d db_chats -U postgres"]
+  #     interval: 1s
+  #     timeout: 5s
+  #     retries: 10
+  #   profiles:
+  #     - all
+  #     - chats
 
-  document-manager:
-    build:
-      context: ./document-manager
-    profiles:
-      - all
-      - document-manager
+  # document-manager:
+  #   build:
+  #     context: ./document-manager
+  #   profiles:
+  #     - all
+  #     - document-manager
 
-  embeddings:
-    image: "postgres:13"
-    profiles:
-      - all
-      - embeddings
-    environment:
-      - POSTGRES_PASSWORD=postgres
-  #
-  llm-manager:
-    build:
-      context: ./llm-manager
-    profiles:
-      - all
-      - llm-manager
+  # embeddings:
+  #   image: "postgres:13"
+  #   profiles:
+  #     - all
+  #     - embeddings
+  #   environment:
+  #     - POSTGRES_PASSWORD=postgres
+  # #
+  # llm-manager:
+  #   build:
+  #     context: ./llm-manager
+  #   profiles:
+  #     - all
+  #     - llm-manager
 
-  #OK
-  message-history:
-    build:
-      context: ./message-history
-    profiles:
-      - all
-      - message-history
+  # #OK
+  # message-history:
+  #   build:
+  #     context: ./message-history
+  #   profiles:
+  #     - all
+  #     - message-history
 
-  db-message-history:
-    image: "postgres:13"
-    env_file:
-      - ./message-history/.env.prod
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d db_message_history -U postgres"]
-      interval: 1s
-      timeout: 5s
-      retries: 10
-    profiles:
-      - all
-      - message-history
+  # db-message-history:
+  #   image: "postgres:13"
+  #   env_file:
+  #     - ./message-history/.env.prod
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -d db_message_history -U postgres"]
+  #     interval: 1s
+  #     timeout: 5s
+  #     retries: 10
+  #   profiles:
+  #     - all
+  #     - message-history
 
   #OK
   role-manager:
@@ -99,7 +99,9 @@ services:
     depends_on:
       db-role-manager:
         condition: service_healthy
-
+    networks:
+      - default
+      - isolated_db_role_manager
   db-role-manager:
     image: "postgres:13"
     env_file:
@@ -112,3 +114,10 @@ services:
     profiles:
       - all
       - role-manager
+    networks:
+      - isolated_db_role_manager
+
+
+networks:
+  isolated_db_role_manager:
+    internal: true
