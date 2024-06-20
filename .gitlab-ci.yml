@@ -1,66 +1,58 @@
 stages:
-  - triggers
+- triggers
 
 trigger-api-gateway:
   stage: triggers
   trigger:
     include: /api-gateway/.gitlab-ci.yml
   rules:
-    - changes:
-      - api-gateway/*
+  - changes:
+    - api-gateway/*
 
 trigger-chat-session:
   stage: triggers
   trigger:
     include: chat-session/.gitlab-ci.yml
   rules:
-    - changes:
-      - chat-session/*
+  - changes:
+    - chat-session/*
 
 trigger-chats:
   stage: triggers
   trigger:
     include: chats/.gitlab-ci.yml
   rules:
-    - changes:
-      - chats/*
+  - changes:
+    - chats/*
 
 trigger-document-manager:
   stage: triggers
   trigger:
     include: document-manager/.gitlab-ci.yml
   rules:
-    - changes:
-      - document-manager/*
-
-trigger-k8s:
-  stage: triggers
-  trigger:
-    include: k8s/.gitlab-ci.yml
-  rules:
-    - changes:
-      - k8s/*
+  - changes:
+    - document-manager/*
 
 trigger-llm-manager:
   stage: triggers
   trigger:
     include: llm-manager/.gitlab-ci.yml
   rules:
-    - changes:
-      - llm-manager/*
+  - changes:
+    - llm-manager/*
 
 trigger-message-history:
   stage: triggers
   trigger:
     include: message-history/.gitlab-ci.yml
   rules:
-    - changes:
-      - message-history/*
+  - changes:
+    - message-history/*
 
 trigger-role-manager:
   stage: triggers
   trigger:
     include: role-manager/.gitlab-ci.yml
   rules:
-    - changes:
-      - role-manager/*
+  - changes:
+    - role-manager/*
