@@ -13,7 +13,7 @@ import { User } from './users/models/user';
       port: 5432,
       username: "postgres",
       password: "postgres",
-      database: "db_role_manager",
+      database: "db-role-manager",
       entities: [User],
       synchronize: true
     }),
