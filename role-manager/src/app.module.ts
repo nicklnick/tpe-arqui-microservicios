@@ -9,11 +9,11 @@ import { User } from './users/models/user';
   imports: [
     TypeOrmModule.forRoot({
       type : "postgres",
-      host : "localhost",
+      host : "db-role-manager-svc", // service name in k8s
       port: 5432,
       username: "postgres",
       password: "postgres",
-      database: "db-role-manager",
+      database: "db_role_manager",
       entities: [User],
       synchronize: true
     }),
