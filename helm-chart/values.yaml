@@ -6,13 +6,14 @@ ingress:
     secretName: example-tls
 
 roleManager:
-  name: role-manager
   api:
+    name: api-role-manager
     deployment:
+      replicas: 1
       name: role-manager-deployment
     image:
       repository: docker.io/nicklnick/role-manager
-      tag: prod-202406211709
+      tag: prod-202406212111
     service:
       name: role-manager-svc
     ingress:
@@ -22,9 +23,15 @@ roleManager:
     containerPort: 3000
 
   db:
+    name: db-role-manager
+    deployment:
+      replicas: 1
+      name: db-role-manager-deployment
     image:
       repository: postgres
       tag: 13
+    service:
+      name: db-role-manager-svc
     pgVariables:
       name: db_role_manager
       user: postgres

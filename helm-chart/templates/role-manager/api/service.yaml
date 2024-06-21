@@ -4,7 +4,7 @@ metadata:
     name: "{{ .Values.roleManager.api.service.name }}"
 spec:
     selector:
-        app: "{{ .Values.roleManager.name }}"
+        app: "{{ .Values.roleManager.api.name }}"
     ports:
         - protocol: TCP
           port: {{ .Values.roleManager.api.servicePort }} # arbitrary
