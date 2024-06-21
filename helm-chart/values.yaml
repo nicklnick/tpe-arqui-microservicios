@@ -8,6 +8,17 @@ ingress:
 roleManager:
   api:
     name: api-role-manager
+    environment:
+      - name: TYPEORM_HOST
+        value: db-role-manager-svc
+      - name: TYPEORM_PORT
+        value: 5432
+      - name: TYPEORM_USERNAME
+        value: postgres
+      - name: TYPEORM_PASSWORD
+        value: postgres
+      - name: TYPEORM_DATABASE
+        value: db_role_manager
     deployment:
       replicas: 1
       name: role-manager-deployment
