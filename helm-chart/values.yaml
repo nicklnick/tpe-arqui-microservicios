@@ -1,0 +1,34 @@
+ingress:
+  name: example-ingress
+  host: example.com
+  tls:
+    enabled: false
+    secretName: example-tls
+
+roleManager:
+  name: role-manager
+  api:
+    deployment:
+      name: role-manager-deployment
+    image:
+      repository: docker.io/nicklnick/role-manager
+      tag: prod-202406211709
+    service:
+      name: role-manager-svc
+    ingress:
+      path: /users
+      pathType: Prefix
+    servicePort: 8080
+    containerPort: 3000
+
+  db:
+    image:
+      repository: postgres
+      tag: 13
+    pgVariables:
+      name: db_role_manager
+      user: postgres
+      password: postgres
+    servicePort: 5432
+    containerPort: 5432
+

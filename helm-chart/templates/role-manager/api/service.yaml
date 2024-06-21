@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: "{{ .Values.roleManager.api.service.name }}"
+spec:
+    selector:
+        app: "{{ .Values.roleManager.name }}"
+    ports:
+        - protocol: TCP
+          port: {{ .Values.roleManager.api.servicePort }} # arbitrary
+          targetPort: {{ .Values.roleManager.api.containerPort }} # where the app is listening

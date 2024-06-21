@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: "{{ .Values.roleManager.api.deployment.name }}"
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: "{{ .Values.roleManager.name }}"
+    template:
+        metadata:
+            labels:
+                app: "{{ .Values.roleManager.name }}"
+        spec:
+            containers:
+                - name: role-manager
+                  image: "{{ .Values.roleManager.api.image.repository }}:{{ .Values.roleManager.api.image.tag }}"
+                  ports:
+                      - containerPort: {{ .Values.roleManager.api.containerPort }}
+                - name: db-role-manager
+                  image: "{{ .Values.roleManager.db.image.repository }}:{{ .Values.roleManager.db.image.tag }}"
+                  env:
+                      - name: POSTGRES_DB
+                        value: "{{ .Values.roleManager.db.pgVariables.name }}"
+                      - name: POSTGRES_PASSWORD
+                        value: "{{ .Values.roleManager.db.pgVariables.password }}"
+                      - name: POSTGRES_USER
+                        value: "{{ .Values.roleManager.db.pgVariables.user }}"
+                  ports:
+                      - containerPort: {{ .Values.roleManager.db.containerPort }}
+                  readinessProbe:
+                      exec:
+                          command:
+                              [
+                                  "pg_isready",
+                                  "-d",
+                                  "$(POSTGRES_DB)",
+                                  "-U",
+                                  "$(POSTGRES_USER)",
+                              ]
+                      initialDelaySeconds: 5
+                      periodSeconds: 10
+                      timeoutSeconds: 5
+                      successThreshold: 1
+                      failureThreshold: 3
