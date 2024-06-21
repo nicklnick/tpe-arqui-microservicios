@@ -22,4 +22,4 @@
 
 5. That's it!
 
-If you want to uninstall the realease run `helm uninstall <release-name>`.
+If you want to uninstall the release run `helm uninstall <release-name>`.
