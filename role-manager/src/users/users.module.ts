@@ -6,11 +6,13 @@ import { User } from './models/user';
 import { IUsersServiceID } from './services/interface/users.interface';
 
 @Module({
-  imports : [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
-  providers: [{
-    provide: IUsersServiceID,
-    useClass: UsersService,
-  }]
+  providers: [
+    {
+      provide: IUsersServiceID,
+      useClass: UsersService,
+    },
+  ],
 })
 export class UsersModule {}

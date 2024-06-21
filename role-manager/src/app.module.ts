@@ -4,21 +4,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { User } from './users/models/user';
 
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type : "postgres",
-      host : "db-role-manager-svc", // service name in k8s
-      port: 5432,
-      username: "postgres",
-      password: "postgres",
-      database: "db_role_manager",
+      type: 'postgres',
+      host: process.env.TYPEORM_HOST, // service name in k8s
+      port: process.env.TYPEORM_PORT as unknown as number,
+      username: process.env.TYPEORM_USERNAME,
+      password: process.env.TYPEORM_PASSWORD,
+      database: process.env.TYPEORM_DATABASE,
       entities: [User],
-      synchronize: true
+      synchronize: true,
     }),
-    UsersModule
+    UsersModule,
   ],
-  
 })
 export class AppModule {}
