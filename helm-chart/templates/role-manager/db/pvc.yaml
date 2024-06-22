@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.roleManager.db.pvc.name }}
+  labels:
+    app: {{ .Values.roleManager.db.name }}
+spec:
+  accessModes:
+    - {{ .Values.roleManager.db.pvc.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.roleManager.db.pvc.size }}

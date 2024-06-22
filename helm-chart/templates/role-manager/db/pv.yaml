@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.roleManager.db.pv.name }}
+  labels:
+    type: local
+    app: {{ .Values.roleManager.db.name }}
+spec:
+    capacity:
+        storage: {{ .Values.roleManager.db.pv.size }}
+    accessModes:
+        - {{ .Values.roleManager.db.pv.accessMode }}
+    hostPath:
+        path: {{ .Values.roleManager.db.pv.path }}
