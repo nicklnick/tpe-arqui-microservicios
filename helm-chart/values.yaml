@@ -8,7 +8,7 @@ ingress:
 roleManager:
   api:
     name: api-role-manager
-    environment:
+    env:
     - name: TYPEORM_HOST
       value: db-role-manager-svc
     - name: TYPEORM_PORT
@@ -24,7 +24,7 @@ roleManager:
       name: role-manager-deployment
     image:
       repository: docker.io/nicklnick/role-manager
-      tag: prod-202406212111
+      tag: prod-202406231937
     service:
       name: role-manager-svc
     ingress:
