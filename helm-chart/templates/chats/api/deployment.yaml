@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.chats.api.deployment.name }}"
+spec:
+  replicas: {{ .Values.chats.api.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: "{{ .Values.chats.api.name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.chats.api.name }}"
+    spec:
+      containers:
+        - name: "{{ .Values.chats.api.name }}"
+          image: "{{ .Values.chats.api.image.repository }}:{{ .Values.chats.api.image.tag }}"
+          env:
+          {{- range .Values.chats.api.env }}
+          - name: {{ .name }}
+            value: "{{ .value }}"
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.chats.api.containerPort }}

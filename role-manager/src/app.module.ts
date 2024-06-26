@@ -9,7 +9,7 @@ import { User } from './users/models/user';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.TYPEORM_HOST, // service name in k8s
-      port: process.env.TYPEORM_PORT as unknown as number,
+      port: parseInt(process.env.TYPEORM_PORT, 10),
       username: process.env.TYPEORM_USERNAME,
       password: process.env.TYPEORM_PASSWORD,
       database: process.env.TYPEORM_DATABASE,

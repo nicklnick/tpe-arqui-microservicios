@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.chats.db.deployment.name }}"
+spec:
+  replicas: {{ .Values.chats.db.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: "{{ .Values.chats.db.name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.chats.db.name }}"
+    spec:
+      containers:
+        - name: "{{ .Values.chats.db.name }}"
+          image: "{{ .Values.chats.db.image.repository }}:{{ .Values.chats.db.image.tag }}"
+          env:
+            - name: POSTGRES_DB
+              value: "{{ .Values.chats.db.pgVariables.name }}"
+            - name: POSTGRES_PASSWORD
+              value: "{{ .Values.chats.db.pgVariables.password }}"
+            - name: POSTGRES_USER
+              value: "{{ .Values.chats.db.pgVariables.user }}"
+          volumeMounts:
+            - mountPath: "{{ .Values.chats.db.deployment.volume.mountPath }}"
+              name: "{{ .Values.chats.db.deployment.volume.name }}"
+          ports:
+            - containerPort: {{ .Values.chats.db.containerPort }}
+          readinessProbe:
+            exec:
+              command:
+                - "pg_isready"
+                - "-d"
+                - "$(POSTGRES_DB)"
+                - "-U"
+                - "$(POSTGRES_USER)"
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+      volumes:
+        - name: "{{ .Values.chats.db.deployment.volume.name }}"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.chats.db.pvc.name }}"

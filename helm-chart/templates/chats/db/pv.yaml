@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.chats.db.pv.name }}
+  labels:
+    type: local
+    app: {{ .Values.chats.db.name }}
+spec:
+    capacity:
+        storage: {{ .Values.chats.db.pv.size }}
+    accessModes:
+        - {{ .Values.chats.db.pv.accessMode }}
+    hostPath:
+        path: {{ .Values.chats.db.pv.path }}

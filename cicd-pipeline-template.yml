@@ -30,10 +30,10 @@ preparation:
     - export BUILD_ID=$(date +%Y%m%d%H%M)
     - echo "BUILD_ID=${BUILD_ID}" > context.env
 
-    #Set Gitlab image names
+    # Set Gitlab image names
     - echo "$[[ inputs.env-image-name ]]_IMAGE_NAME=${IMAGE_BASE}/$[[ inputs.image-name ]]:$[[ inputs.environment ]]-${BUILD_ID}" >> context.env
 
-    #Set Dockerhub image names
+    # Set Dockerhub image names
     - echo "DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME=${DOCKER_HUB_USER}/$[[ inputs.image-name ]]:$[[ inputs.environment ]]-${BUILD_ID}" >> context.env
 
   artifacts:
@@ -44,7 +44,7 @@ build:
   stage: build
   image:
     name: "gcr.io/kaniko-project/executor:v1.14.0-debug"
-    entrypoint: [""]  #https://docs.gitlab.com/ee/ci/docker/using_kaniko.htmlbuilding-a-docker-image-with-kaniko
+    entrypoint: [""]  # https://docs.gitlab.com/ee/ci/docker/using_kaniko.html#building-a-docker-image-with-kaniko
   script:
     - export $(cat context.env | xargs)
 
