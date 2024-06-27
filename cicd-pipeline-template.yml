@@ -176,7 +176,7 @@ deploy-prod:
 
   script:
     - export $(cat context.env | xargs)
-    - helm upgrade arqui-app ./helm-chart --set $[[ inputs.helm-image-tag-path ]]=$$[[ inputs.env-image-name ]]_IMAGE_NAME
+    - helm upgrade arqui-app ./helm-chart --set $[[ inputs.helm-image-tag-path ]]=$[[ inputs.environment ]]-${BUILD_ID}
     - echo "Successfully deployed"
   
   after_script:
