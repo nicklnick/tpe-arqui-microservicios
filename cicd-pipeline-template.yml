@@ -135,6 +135,8 @@ deliver-dockerhub:
 
 deploy-prod:
   stage: deploy
+  image:
+    name: alpine/helm:3.15.2
   tags:
     - prod
   before_script:
