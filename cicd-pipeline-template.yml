@@ -146,9 +146,9 @@ deliver-dockerhub:
     - echo "$CI_JOB_TOKEN" | img login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - echo "$DOCKER_HUB_PASS" | img login -u $DOCKER_HUB_USER --password-stdin
 
-    - img pull $[[ inputs.env-image-name ]]_IMAGE_NAME
+    - img pull $$[[ inputs.env-image-name ]]_IMAGE_NAME
 
-    - img tag $[[ inputs.env-image-name ]]_IMAGE_NAME $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
+    - img tag $$[[ inputs.env-image-name ]]_IMAGE_NAME $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
 
     - img push $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
 
