@@ -1,10 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { Role } from '../utils/roleEnum';
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Role } from "../utils/roleEnum";
+
+
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class UserEntity {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
 
   @Column()
   name: string;

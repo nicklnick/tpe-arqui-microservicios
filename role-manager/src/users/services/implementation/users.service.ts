@@ -1,27 +1,26 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IUsersService } from '../interface/users.interface';
-import { User } from 'src/users/models/user';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { createHash } from 'crypto';
 import { Role } from 'src/users/utils/roleEnum';
 
 import { randomBytes, scrypt, timingSafeEqual } from 'crypto';
 import { promisify } from 'util';
+import { UserEntity } from '../../models/user';
 
 const scryptPromise = promisify(scrypt);
 
 @Injectable()
 export class UsersService implements IUsersService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
   ) {}
   async register(
     email: string,
     password: string,
     name: string,
     role: Role,
-  ): Promise<User | null> {
+  ): Promise<UserEntity | null> {
     const maybeExistingUser = await this.userRepository.findOneBy({ email });
     if (maybeExistingUser !== null) {
       return null;
@@ -44,9 +43,9 @@ export class UsersService implements IUsersService {
     return user;
   }
 
-  async signIn(email: string, password: string): Promise<User | null> {
+  async signIn(email: string, password: string): Promise<UserEntity | null> {
     const user = await this.userRepository.findOneBy({ email });
-    if (!user || !this.verify(password, user.password)) {
+    if (!user || !(await this.verify(password, user.password))) {
       return null;
     }
     return user;

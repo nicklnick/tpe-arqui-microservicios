@@ -6,3 +6,5 @@ include:
       environment: 'prod'
       directory-name: 'role-manager'
       helm-image-tag-path: 'roleManager.api.image.tag'
+      unit-test-command: 'test'
+      e2e-test-command: 'test:e2e'

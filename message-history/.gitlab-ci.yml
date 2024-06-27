@@ -5,3 +5,5 @@ include:
       env-image-name: 'MESSAGE_HISTORY'
       environment: 'prod'
       directory-name: 'message-history'
+      unit-test-command: ''
+      e2e-test-command: ''
