@@ -1,3 +1,5 @@
 /role-manager/node_modules
 /role-manager/.vscode
 /role-manager/dist
+/role-manager/requests.http
+
