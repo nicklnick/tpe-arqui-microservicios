@@ -10,6 +10,7 @@ import { UserRequestDto } from '../src/users/dtos/userRequestDto';
 import { UserRegisterDto } from '../src/users/dtos/userRegisterDto';
 import { IUsersServiceID } from '../src/users/services/interface/users.interface';
 import { Repository } from 'typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 
 describe('UsersController (E2E)', () => {
@@ -19,16 +20,23 @@ describe('UsersController (E2E)', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot({
-            type : "postgres",
-            host : "localhost",
-            port: 5432,
-            username: "postgres",
-            password: "postgres",
-            database: "db_role_manager_test",
+        ConfigModule.forRoot({
+          isGlobal: true,
+        }),
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          useFactory: async (configService: ConfigService) => ({
+            type: 'postgres',
+            host: configService.get<string>('TYPEORM_HOST'),
+            port: configService.get<number>('TYPEORM_PORT'),
+            username: configService.get<string>('TYPEORM_USERNAME'),
+            password: configService.get<string>('TYPEORM_PASSWORD'),
+            database: configService.get<string>('TYPEORM_NAME'),
             entities: [UserEntity],
-            synchronize: true
+            synchronize: true,
           }),
+          inject: [ConfigService],
+        }),
         TypeOrmModule.forFeature([UserEntity]),
       ],
       controllers: [UsersController],
@@ -36,7 +44,7 @@ describe('UsersController (E2E)', () => {
         UsersService,
         {
           provide: IUsersServiceID,
-          useClass: UsersService
+          useClass: UsersService,
         },
       ],
     }).compile();
