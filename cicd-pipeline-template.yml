@@ -58,11 +58,19 @@ build:
 
 unit-test:
   stage: test
+  image:
+    name: jess/img:latest
+    entrypoint: [""]
   script:
-    - echo "Running unit tests"
-    - echo "Successful unit tests"
+    - export $(cat context.env | xargs)
+
+    - echo "$CI_JOB_TOKEN" | img login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+
+    - img run $[[ inputs.env-image-name ]]_IMAGE_NAME $[[ inputs.unit-test-command ]]
   needs:
     - job: build
+    - job: preparation
+      artifacts: true
 
 integration-test:
   stage: test
@@ -102,9 +110,18 @@ contract-test:
 
 e2e-test:
   stage: test
+  # Mega inseguro, cambiar
+  services:
+    - docker:19.03.12-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
   script:
-    - echo "Running e2e tests"
-    - echo "Successful e2e tests"
+    - export $(cat context.env | xargs)
+
+    - echo "$CI_JOB_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+
+    - docker compose --profile $[[ inputs.directory-name ]] up --abort-on-container-exit --exit-code-from $[[ inputs.directory-name ]]
   needs:
     - job: contract-test
     - job: build

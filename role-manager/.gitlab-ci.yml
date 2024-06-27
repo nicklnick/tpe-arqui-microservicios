@@ -1,7 +1,10 @@
 include:
-  - local: 'cicd-pipeline-template.yml'
-    inputs:
-      image-name: 'role-manager'
-      env-image-name: 'ROLE_MANAGER'
-      environment: 'prod'
-      directory-name: 'role-manager'
+- local: 'cicd-pipeline-template.yml'
+  inputs:
+    image-name: 'role-manager'
+    env-image-name: 'ROLE_MANAGER'
+    environment: 'prod'
+    directory-name: 'role-manager'
+
+    unit-test-command: 'test'
+    e2e-test-command: 'test:e2e'
