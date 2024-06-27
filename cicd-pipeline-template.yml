@@ -145,8 +145,8 @@ deploy-prod:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
 
-    - ssh -n -f $MASTER_PRIV_HOST "kubectl proxy --port=8080 > /dev/null 2>&1 &"
-    - ssh -L localhost:8080:localhost:8080 -N -f $MASTER_PRIV_HOST
+    - ssh -o -n -f $MASTER_PRIV_HOST "kubectl proxy --port=8080 > /dev/null 2>&1 &"
+    - ssh -o -L localhost:8080:localhost:8080 -N -f $MASTER_PRIV_HOST
 
   script:
     - export $(cat context.env | xargs)
@@ -155,7 +155,7 @@ deploy-prod:
   
   after_script:
     - ps aux|grep 8080|grep -v grep|awk '{print $2}'|xargs kill
-    - ssh -n -f $MASTER_PRIV_HOST "ps -ef | grep "kubectl proxy"|grep -v grep|awk '{print $2}'|xargs kill"
+    - ssh -o -n -f $MASTER_PRIV_HOST "ps -ef | grep "kubectl proxy"|grep -v grep|awk '{print $2}'|xargs kill"
 
   needs:
     - job: deliver-dockerhub
