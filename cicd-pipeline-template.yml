@@ -8,6 +8,8 @@ spec:
       type: string
     directory-name:
       type: string
+    helm-image-tag-path:
+      type: string
 
 ---
 
@@ -133,11 +135,23 @@ deliver-dockerhub:
 
 deploy-prod:
   stage: deploy
+  tags:
+    - prod
+  before_script:
+    - chmod 400 "$CLUSTER_KEY"
+    - ssh-add "$CLUSTER_KEY"
+    - ssh -n -f $MASTER_PRIV_HOST "kubectl proxy --port=8080 > /dev/null 2>&1 &"
+    - ssh -L localhost:8080:localhost:8080 -N -f $MASTER_PRIV_HOST
+
   script:
     - export $(cat context.env | xargs)
-
-    - echo "Deploying..."
+    - helm upgrade arqui-app ./helm-chart --set $[[ inputs.helm-image-tag-path ]]=$$[[ inputs.env-image-name ]]_IMAGE_NAME
     - echo "Successfully deployed"
+  
+  after_script:
+    - ps aux|grep 8080|grep -v grep|awk '{print $2}'|xargs kill
+    - ssh -n -f $MASTER_PRIV_HOST "ps -ef | grep "kubectl proxy"|grep -v grep|awk '{print $2}'|xargs kill"
+
   needs:
     - job: deliver-dockerhub
     - job: preparation
