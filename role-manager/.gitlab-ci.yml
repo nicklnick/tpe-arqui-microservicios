@@ -5,3 +5,4 @@ include:
       env-image-name: 'ROLE_MANAGER'
       environment: 'prod'
       directory-name: 'role-manager'
+      helm-image-tag-path: 'roleManager.api.image.tag'

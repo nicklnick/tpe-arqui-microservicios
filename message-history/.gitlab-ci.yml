@@ -5,4 +5,3 @@ include:
       env-image-name: 'MESSAGE_HISTORY'
       environment: 'prod'
       directory-name: 'message-history'
-      helm-image-tag-path: 'roleManager.api.image.tag'
