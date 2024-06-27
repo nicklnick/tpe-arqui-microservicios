@@ -136,7 +136,7 @@ deliver-dockerhub:
 deploy-prod:
   stage: deploy
   image:
-    name: alpine/helm:3.15.2
+    name: scastaneda16/alpine-ssh-helm:latest
   tags:
     - prod
   before_script:
