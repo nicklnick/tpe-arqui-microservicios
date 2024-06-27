@@ -138,8 +138,13 @@ deploy-prod:
   tags:
     - prod
   before_script:
-    - chmod 400 "$CLUSTER_KEY"
-    - ssh-add "$CLUSTER_KEY"
+    - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - chmod 400 "$SSH_KEY"
+    - ssh-add "$SSH_KEY"
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+
     - ssh -n -f $MASTER_PRIV_HOST "kubectl proxy --port=8080 > /dev/null 2>&1 &"
     - ssh -L localhost:8080:localhost:8080 -N -f $MASTER_PRIV_HOST
 
