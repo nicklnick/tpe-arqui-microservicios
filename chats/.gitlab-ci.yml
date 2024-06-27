@@ -5,3 +5,5 @@ include:
       env-image-name: 'CHATS'
       environment: 'prod'
       directory-name: 'chats'
+      unit-test-command: ''
+      e2e-test-command: ''

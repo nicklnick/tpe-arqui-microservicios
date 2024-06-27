@@ -8,6 +8,10 @@ spec:
       type: string
     directory-name:
       type: string
+    unit-test-command:
+      type: string
+    e2e-test-command:
+      type: string
 
 ---
 
@@ -58,14 +62,23 @@ build:
 
 unit-test:
   stage: test
+  tags:
+    - test
   script:
-    - echo "Running unit tests"
-    - echo "Successful unit tests"
+    - export $(cat context.env | xargs)
+
+    - echo "$CI_JOB_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+
+    - docker run ${$[[ inputs.env-image-name ]]_IMAGE_NAME} $[[ inputs.unit-test-command ]]
   needs:
     - job: build
+    - job: preparation
+      artifacts: true
 
 integration-test:
   stage: test
+  tags:
+    - test
   script:
     - echo "Running integration tests"
     - echo "Successful integration tests"
@@ -75,6 +88,8 @@ integration-test:
 
 functional-test:
   stage: test
+  tags:
+    - test
   script:
     - echo "Running functional tests"
     - echo "Successful functional tests"
@@ -84,6 +99,8 @@ functional-test:
 
 component-test:
   stage: test
+  tags:
+    - test
   script:
     - echo "Running component tests"
     - echo "Successful component tests"
@@ -102,12 +119,19 @@ contract-test:
 
 e2e-test:
   stage: test
+  tags:
+    - test
   script:
-    - echo "Running e2e tests"
-    - echo "Successful e2e tests"
+    - export $(cat context.env | xargs)
+
+    - echo "$CI_JOB_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+
+    - docker compose --profile $[[ inputs.directory-name ]] up --abort-on-container-exit --exit-code-from $[[ inputs.directory-name ]]
   needs:
     - job: contract-test
     - job: build
+    - job: preparation
+      artifacts: true
 
 deliver-dockerhub:
   stage: deliver
@@ -120,9 +144,9 @@ deliver-dockerhub:
     - echo "$CI_JOB_TOKEN" | img login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - echo "$DOCKER_HUB_PASS" | img login -u $DOCKER_HUB_USER --password-stdin
 
-    - img pull $$[[ inputs.env-image-name ]]_IMAGE_NAME
+    - img pull $[[ inputs.env-image-name ]]_IMAGE_NAME
 
-    - img tag $$[[ inputs.env-image-name ]]_IMAGE_NAME $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
+    - img tag $[[ inputs.env-image-name ]]_IMAGE_NAME $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
 
     - img push $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
 

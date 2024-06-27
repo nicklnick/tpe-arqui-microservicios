@@ -5,3 +5,5 @@ include:
       env-image-name: 'API_GATEWAY'
       environment: 'prod'
       directory-name: 'api-gateway'
+      unit-test-command: ''
+      e2e-test-command: ''
