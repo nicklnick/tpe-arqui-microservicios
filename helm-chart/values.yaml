@@ -20,7 +20,7 @@ roleManager:
     - name: TYPEORM_DATABASE
       value: db_role_manager
     deployment:
-      replicas: 1
+      replicas: 2
       name: role-manager-deployment
     image:
       repository: docker.io/nicklnick/role-manager
