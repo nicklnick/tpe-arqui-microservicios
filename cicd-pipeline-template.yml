@@ -171,18 +171,16 @@ deploy-prod:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
 
-    - ssh -o StrictHostKeyChecking=no -L localhost:8080:localhost:8080 -N -f $MASTER_PRIV_HOST
+    - ssh -4 -o StrictHostKeyChecking=no -L localhost:8080:localhost:8080 -N -f $MASTER_PRIV_HOST
     - ssh -o StrictHostKeyChecking=no -n -f $MASTER_PRIV_HOST "kubectl proxy --port=8080 > /dev/null 2>&1 &"
 
   script:
     - export $(cat context.env | xargs)
     - helm upgrade -i arqui-app ./helm-chart --set $[[ inputs.helm-image-tag-path ]]=$[[ inputs.environment ]]-${BUILD_ID}
     - echo "Successfully deployed"
-  
-  after_script:
     - ssh -o StrictHostKeyChecking=no -n -f $MASTER_PRIV_HOST "ps -ef | grep "kubectl proxy"|grep -v grep|awk '{print \$2}'|xargs kill"
     - ps aux|grep 8080|grep -v grep|awk '{print $1}'|xargs kill
-    
+  
   needs:
     - job: deliver-dockerhub
     - job: preparation
