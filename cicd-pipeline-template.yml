@@ -180,8 +180,8 @@ deploy-prod:
     - echo "Successfully deployed"
   
   after_script:
-    - ps aux|grep 8080|grep -v grep|awk '{print $2}'|xargs kill
-    - ssh -o StrictHostKeyChecking=no -n -f $MASTER_PRIV_HOST "ps -ef | grep "kubectl proxy"|grep -v grep|awk '{print $2}'|xargs kill"
+    - ps aux|grep 8080|grep -v grep|awk '{print $1}'|xargs kill
+    - ssh -o StrictHostKeyChecking=no -n -f $MASTER_PRIV_HOST "ps -ef | grep "kubectl proxy"|grep -v grep|awk '{print \$2}'|xargs kill"
 
   needs:
     - job: deliver-dockerhub
