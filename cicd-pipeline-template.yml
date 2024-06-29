@@ -161,6 +161,7 @@ deploy-prod:
   stage: deploy
   image:
     name: scastaneda16/kubectl-helm:latest
+    entrypoint: [""]
   tags:
     - prod
 
