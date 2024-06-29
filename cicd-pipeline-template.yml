@@ -160,27 +160,17 @@ deliver-dockerhub:
 deploy-prod:
   stage: deploy
   image:
-    name: scastaneda16/alpine-ssh-helm:latest
+    name: scastaneda16/kubectl-helm:latest
   tags:
     - prod
-  before_script:
-    - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
-    - eval $(ssh-agent -s)
-    - chmod 400 "$SSH_KEY"
-    - ssh-add "$SSH_KEY"
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-
-    - ssh -4 -o StrictHostKeyChecking=no -L localhost:8080:localhost:8080 -N -f $MASTER_PRIV_HOST
-    - ssh -o StrictHostKeyChecking=no -n -f $MASTER_PRIV_HOST "kubectl proxy --port=8080 > /dev/null 2>&1 &"
+  volumes:
+    - /home/ubuntu/.kube/config:/usr/app/.kube/config
 
   script:
     - export $(cat context.env | xargs)
     - helm upgrade -i arqui-app ./helm-chart --set $[[ inputs.helm-image-tag-path ]]=$[[ inputs.environment ]]-${BUILD_ID}
     - echo "Successfully deployed"
-    - ssh -o StrictHostKeyChecking=no -n -f $MASTER_PRIV_HOST "ps -ef | grep "kubectl proxy"|grep -v grep|awk '{print \$2}'|xargs kill"
-    - ps aux|grep 8080|grep -v grep|awk '{print $1}'|xargs kill
-  
+    
   needs:
     - job: deliver-dockerhub
     - job: preparation
