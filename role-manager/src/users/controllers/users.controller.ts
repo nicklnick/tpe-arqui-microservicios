@@ -19,7 +19,7 @@ export class UsersController {
     
     constructor (@Inject(IUsersServiceID) private readonly userService: IUsersService ){}
 
-    @Get("signIn")
+    @Post("signIn")
     async signIn(@Body() user: UserRequestDto){
         const userData = await this.userService.signIn(user.email,user.password)
         if (!userData){

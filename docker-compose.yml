@@ -91,9 +91,9 @@ services:
   role-manager:
     build:
       context: ./role-manager
-    command: test:e2e
+    command: start
     env_file:
-      - ./role-manager/.env.test.e2e
+      - ./role-manager/application/.env.dev
     profiles:
       - all
       - role-manager
@@ -103,13 +103,15 @@ services:
     networks:
       - default
       - isolated_db_role_manager
+    ports:
+      - "3000:3000"
   
   db-role-manager:
     image: "postgres:13"
     env_file:
-      - ./role-manager/.env.test.db
+      - ./role-manager/database/.env.dev
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d db_role_manager_test -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -d db_role_manager -U postgres"]
       interval: 1s
       timeout: 5s
       retries: 10

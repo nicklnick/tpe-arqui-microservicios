@@ -109,7 +109,7 @@ describe('UsersController (E2E)', () => {
     });
   });
 
-  describe('/users/signIn (GET)', () => {
+  describe('/users/signIn (POST)', () => {
     it('should sign in a user successfully', async () => {
       const user = {
         email: 'test@example.com',
@@ -126,7 +126,7 @@ describe('UsersController (E2E)', () => {
       };
 
       const response = await request(app.getHttpServer())
-        .get('/users/signIn')
+        .post('/users/signIn')
         .send(userRequestDto)
         .expect(200);
 
@@ -143,7 +143,7 @@ describe('UsersController (E2E)', () => {
       };
 
       await request(app.getHttpServer())
-        .get('/users/signIn')
+        .post('/users/signIn')
         .send(userRequestDto)
         .expect(409);
     });
@@ -164,7 +164,7 @@ describe('UsersController (E2E)', () => {
       };
 
       await request(app.getHttpServer())
-        .get('/users/signIn')
+        .post('/users/signIn')
         .send(userRequestDto)
         .expect(409);
     });
