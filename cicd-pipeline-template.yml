@@ -8,10 +8,6 @@ spec:
       type: string
     directory-name:
       type: string
-    unit-test-command:
-      type: string
-    e2e-test-command:
-      type: string
 
 ---
 
@@ -67,9 +63,9 @@ unit-test:
   script:
     - export $(cat context.env | xargs)
 
-    - echo "$CI_JOB_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-
-    - docker run ${$[[ inputs.env-image-name ]]_IMAGE_NAME} $[[ inputs.unit-test-command ]]
+    - cd $[[ inputs.directory-name ]]/.scripts/unit
+    - chmod +x test.sh
+    - sh test.sh
   needs:
     - job: build
     - job: preparation
@@ -80,42 +76,45 @@ integration-test:
   tags:
     - test
   script:
-    - echo "Running integration tests"
-    - echo "Successful integration tests"
+    - export $(cat context.env | xargs)
+
+    - cd $[[ inputs.directory-name ]]/.scripts/integration
+    - chmod +x test.sh
+    - sh test.sh
   needs:
     - job: unit-test
-    - job: build
+    - job: preparation
+      artifacts: true
 
 functional-test:
   stage: test
   tags:
     - test
   script:
-    - echo "Running functional tests"
-    - echo "Successful functional tests"
+    - export $(cat context.env | xargs)
+
+    - cd $[[ inputs.directory-name ]]/.scripts/functional
+    - chmod +x test.sh
+    - sh test.sh
   needs:
     - job: integration-test
-    - job: build
+    - job: preparation
+      artifacts: true
 
 component-test:
   stage: test
   tags:
     - test
   script:
-    - echo "Running component tests"
-    - echo "Successful component tests"
+    - export $(cat context.env | xargs)
+
+    - cd $[[ inputs.directory-name ]]/.scripts/component
+    - chmod +x test.sh
+    - sh test.sh
   needs:
     - job: functional-test
-    - job: build
-
-contract-test:
-  stage: test
-  script:
-    - echo "Running contract tests"
-    - echo "Successful contract tests"
-  needs:
-    - job: component-test
-    - job: build
+    - job: preparation
+      artifacts: true
 
 e2e-test:
   stage: test
@@ -124,12 +123,11 @@ e2e-test:
   script:
     - export $(cat context.env | xargs)
 
-    - echo "$CI_JOB_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-
-    - docker compose --profile $[[ inputs.directory-name ]] up --abort-on-container-exit --exit-code-from $[[ inputs.directory-name ]]
+    - cd $[[ inputs.directory-name ]]/.scripts/e2e
+    - chmod +x test.sh
+    - sh test.sh
   needs:
-    - job: contract-test
-    - job: build
+    - job: component-test
     - job: preparation
       artifacts: true
 
