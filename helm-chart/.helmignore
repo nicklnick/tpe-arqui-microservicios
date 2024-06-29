@@ -21,7 +21,3 @@
 .idea/
 *.tmproj
 .vscode/
-
-
-# CHANGE THIS AFTER MAKING THE CORRESPONDING MS
-chats/

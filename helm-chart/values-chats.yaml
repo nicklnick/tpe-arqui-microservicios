@@ -1,0 +1,71 @@
+# Enable or disable microservices
+role-manager:
+  enabled: false
+chats:
+  enabled: true
+document-manager:
+  enabled: false
+postgres:
+  enabled: true
+buildApi: true
+
+# Configure api
+api:
+  name: api-chats
+  env:
+  - name: TYPEORM_HOST
+    value: db-chats-svc
+  - name: TYPEORM_PORT
+    value: "5432"
+  - name: TYPEORM_USERNAME
+    value: postgres
+  - name: TYPEORM_PASSWORD
+    value: postgres
+  - name: TYPEORM_DATABASE
+    value: db_chats
+  deployment:
+    replicas: 1
+    name: chats-deployment
+  image:
+    repository: docker.io/nicklnick/chats
+    tag: RUNTIME # determined in cicd pipeline
+  service:
+    name: chats-svc
+  ingress:
+    path: /chats
+    pathType: Prefix
+  servicePort: 8080
+  containerPort: 3000
+
+# Configure db
+db:
+  name: db-chats
+  env:
+  - name: POSTGRES_DB
+    value: db_chats
+  - name: POSTGRES_PASSWORD
+    value: postgres
+  - name: POSTGRES_USER
+    value: postgres
+  deployment:
+    replicas: 1
+    name: db-chats
+    volume:
+      mountPath: /var/lib/postgresql/data
+      name: postgresdata
+  image:
+    repository: postgres
+    tag: 13
+  service:
+    name: db-chats-svc
+  pv:
+    name: db-chats-pv
+    path: /data/postgresql
+    accessMode: ReadWriteOnce
+    size: 2Gi
+  pvc:
+    name: db-chats-pvc
+    accessMode: ReadWriteOnce
+    size: 500Mi
+  servicePort: 5432
+  containerPort: 5432

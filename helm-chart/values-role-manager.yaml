@@ -1,0 +1,71 @@
+# Enable or diable microservices
+role-manager:
+  enabled: true
+chats:
+  enabled: false
+document-manager:
+  enabled: false
+postgres:
+  enabled: true
+buildApi: true
+
+# Configure api
+api:
+  name: api-role-manager
+  env:
+  - name: TYPEORM_HOST
+    value: db-role-manager-svc
+  - name: TYPEORM_PORT
+    value: "5432"
+  - name: TYPEORM_USERNAME
+    value: postgres
+  - name: TYPEORM_PASSWORD
+    value: postgres
+  - name: TYPEORM_DATABASE
+    value: db_role_manager
+  deployment:
+    replicas: 1
+    name: role-manager-deployment
+  image:
+    repository: docker.io/nicklnick/role-manager
+    tag: prod-202406231937
+  service:
+    name: role-manager-svc
+  ingress:
+    path: /users
+    pathType: Prefix
+  servicePort: 8080
+  containerPort: 3000
+
+# Configure db
+db:
+  name: db-role-manager
+  env:
+  - name: POSTGRES_DB
+    value: db_role_manager
+  - name: POSTGRES_PASSWORD
+    value: postgres
+  - name: POSTGRES_USER
+    value: postgres
+  deployment:
+    replicas: 1
+    name: db-role-manager-deployment
+    volume:
+      mountPath: /var/lib/postgresql/data
+      name: postgresdata
+  image:
+    repository: postgres
+    tag: 13
+  service:
+    name: db-role-manager-svc
+  pv:
+    name: db-role-manager-pv
+    path: /data/postgresql
+    accessMode: ReadWriteOnce
+    size: 500Mi
+  pvc:
+    name: db-role-manager-pvc
+    accessMode: ReadWriteOnce
+    size: 500Mi
+  servicePort: 5432
+  containerPort: 5432

@@ -1,0 +1,6 @@
+ingress:
+  name: example-ingress
+  host: example.com
+  tls:
+    enabled: false
+    secretName: example-tls

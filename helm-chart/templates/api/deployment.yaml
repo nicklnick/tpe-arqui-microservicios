@@ -1,0 +1,28 @@
+{{- if .Values.buildApi -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.api.deployment.name }}"
+spec:
+  replicas: {{ .Values.api.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: "{{ .Values.api.name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.api.name }}"
+    spec:
+      containers:
+        - name: "{{ .Values.api.name }}"
+          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"
+          env:
+          {{- range .Values.api.env }}
+          - name: {{ .name }}
+            value: "{{ .value }}"
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.api.containerPort }}
+{{- else -}}
+  # dont build api
+{{- end -}}

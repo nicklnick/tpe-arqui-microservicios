@@ -1,0 +1,71 @@
+# Enable or disable microservices
+role-manager:
+  enabled: false
+chats:
+  enabled: false
+document-manager:
+  enabled: true
+postgres:
+  enabled: true
+buildApi: true
+
+# Configure api
+api:
+  name: api-document-manager
+  env:
+  - name: POSTGRES_HOST
+    value: db-document-manager-svc
+  - name: POSTGRES_PORT
+    value: "5432"
+  - name: POSTGRES_USERNAME
+    value: postgres
+  - name: POSTGRES_PASSWORD
+    value: postgres
+  - name: POSTGRES_DB
+    value: db_document_manager
+  deployment:
+    replicas: 1
+    name: document-manager-deployment
+  image:
+    repository: docker.io/nicklnick/document-manager
+    tag: prod-202406231937
+  service:
+    name: document-manager-svc
+  ingress:
+    path: /users
+    pathType: Prefix
+  servicePort: 8080
+  containerPort: 3000
+
+# Configure db
+db:
+  name: db-document-manager
+  env:
+  - name: POSTGRES_DB
+    value: db_document_manager
+  - name: POSTGRES_PASSWORD
+    value: postgres
+  - name: POSTGRES_USER
+    value: postgres
+  deployment:
+    replicas: 1
+    name: db-document-manager-deployment
+    volume:
+      mountPath: /var/lib/postgresql/data
+      name: postgresdata
+  image:
+    repository: postgres
+    tag: 13
+  service:
+    name: db-document-manager-svc
+  pv:
+    name: db-document-manager-pv
+    path: /data/postgresql
+    accessMode: ReadWriteOnce
+    size: 500Mi
+  pvc:
+    name: db-document-manager-pvc
+    accessMode: ReadWriteOnce
+    size: 500Mi
+  servicePort: 5432
+  containerPort: 5432

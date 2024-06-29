@@ -12,8 +12,6 @@ spec:
       type: string
     e2e-test-command:
       type: string
-    helm-image-tag-path:
-      type: string
 
 ---
 
@@ -167,7 +165,10 @@ deploy-prod:
 
   script:
     - export $(cat context.env | xargs)
-    - helm upgrade -i arqui-app ./helm-chart --set $[[ inputs.helm-image-tag-path ]]=$[[ inputs.environment ]]-${BUILD_ID}
+    - helm upgrade 
+      -i arqui-app ./helm-chart 
+      -f ./helm-chart/values-$[[ inputs.directory-name ]].yaml 
+      --set api.image.tag=$[[ inputs.environment ]]-${BUILD_ID}
     - echo "Successfully deployed"
     
   needs:
