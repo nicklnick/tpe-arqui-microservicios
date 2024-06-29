@@ -163,7 +163,6 @@ deploy-prod:
     name: scastaneda16/kubectl-helm:latest
   tags:
     - prod
-  entrypoint: ["/bin/sh", "-c", "cp /home/ubuntu/.kube/config /usr/app/.kube/config && exec /bin/sh"]
 
   script:
     - export $(cat context.env | xargs)
