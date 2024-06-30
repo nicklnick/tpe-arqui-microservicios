@@ -5,6 +5,8 @@ chats:
   enabled: false
 document-manager:
   enabled: true
+embeddings:
+  enabled: false
 postgres:
   enabled: true
 buildApi: true
@@ -44,10 +46,10 @@ api:
   service:
     name: document-manager-svc
   ingress:
-    path: /users
+    path: /documents
     pathType: Prefix
-  servicePort: 8080
-  containerPort: 3000
+  servicePort: 8000
+  containerPort: 8000
 
 # Configure db
 db:

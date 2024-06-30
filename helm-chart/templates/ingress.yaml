@@ -8,10 +8,10 @@ spec:
         - host: "{{ .Values.ingress.host }}"
           http:
               paths:
-                  - path: "{{ .Values.roleManager.api.ingress.path }}"
-                    pathType: "{{ .Values.roleManager.api.ingress.pathType }}"
+                  - path: "{{ .Values.api.ingress.path }}"
+                    pathType: "{{ .Values.api.ingress.pathType }}"
                     backend:
                         service:
-                            name: "{{ .Values.roleManager.api.service.name }}"
+                            name: "{{ .Values.api.service.name }}"
                             port:
-                                number: {{ .Values.roleManager.api.servicePort }}
+                                number: {{ .Values.api.servicePort }}

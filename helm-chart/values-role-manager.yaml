@@ -5,6 +5,8 @@ chats:
   enabled: false
 document-manager:
   enabled: false
+embeddings:
+  enabled: false
 postgres:
   enabled: true
 buildApi: true
@@ -29,11 +31,11 @@ api:
   image:
     repository: docker.io/nicklnick/role-manager
     tag: prod-202406231937
-  service:
-    name: role-manager-svc
   ingress:
     path: /users
     pathType: Prefix
+  service:
+    name: role-manager-svc
   servicePort: 8080
   containerPort: 3000
 

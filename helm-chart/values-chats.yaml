@@ -5,6 +5,8 @@ chats:
   enabled: true
 document-manager:
   enabled: false
+embeddings:
+  enabled: false
 postgres:
   enabled: true
 buildApi: true
