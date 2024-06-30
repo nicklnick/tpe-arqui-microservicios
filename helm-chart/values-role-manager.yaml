@@ -58,11 +58,6 @@ db:
     tag: 13
   service:
     name: db-role-manager-svc
-  pv:
-    name: db-role-manager-pv
-    path: /data/postgresql
-    accessMode: ReadWriteOnce
-    size: 500Mi
   pvc:
     name: db-role-manager-pvc
     accessMode: ReadWriteOnce

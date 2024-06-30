@@ -13,16 +13,28 @@ buildApi: true
 api:
   name: api-document-manager
   env:
-  - name: POSTGRES_HOST
-    value: db-document-manager-svc
-  - name: POSTGRES_PORT
+  - name: PG_HOST
+    value: db-document-manager
+  - name: PG_PORT
     value: "5432"
-  - name: POSTGRES_USERNAME
-    value: postgres
-  - name: POSTGRES_PASSWORD
-    value: postgres
-  - name: POSTGRES_DB
+  - name: PG_DB
     value: db_document_manager
+  - name: PG_USER
+    value: postgres
+  - name: PG_PASSWORD
+    value: postgres
+  - name: PGVECTOR_HOST
+    value: db-embeddings
+  - name: PGVECTOR_PORT
+    value: "5432"
+  - name: PGVECTOR_DB
+    value: db_embeddings
+  - name: PGVECTOR_USER
+    value: langchain
+  - name: PGVECTOR_PASSWORD
+    value: langchain
+  - name: COHERE_API_KEY
+    value: 67R9m15IQFIoLIiCWAk5uyJ5JVIqPfuApiJOlNhc
   deployment:
     replicas: 1
     name: document-manager-deployment
@@ -58,14 +70,9 @@ db:
     tag: 13
   service:
     name: db-document-manager-svc
-  pv:
-    name: db-document-manager-pv
-    path: /data/postgresql
-    accessMode: ReadWriteOnce
-    size: 500Mi
   pvc:
     name: db-document-manager-pvc
     accessMode: ReadWriteOnce
-    size: 500Mi
+    size: 10Gi 
   servicePort: 5432
   containerPort: 5432

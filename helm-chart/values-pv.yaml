@@ -1,0 +1,5 @@
+pv:
+  name: app-pv
+  path: /data/postgresql
+  accessMode: ReadWriteOnce
+  size: 32Gi
