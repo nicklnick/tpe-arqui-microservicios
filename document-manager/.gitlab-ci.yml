@@ -5,5 +5,3 @@ include:
       env-image-name: 'DOCUMENT_MANAGER'
       environment: 'prod'
       directory-name: 'document-manager'
-      unit-test-command: ''
-      e2e-test-command: ''

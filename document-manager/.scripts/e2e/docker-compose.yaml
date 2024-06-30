@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+    api-document-manager:
+        build: .
+        env_file:
+            - .env
+        depends_on:
+            db-document-manager:
+                condition: service_healthy
+            db-embeddings:
+                condition: service_healthy
+        ports:
+            - "8000:8000"
+        networks:
+            - default
+            - isolated_db_document_manager
+            - isolated_db_embeddings
+
+    db-document-manager:
+        image: "postgres:13"
+        environment:
+            - POSTGRES_DB=db_document_manager
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - "5432:5432"
+        # Este comando lo tira el api-document-manager, asiq tengo que usar SUS variables de entorno
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -d $PG_DB -U $PG_USER"]
+            interval: 1s
+            timeout: 5s
+            retries: 10
+        networks:
+            - isolated_db_document_manager
+
+networks:
+    isolated_db_document_manager:
+        internal: true
+    isolated_db_embeddings:
+        internal: true
