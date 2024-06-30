@@ -15,10 +15,8 @@ public class WebSocketImplementation extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-
         String payload = message.getPayload();
         System.out.println("Received message: " + payload);
-
         WebSocketMessage webSocketMessage = objectMapper.readValue(payload, WebSocketMessage.class);
         if (webSocketMessage == null){
             session.sendMessage(new TextMessage("Error"));

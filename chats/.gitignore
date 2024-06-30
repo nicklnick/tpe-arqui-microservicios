@@ -1,0 +1,29 @@
+# Ignore build output directories
+ChatsApi/ChatsApi/bin/
+ChatsApi/ChatsApi/obj/
+
+# User-specific files and IDE settings
+ChatsApi/.idea/
+
+# Rider and IntelliJ IDEA files
+ChatsApi/.idea/
+
+# Visual Studio Code files
+.vscode/
+
+# Docker
+ChatsApi/.dockerignore
+ChatsApi/ChatsApi/Dockerfile
+
+# Entity Framework Migrations (optional, but typically included)
+#ChatsApi/ChatsApi/Migrations/
+
+# Configuration files (be cautious with sensitive data)
+ChatsApi/ChatsApi/appsettings.Development.json
+
+# Log files
+*.log
+
+# npm package directory (if using npm for front-end packages)
+node_modules/
+
