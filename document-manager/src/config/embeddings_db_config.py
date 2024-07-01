@@ -17,9 +17,9 @@ class EmbeddingsSettings(BaseSettings):
     class Config:
         case_sensitive = True
 
+
 load_dotenv()
 embeddings_settings = EmbeddingsSettings()
-print(embeddings_settings.dict())
 embeddings_settings.PGVECTOR_URL = PostgresDsn.build(
     scheme="postgresql+psycopg",
     host=embeddings_settings.PGVECTOR_HOST,
@@ -28,7 +28,6 @@ embeddings_settings.PGVECTOR_URL = PostgresDsn.build(
     password=embeddings_settings.PGVECTOR_PASSWORD,
     path=embeddings_settings.PGVECTOR_DB,
 )
-print(embeddings_settings.PGVECTOR_URL)
 
 # See docker command above to launch a postgres instance with pgvector enabled.
 connection = embeddings_settings.PGVECTOR_URL
