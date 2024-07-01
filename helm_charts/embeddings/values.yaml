@@ -1,0 +1,32 @@
+# Configure db
+db:
+  name: db-embeddings
+  env:
+  - name: POSTGRES_DB
+    value: db_embeddings
+  - name: POSTGRES_USER
+    value: langchain
+  - name: POSTGRES_PASSWORD
+    value: langchain
+  statefulSet::
+    replicas: 1
+    name: db-embeddings-stateful-set
+    volume:
+      mountPath: /var/lib/postgresql/data
+      name: postgresdata
+  image:
+    repository: pgvector/pgvector
+    tag: pg16
+  service:
+    name: db-embeddings-svc
+  pv:
+    name: db-embeddings-pv
+    path: /data/embeddings/postgresql
+    accessMode: ReadWriteMany
+    size: 1Gi
+  pvc:
+    name: db-embeddings-pvc
+    accessMode: ReadWriteMany
+    size: 1Gi
+  servicePort: 6024
+  containerPort: 5432

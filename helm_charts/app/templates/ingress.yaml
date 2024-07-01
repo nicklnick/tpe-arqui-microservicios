@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: "{{ .Values.ingress.name }}"
+spec:
+    ingressClassName: nginx
+    rules:
+        - host: "{{ .Values.ingress.host }}"
+          http:
+              paths:
+                  - path: "{{ .Values.roleManager.api.path }}"
+                    pathType: "{{ .Values.roleManager.api.pathType }}"
+                    backend:
+                        service:
+                            name: "{{ .Values.roleManager.api.service.name }}"
+                            port:
+                                number: {{ .Values.roleManager.api.service.port }}
+                  - path: "{{ .Values.documentManager.api.path }}"
+                    pathType: "{{ .Values.documentManager.api.pathType }}"
+                    backend:
+                        service:
+                            name: "{{ .Values.documentManager.api.service.name }}"
+                            port:
+                                number: {{ .Values.documentManager.api.service.port }}

@@ -1,0 +1,22 @@
+ingress:
+  name: example-ingress
+  host: example.com
+  tls:
+    enabled: false
+    secretName: example-tls
+
+name: app
+roleManager:
+  api:
+    service:
+      name: api-role-manager-svc
+      port: 8080
+    path: /users
+    pathType: Prefix
+documentManager:
+  api:
+    service:
+      name: api-document-manager-svc
+      port: 8000
+    path: /documents
+    pathType: Prefix

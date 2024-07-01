@@ -1,0 +1,69 @@
+# Configure api
+api:
+  name: api-document-manager
+  env:
+  - name: PG_HOST
+    value: db-document-manager-svc
+  - name: PG_PORT
+    value: "5432"
+  - name: PG_DB
+    value: db_document_manager
+  - name: PG_USER
+    value: postgres
+  - name: PG_PASSWORD
+    value: postgres
+  - name: PGVECTOR_HOST
+    value: db-embeddings-svc
+  - name: PGVECTOR_PORT
+    value: "6024"
+  - name: PGVECTOR_DB
+    value: db_embeddings
+  - name: PGVECTOR_USER
+    value: langchain
+  - name: PGVECTOR_PASSWORD
+    value: langchain
+  - name: COHERE_API_KEY
+    value: 67R9m15IQFIoLIiCWAk5uyJ5JVIqPfuApiJOlNhc
+  deployment:
+    replicas: 1
+    name: api-document-manager-deployment
+  image:
+    repository: docker.io/nicklnick/document-manager
+    tag: test-noid
+  service:
+    name: api-document-manager-svc
+  servicePort: 8000
+  containerPort: 8000
+
+# Configure db
+db:
+  name: db-document-manager
+  env:
+  - name: POSTGRES_DB
+    value: db_document_manager
+  - name: POSTGRES_PASSWORD
+    value: postgres
+  - name: POSTGRES_USER
+    value: postgres
+  statefulSet:
+    replicas: 1
+    name: db-document-manager-stateful-set
+    volume:
+      mountPath: /var/lib/postgresql/data
+      name: postgresdata
+  image:
+    repository: postgres
+    tag: 16
+  service:
+    name: db-document-manager-svc
+  pv:
+    name: db-document-manager-pv
+    path: /data/doc-manager/postgresql
+    accessMode: ReadWriteMany
+    size: 1Gi
+  pvc:
+    name: db-document-manager-pvc
+    accessMode: ReadWriteMany
+    size: 1Gi
+  servicePort: 5432
+  containerPort: 5432
