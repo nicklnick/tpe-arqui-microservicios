@@ -58,7 +58,7 @@ db:
     name: db-document-manager-svc
   pv:
     name: db-document-manager-pv
-    path: /data/doc-manager/postgresql
+    path: /data/document-manager/postgresql
     accessMode: ReadWriteMany
     size: 1Gi
   pvc:

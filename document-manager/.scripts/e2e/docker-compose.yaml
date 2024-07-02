@@ -2,7 +2,8 @@ version: "3"
 
 services:
     api-document-manager:
-        build: .
+        build: ../../
+        command: ["pytest", "src/tests/e2e"]
         env_file:
             - .env
         depends_on:
@@ -10,8 +11,6 @@ services:
                 condition: service_healthy
             db-embeddings:
                 condition: service_healthy
-        ports:
-            - "8000:8000"
         networks:
             - default
             - isolated_db_document_manager
@@ -25,14 +24,29 @@ services:
             - POSTGRES_PASSWORD=postgres
         ports:
             - "5432:5432"
-        # Este comando lo tira el api-document-manager, asiq tengo que usar SUS variables de entorno
         healthcheck:
-            test: ["CMD-SHELL", "pg_isready -d $PG_DB -U $PG_USER"]
+            test: ["CMD-SHELL", "pg_isready -d db_document_manager -U postgres"]
             interval: 1s
             timeout: 5s
             retries: 10
         networks:
             - isolated_db_document_manager
+
+    db-embeddings:
+        image: pgvector/pgvector:pg16
+        environment:
+            - POSTGRES_DB=db_embeddings
+            - POSTGRES_USER=langchain
+            - POSTGRES_PASSWORD=langchain
+        ports:
+            - "6024:5432"
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -d db_embeddings -U langchain"]
+            interval: 1s
+            timeout: 5s
+            retries: 10
+        networks:
+            - isolated_db_embeddings
 
 networks:
     isolated_db_document_manager:

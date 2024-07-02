@@ -31,7 +31,7 @@ embeddings_settings.PGVECTOR_URL = PostgresDsn.build(
 
 # See docker command above to launch a postgres instance with pgvector enabled.
 connection = embeddings_settings.PGVECTOR_URL
-collection_name = "my_docs"
+collection_name = "arqui_docs"
 embeddings = CohereEmbeddings()
 
 vectorstore = PGVector(

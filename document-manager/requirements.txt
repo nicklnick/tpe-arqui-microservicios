@@ -5,3 +5,6 @@ sqlmodel
 psycopg2-binary
 langchain_cohere
 langchain_postgres
+# for testing
+httpx
+pytest
