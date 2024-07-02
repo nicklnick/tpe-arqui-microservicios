@@ -6,7 +6,7 @@ namespace ChatsApi.Models;
 //constructor para opciones
 public class ChatDbContext(DbContextOptions<ChatDbContext> options) : DbContext(options)
 {
-   public DbSet<Chat> Chats { get; set; }
+   public virtual DbSet<Chat> Chats { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

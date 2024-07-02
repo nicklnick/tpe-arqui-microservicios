@@ -1,7 +1,8 @@
 # Ignore build output directories
-ChatsApi/ChatsApi/bin/
-ChatsApi/ChatsApi/obj/
-
+ChatsApi/ChatsApi/bin/*
+ChatsApi/ChatsApi/obj/*
+ChatsApi/Tests/bin/*
+ChatsApi/Tests/obj/*
 # User-specific files and IDE settings
 ChatsApi/.idea/
 
