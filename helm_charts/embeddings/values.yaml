@@ -8,7 +8,7 @@ db:
     value: langchain
   - name: POSTGRES_PASSWORD
     value: langchain
-  statefulSet::
+  statefulSet:
     replicas: 1
     name: db-embeddings-stateful-set
     volume:

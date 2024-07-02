@@ -147,7 +147,6 @@ deliver-dockerhub:
     - img tag $$[[ inputs.env-image-name ]]_IMAGE_NAME $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
 
     - img push $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
-
   needs:
     - job: e2e-test
     - job: preparation
@@ -160,15 +159,16 @@ deploy-prod:
     entrypoint: [""]
   tags:
     - prod
-
   script:
     - export $(cat context.env | xargs)
+    - cd helm_charts
+
+    - sh build_dependencies.sh
+
     - helm upgrade 
-      -i arqui-app ./helm-chart 
-      -f ./helm-chart/values-$[[ inputs.directory-name ]].yaml 
+      -i arqui-app app/
+      -f $[[ inputs.directory-name ]]/values-$[[ inputs.directory-name ]].yaml 
       --set api.image.tag=$[[ inputs.environment ]]-${BUILD_ID}
-    - echo "Successfully deployed"
-    
   needs:
     - job: deliver-dockerhub
     - job: preparation
