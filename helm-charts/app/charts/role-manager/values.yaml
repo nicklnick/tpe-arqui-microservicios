@@ -14,11 +14,11 @@ api:
   - name: TYPEORM_DATABASE
     value: db_role_manager
   deployment:
-    replicas: 1
+    # replicas: 1 -> parent
     name: api-role-manager-deployment
   image:
     repository: docker.io/nicklnick/role-manager
-    tag: prod-202406231937
+    # tag: prod-202406231937 -> parent
   service:
     name: api-role-manager-svc
   servicePort: 8080
@@ -35,7 +35,7 @@ db:
   - name: POSTGRES_USER
     value: postgres
   statefulSet:
-    replicas: 1
+    # replicas: 1 -> parent
     name: db-role-manager-stateful-set
     volume:
       mountPath: /var/lib/postgresql/data

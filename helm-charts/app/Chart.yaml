@@ -20,15 +20,15 @@ dependencies:
   alias: ingress-nginx
   version: 4.10.1
   repository: "https://kubernetes.github.io/ingress-nginx"
-- name: role-manager
-  alias: role-manager
-  version: 0.1.0
-  repository: "file://../role_manager"
 - name: document-manager
   alias: document-manager
   version: 0.1.0
-  repository: "file://../document_manager"
+  repository: "file://charts/document-manager"
 - name: embeddings
   alias: embeddings
   version: 0.1.0
-  repository: "file://../embeddings"
+  repository: "file://charts/embeddings"
+- name: role-manager
+  alias: role-manager
+  version: 0.1.0
+  repository: "file://charts/role-manager"

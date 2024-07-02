@@ -9,7 +9,7 @@ db:
   - name: POSTGRES_PASSWORD
     value: langchain
   statefulSet:
-    replicas: 1
+    # replicas: 1 -> parent
     name: db-embeddings-stateful-set
     volume:
       mountPath: /var/lib/postgresql/data

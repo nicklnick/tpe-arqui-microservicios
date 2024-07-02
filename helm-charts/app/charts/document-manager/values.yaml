@@ -25,11 +25,11 @@ api:
   - name: COHERE_API_KEY
     value: 67R9m15IQFIoLIiCWAk5uyJ5JVIqPfuApiJOlNhc
   deployment:
-    replicas: 1
+    # replicas: 1 -> parent
     name: api-document-manager-deployment
   image:
     repository: docker.io/nicklnick/document-manager
-    tag: test-noid
+    # tag: test-noid -> parent
   service:
     name: api-document-manager-svc
   servicePort: 8000
@@ -46,7 +46,7 @@ db:
   - name: POSTGRES_USER
     value: postgres
   statefulSet:
-    replicas: 1
+    # replicas: 1 -> parent
     name: db-document-manager-stateful-set
     volume:
       mountPath: /var/lib/postgresql/data

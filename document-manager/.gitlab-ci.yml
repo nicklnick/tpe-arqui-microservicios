@@ -1,7 +1,7 @@
 include:
-  - local: 'cicd-pipeline-template.yml'
-    inputs:
-      image-name: 'document-manager'
-      env-image-name: 'DOCUMENT_MANAGER'
-      environment: 'prod'
-      directory-name: 'document-manager'
+- local: 'cicd-pipeline-template.yml'
+  inputs:
+    image-name: 'document-manager'
+    env-image-name: 'DOCUMENT_MANAGER'
+    environment: 'prod'
+    directory-name: 'document-manager'

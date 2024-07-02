@@ -18,118 +18,118 @@ variables:
   DOCKER_BUILDKIT: 1
 
 stages:
-  - prep
-  - build
-  - test
-  - deliver
-  - deploy
+- prep
+- build
+- test
+- deliver
+- deploy
 
 preparation:
   stage: prep
   script:
-    - export BUILD_ID=$(date +%Y%m%d%H%M)
-    - echo "BUILD_ID=${BUILD_ID}" > context.env
+  - export BUILD_ID=$(date +%Y%m%d%H%M)
+  - echo "BUILD_ID=${BUILD_ID}" > context.env
 
-    # Set Gitlab image names
-    - echo "$[[ inputs.env-image-name ]]_IMAGE_NAME=${IMAGE_BASE}/$[[ inputs.image-name ]]:$[[ inputs.environment ]]-${BUILD_ID}" >> context.env
+  # Set Gitlab image names
+  - echo "$[[ inputs.env-image-name ]]_IMAGE_NAME=${IMAGE_BASE}/$[[ inputs.image-name ]]:$[[ inputs.environment ]]-${BUILD_ID}" >> context.env
 
-    # Set Dockerhub image names
-    - echo "DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME=${DOCKER_HUB_USER}/$[[ inputs.image-name ]]:$[[ inputs.environment ]]-${BUILD_ID}" >> context.env
+  # Set Dockerhub image names
+  - echo "DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME=${DOCKER_HUB_USER}/$[[ inputs.image-name ]]:$[[ inputs.environment ]]-${BUILD_ID}" >> context.env
 
   artifacts:
     paths:
-      - context.env
+    - context.env
 
 build:
   stage: build
   image:
     name: "gcr.io/kaniko-project/executor:v1.14.0-debug"
-    entrypoint: [""]  # https://docs.gitlab.com/ee/ci/docker/using_kaniko.html#building-a-docker-image-with-kaniko
+    entrypoint: [""] # https://docs.gitlab.com/ee/ci/docker/using_kaniko.html#building-a-docker-image-with-kaniko
   script:
-    - export $(cat context.env | xargs)
+  - export $(cat context.env | xargs)
 
-    - /kaniko/executor
-      --dockerfile=$[[ inputs.directory-name ]]/Dockerfile
-      --context=./$[[ inputs.directory-name ]]
-      --destination=${$[[ inputs.env-image-name ]]_IMAGE_NAME}
+  - /kaniko/executor  
+    --dockerfile=$[[ inputs.directory-name ]]/Dockerfile 
+    --context=./$[[ inputs.directory-name ]] 
+    --destination=${$[[ inputs.env-image-name ]]_IMAGE_NAME}
   needs:
-    - job: preparation
-      artifacts: true
+  - job: preparation
+    artifacts: true
 
 unit-test:
   stage: test
   tags:
-    - test
+  - test
   script:
-    - export $(cat context.env | xargs)
+  - export $(cat context.env | xargs)
 
-    - cd $[[ inputs.directory-name ]]/.scripts/unit
-    - chmod +x test.sh
-    - sh test.sh
+  - cd $[[ inputs.directory-name ]]/.scripts/unit
+  - chmod +x test.sh
+  - sh test.sh
   needs:
-    - job: build
-    - job: preparation
-      artifacts: true
+  - job: build
+  - job: preparation
+    artifacts: true
 
 integration-test:
   stage: test
   tags:
-    - test
+  - test
   script:
-    - export $(cat context.env | xargs)
+  - export $(cat context.env | xargs)
 
-    - cd $[[ inputs.directory-name ]]/.scripts/integration
-    - chmod +x test.sh
-    - sh test.sh
+  - cd $[[ inputs.directory-name ]]/.scripts/integration
+  - chmod +x test.sh
+  - sh test.sh
   needs:
-    - job: unit-test
-    - job: preparation
-      artifacts: true
+  - job: unit-test
+  - job: preparation
+    artifacts: true
 
 functional-test:
   stage: test
   tags:
-    - test
+  - test
   script:
-    - export $(cat context.env | xargs)
+  - export $(cat context.env | xargs)
 
-    - cd $[[ inputs.directory-name ]]/.scripts/functional
-    - chmod +x test.sh
-    - sh test.sh
+  - cd $[[ inputs.directory-name ]]/.scripts/functional
+  - chmod +x test.sh
+  - sh test.sh
   needs:
-    - job: integration-test
-    - job: preparation
-      artifacts: true
+  - job: integration-test
+  - job: preparation
+    artifacts: true
 
 component-test:
   stage: test
   tags:
-    - test
+  - test
   script:
-    - export $(cat context.env | xargs)
+  - export $(cat context.env | xargs)
 
-    - cd $[[ inputs.directory-name ]]/.scripts/component
-    - chmod +x test.sh
-    - sh test.sh
+  - cd $[[ inputs.directory-name ]]/.scripts/component
+  - chmod +x test.sh
+  - sh test.sh
   needs:
-    - job: functional-test
-    - job: preparation
-      artifacts: true
+  - job: functional-test
+  - job: preparation
+    artifacts: true
 
 e2e-test:
   stage: test
   tags:
-    - test
+  - test
   script:
-    - export $(cat context.env | xargs)
+  - export $(cat context.env | xargs)
 
-    - cd $[[ inputs.directory-name ]]/.scripts/e2e
-    - chmod +x test.sh
-    - sh test.sh
+  - cd $[[ inputs.directory-name ]]/.scripts/e2e
+  - chmod +x test.sh
+  - sh test.sh
   needs:
-    - job: component-test
-    - job: preparation
-      artifacts: true
+  - job: component-test
+  - job: preparation
+    artifacts: true
 
 deliver-dockerhub:
   stage: deliver
@@ -137,20 +137,20 @@ deliver-dockerhub:
     name: jess/img:latest
     entrypoint: [""]
   script:
-    - export $(cat context.env | xargs)
+  - export $(cat context.env | xargs)
 
-    - echo "$CI_JOB_TOKEN" | img login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-    - echo "$DOCKER_HUB_PASS" | img login -u $DOCKER_HUB_USER --password-stdin
+  - echo "$CI_JOB_TOKEN" | img login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  - echo "$DOCKER_HUB_PASS" | img login -u $DOCKER_HUB_USER --password-stdin
 
-    - img pull $$[[ inputs.env-image-name ]]_IMAGE_NAME
+  - img pull $$[[ inputs.env-image-name ]]_IMAGE_NAME
 
-    - img tag $$[[ inputs.env-image-name ]]_IMAGE_NAME $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
+  - img tag $$[[ inputs.env-image-name ]]_IMAGE_NAME $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
 
-    - img push $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
+  - img push $DOCKER_HUB_$[[ inputs.env-image-name ]]_IMAGE_NAME
   needs:
-    - job: e2e-test
-    - job: preparation
-      artifacts: true
+  - job: e2e-test
+  - job: preparation
+    artifacts: true
 
 deploy-prod:
   stage: deploy
@@ -158,18 +158,18 @@ deploy-prod:
     name: scastaneda16/kubectl-helm:latest
     entrypoint: [""]
   tags:
-    - prod
+  - prod
   script:
-    - export $(cat context.env | xargs)
-    - cd helm_charts
+  - export $(cat context.env | xargs)
+  - cd helm-charts
 
-    - sh build_dependencies.sh
+  - helm dependency update app
+  - helm dependency build app
 
-    - helm upgrade 
-      -i arqui-app app/
-      -f $[[ inputs.directory-name ]]/values-$[[ inputs.directory-name ]].yaml 
-      --set api.image.tag=$[[ inputs.environment ]]-${BUILD_ID}
+  - helm upgrade 
+    -i arqui-app app 
+    --set $[[ inputs.directory-name ]].api.image.tag=$[[ inputs.environment ]]-${BUILD_ID}
   needs:
-    - job: deliver-dockerhub
-    - job: preparation
-      artifacts: true
+  - job: deliver-dockerhub
+  - job: preparation
+    artifacts: true

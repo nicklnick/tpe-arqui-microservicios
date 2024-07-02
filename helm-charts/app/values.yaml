@@ -20,3 +20,29 @@ documentManager:
       port: 8000
     path: /documents
     pathType: Prefix
+
+# SUBCHARTS
+role-manager:
+  api:
+    deployment:
+      replicas: 1
+    image:
+      tag: prod-202406231937
+  db:
+    statefulSet:
+      replicas: 1
+
+document-manager:
+  api:
+    deployment:
+      replicas: 1
+    image:
+      tag: test-noid
+  db:
+    statefulSet:
+      replicas: 1
+
+embeddings:
+  db:
+    statefulSet:
+      replicas: 1
