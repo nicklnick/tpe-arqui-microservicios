@@ -1,0 +1,5 @@
+#Environments
+*.env
+
+# PyCharm
+.idea
