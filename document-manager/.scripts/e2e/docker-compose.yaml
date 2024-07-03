@@ -6,6 +6,8 @@ services:
         command: ["pytest", "src/tests/e2e"]
         env_file:
             - .env
+        ports:
+            - "8000:8000"
         depends_on:
             db-document-manager:
                 condition: service_healthy

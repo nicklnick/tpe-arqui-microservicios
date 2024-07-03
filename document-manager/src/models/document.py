@@ -1,11 +1,12 @@
 import datetime
 
 from sqlmodel import SQLModel, Field
+from sqlalchemy import Column, String, LargeBinary
 
 
 class DocumentBase(SQLModel):
-    title: str
-    content: bytes
+    title: str = Column(String, nullable=False, index=True)
+    content: bytes = Column(LargeBinary)
 
 
 # Had to name it MyDocument because Document is already taken by langchain

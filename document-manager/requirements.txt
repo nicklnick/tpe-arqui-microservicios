@@ -5,6 +5,7 @@ sqlmodel
 psycopg2-binary
 langchain_cohere
 langchain_postgres
+pymupdf
 # for testing
 httpx
 pytest
