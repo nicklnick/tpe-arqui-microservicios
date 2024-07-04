@@ -3,3 +3,6 @@
 /role-manager/dist
 /role-manager/requests.http
 node_modules
+
+#Credentials
+*.pem
