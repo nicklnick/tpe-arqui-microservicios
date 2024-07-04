@@ -7,4 +7,6 @@ fastapi==0.111.0
 pydantic-settings==2.3.4
 SQLAlchemy==2.0.31
 psycopg==3.2.1
+pytest==8.2.2
+pytest-asyncio==0.23.7
 python-dotenv

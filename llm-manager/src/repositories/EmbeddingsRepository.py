@@ -1,12 +1,12 @@
 import logging
 
-from fastapi import Depends
 from langchain_cohere import CohereEmbeddings
 from langchain_postgres import PGVector
 from typing import Optional
 
 from src.models.InputLLM import InputLLM
 from sqlalchemy.ext.asyncio import create_async_engine
+
 from src.models.config import PGVectorSettings
 
 LOGGER = logging.getLogger(__name__)
@@ -14,16 +14,16 @@ LOGGER = logging.getLogger(__name__)
 class EmbeddingsRepository:
 
 
-    def __init__(self, host, port, database, user, password, collection_name):
-        self.host = host
-        self.port = port
-        self.database = database
-        self.user = user
-        self.password = password
+    def __init__(self, pgvector_settings: PGVectorSettings):
+        self.host = pgvector_settings.host
+        self.port = pgvector_settings.port
+        self.database = pgvector_settings.database
+        self.user = pgvector_settings.user
+        self.password = pgvector_settings.password
 
         self.connection = f"postgresql+psycopg://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
 
-        self.collection_name= collection_name
+        self.collection_name= pgvector_settings.collection_name
         self.vectorstore : Optional[PGVector] = None
 
 
