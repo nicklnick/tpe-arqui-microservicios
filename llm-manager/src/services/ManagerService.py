@@ -23,14 +23,21 @@ class ManagerService:
         self.llm = llm
 
     async def send_query(self, input_llm: InputLLM, embeddings: list[Document]):
+        LOGGER.info("Connecting to external LLM")
         await self.llm.connect()
 
         prompt_dict = {"context": embeddings, "input": input_llm.input}
+        LOGGER.info("Sending message...")
         return await self.llm.send_message(SYSTEM_PROMPT, prompt_dict)
+
     async def get_similar_embeddings(self, input_llm: InputLLM, results_count: int):
+        self.embeddings_repository.connect()
         return  await self.embeddings_repository.get_similar_embeddings(input_llm, results_count)
 
     async def manage_input(self, input_llm: InputLLM):
-        documents = await self.embeddings_repository.get_similar_embeddings(input_llm, RESULTS_COUNT)
-        results = await self.send_query(input_llm, documents)
-        # put response into rabbitmq
+        LOGGER.info("Getting similar documents")
+        documents = await self.get_similar_embeddings(input_llm, RESULTS_COUNT)
+        if len(documents) < 1:
+            return LOGGER.info(f"No hay documentos asociados a:\n[PREGUNTA]: {input_llm.input}")
+
+        return await self.send_query(input_llm, documents)
