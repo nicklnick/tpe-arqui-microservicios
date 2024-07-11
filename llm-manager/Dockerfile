@@ -4,15 +4,17 @@ WORKDIR /usr/app
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY app.py .
-COPY ./src ./src
-
 RUN apk update && apk add --no-cache \
     build-base \
     libpq \
     libpq-dev \
     gcc
+
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app.py .
+COPY ./src ./src
+
 
 ENTRYPOINT ["python", "app.py"]
