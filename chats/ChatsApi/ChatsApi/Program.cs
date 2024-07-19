@@ -15,9 +15,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddTransient<IChatsService, ChatsService>();
 
+
+
+
 // Add your DbContext to the services
-builder.Services.AddDbContext<ChatDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ChatDbContext>(options => options.UseNpgsql(builder.Configuration.GetValue<string>("DB_CONNECTION")));
 
 var app = builder.Build();
 

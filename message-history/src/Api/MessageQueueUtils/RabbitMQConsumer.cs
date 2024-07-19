@@ -62,7 +62,6 @@ public class RabbitMqConsumer : BackgroundService
     {
         using var scope = _scopeFactory.CreateScope();
         var messageHistoryService = scope.ServiceProvider.GetRequiredService<IMessageHistoryService>();
-        
         var messageModel = JsonSerializer.Deserialize<QueueMessage>(message);
         var uploadMessageOk = await messageHistoryService.UploadMessage(messageModel!.Question, messageModel.Answer,messageModel.ChatId);
         return uploadMessageOk;

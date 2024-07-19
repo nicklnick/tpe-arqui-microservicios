@@ -11,5 +11,4 @@ public class GreetingMessage extends WebSocketMessage {
         this.setType("greeting");
     }
 
-
 }

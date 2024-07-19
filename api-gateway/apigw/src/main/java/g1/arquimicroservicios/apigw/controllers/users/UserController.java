@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 
 @AllArgsConstructor
@@ -18,6 +17,7 @@ import java.util.Optional;
 @RequestMapping("users")
 public class UserController {
     private final IUsersService service;
+
     @PostMapping("register")
     public ResponseEntity<?> response(@RequestBody ApiUserRegisterRequest userRegisterRequest){
         boolean registerSuccess = service.register(userRegisterRequest.getEmail(), userRegisterRequest.getPassword(), userRegisterRequest.getName(), userRegisterRequest.getRole());
@@ -33,14 +33,9 @@ public class UserController {
         String maybeRole = service.signIn(userSignInRequest.getEmail(), userSignInRequest.getPassword());
         if (maybeRole == null)
         {
-            return  ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.ok(new ApiUserSignInResponseDto(userSignInRequest.getEmail(), maybeRole));
     }
-
-
-
-
-
 
 }

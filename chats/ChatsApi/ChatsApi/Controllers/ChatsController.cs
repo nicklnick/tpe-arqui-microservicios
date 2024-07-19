@@ -7,7 +7,7 @@ namespace ChatsApi.Controllers;
 
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/chats")]
 public class ChatsController(IChatsService chatsService) : ControllerBase
 {
 
