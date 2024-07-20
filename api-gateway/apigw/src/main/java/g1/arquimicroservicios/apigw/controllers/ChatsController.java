@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("chats")
+@RequestMapping("/api/chats")
 public class ChatsController {
     
     private final IChatsService chatsService;
