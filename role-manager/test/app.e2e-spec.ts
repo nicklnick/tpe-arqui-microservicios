@@ -13,6 +13,7 @@ import { Repository } from 'typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 
+
 describe('UsersController (E2E)', () => {
   let app: INestApplication;
   let repository: Repository<UserEntity>;
@@ -82,7 +83,7 @@ describe('UsersController (E2E)', () => {
         .expect(201);
 
       expect(response.body).toHaveProperty('email');
-
+      //Chequear aca que este en la DB.
       
     });
 
@@ -108,7 +109,7 @@ describe('UsersController (E2E)', () => {
     });
   });
 
-  describe('/users/signIn (GET)', () => {
+  describe('/users/signIn (POST)', () => {
     it('should sign in a user successfully', async () => {
       const user = {
         email: 'test@example.com',
@@ -125,7 +126,7 @@ describe('UsersController (E2E)', () => {
       };
 
       const response = await request(app.getHttpServer())
-        .get('/users/signIn')
+        .post('/users/signIn')
         .send(userRequestDto)
         .expect(200);
 
@@ -142,7 +143,7 @@ describe('UsersController (E2E)', () => {
       };
 
       await request(app.getHttpServer())
-        .get('/users/signIn')
+        .post('/users/signIn')
         .send(userRequestDto)
         .expect(409);
     });
@@ -163,9 +164,11 @@ describe('UsersController (E2E)', () => {
       };
 
       await request(app.getHttpServer())
-        .get('/users/signIn')
+        .post('/users/signIn')
         .send(userRequestDto)
         .expect(409);
     });
   });
 });
+
+

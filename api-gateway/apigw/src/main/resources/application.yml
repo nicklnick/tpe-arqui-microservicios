@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: apigw
+
+role-manager:
+  api: http://localhost:3000
+
+chats:
+  api: http://localhost:5075

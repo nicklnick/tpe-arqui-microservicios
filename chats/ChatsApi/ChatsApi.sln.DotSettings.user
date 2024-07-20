@@ -1,0 +1,33 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1d93b1ed_002D6fbb_002D4bca_002D8a18_002D7a4bebfe643a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddChat_ShouldReturnNull_WhenChatWithSameNameExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::0DF386C7-A064-4C66-8A5C-D3E299450A10::net8.0::Tests.UnitTest1+ChatsServiceTests.AddChat_ShouldReturnNull_WhenChatWithSameNameExists&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=24335c76_002D3b3b_002D4feb_002D8d90_002Dfad3aff3cda9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddChat_ShouldReturnNull_WhenChatWithSameNameExists #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::0DF386C7-A064-4C66-8A5C-D3E299450A10::net8.0::Tests.ChatsServiceTests.AddChat_ShouldReturnNull_WhenChatWithSameNameExists&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=258dc1c9_002D9f2d_002D4f07_002Da382_002Da18dcccbf116/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddChat_ShouldReturnNull_WhenChatWithSameNameExists #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::0DF386C7-A064-4C66-8A5C-D3E299450A10::net8.0::Tests.ChatsServiceTests.AddChat_ShouldReturnNull_WhenChatWithSameNameExists&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=559a684e_002D0197_002D418a_002Db49e_002D9daefd4d7b86/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ChatsServiceTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatServiceUnitTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatsControllerTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ddf778a5_002D4e26_002D4d48_002Dbf38_002Dddb1dcc1a17c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UnitTest1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatsControllerTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatServiceUnitTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fe49ad91_002D17a7_002D4be7_002D9bf8_002D80deac96f71a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddChat_ShouldReturnNull_WhenChatWithSameNameExists #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::0DF386C7-A064-4C66-8A5C-D3E299450A10::net8.0::Tests.ChatsServiceTests.AddChat_ShouldReturnNull_WhenChatWithSameNameExists&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

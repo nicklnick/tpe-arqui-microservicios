@@ -58,6 +58,9 @@ build:
 
 unit-test:
   stage: test
+  image:
+    name: jess/img:latest
+    entrypoint: [""]
   tags:
   - test
   script:
@@ -68,6 +71,8 @@ unit-test:
   - sh test.sh
   needs:
   - job: build
+    - job: preparation
+      artifacts: true
   - job: preparation
     artifacts: true
 
@@ -118,6 +123,12 @@ component-test:
 
 e2e-test:
   stage: test
+  # Mega inseguro, cambiar
+  services:
+    - docker:19.03.12-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
   tags:
   - test
   script:
@@ -126,6 +137,11 @@ e2e-test:
   - cd $[[ inputs.directory-name ]]/.scripts/e2e
   - chmod +x test.sh
   - sh test.sh
+    - export $(cat context.env | xargs)
+
+    - echo "$CI_JOB_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+
+    - docker compose --profile $[[ inputs.directory-name ]] up --abort-on-container-exit --exit-code-from $[[ inputs.directory-name ]]
   needs:
   - job: component-test
   - job: preparation
