@@ -1,4 +1,4 @@
-package g1.arquimicroservicios.apigw.controllers.websocket.dtos;
+package g1.arquimicroservicios.apigw.controllers.websocket.incomingFromFrontendDtos;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -14,5 +14,4 @@ import lombok.Setter;
 })
 public abstract class WebSocketMessage {
     private  @Getter @Setter String  type;
-    private @Getter @Setter String session;
 }

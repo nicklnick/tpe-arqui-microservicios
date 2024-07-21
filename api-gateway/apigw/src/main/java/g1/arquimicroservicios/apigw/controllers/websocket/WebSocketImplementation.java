@@ -2,8 +2,9 @@ package g1.arquimicroservicios.apigw.controllers.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import g1.arquimicroservicios.apigw.constants.RabbitMQConstants;
-import g1.arquimicroservicios.apigw.controllers.websocket.dtos.QuestionMessage;
-import g1.arquimicroservicios.apigw.controllers.websocket.dtos.WebSocketMessage;
+import g1.arquimicroservicios.apigw.controllers.websocket.forwardingToBackendDtos.QuestionDto;
+import g1.arquimicroservicios.apigw.controllers.websocket.incomingFromFrontendDtos.QuestionMessage;
+import g1.arquimicroservicios.apigw.controllers.websocket.incomingFromFrontendDtos.WebSocketMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -53,10 +54,17 @@ public class WebSocketImplementation extends TextWebSocketHandler {
         WebSocketMessage webSocketMessage = objectMapper.readValue(payload, WebSocketMessage.class);
         if (webSocketMessage == null){
             session.sendMessage(new TextMessage("Error"));
-        } else if (webSocketMessage instanceof QuestionMessage questionMessage) {
-            rabbitTemplate.convertAndSend(RabbitMQConstants.QUESTION_EXCHANGE, RabbitMQConstants.QUESTION_ROUTING_KEY, questionMessage.getContent());
-            session.sendMessage(new TextMessage("Hello man guy, " + questionMessage.getContent()));
+            return;
         }
+
+
+        if (webSocketMessage instanceof QuestionMessage questionMessage) {
+            QuestionDto dto = questionMessage.asQuestionDto(session.getId());
+            String serializedMessage = objectMapper.writeValueAsString(dto);
+            rabbitTemplate.convertAndSend(RabbitMQConstants.QUESTION_EXCHANGE, RabbitMQConstants.QUESTION_ROUTING_KEY, serializedMessage);
+        }
+
+
     }
 
 

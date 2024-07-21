@@ -2,6 +2,7 @@ package ar.edu.itba.arquimicro.ampq.util;
 
 public class QueueNames {
     // from api gw
+
     public static final String PROCESS_INPUT = "process_input";
     // from llm manager
     public static final String RECEIVE_LLM = "receive_llm";

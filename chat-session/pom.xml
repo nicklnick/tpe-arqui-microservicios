@@ -31,6 +31,11 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
@@ -49,11 +54,11 @@
             <artifactId>spring-rabbit-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-docker-compose</artifactId>
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-docker-compose</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

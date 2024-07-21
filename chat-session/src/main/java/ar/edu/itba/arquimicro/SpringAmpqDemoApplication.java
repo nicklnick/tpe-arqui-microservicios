@@ -17,7 +17,7 @@ public class SpringAmpqDemoApplication {
             .build();
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringAmpqDemoApplication.class, args).close();
+        SpringApplication.run(SpringAmpqDemoApplication.class, args);
     }
 
     @Bean

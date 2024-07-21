@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: spring-chat-session
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+server:
+  port: 8081 # for no api gw conflicts for local development
+
+message-history:
+  api: http://localhost:5128
