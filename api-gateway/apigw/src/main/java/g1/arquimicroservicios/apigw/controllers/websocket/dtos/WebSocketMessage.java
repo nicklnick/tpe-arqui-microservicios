@@ -10,10 +10,9 @@ import lombok.Setter;
         property = "type"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = GreetingMessage.class, name = "greeting"),
-        @JsonSubTypes.Type(value = FarewellMessage.class, name = "farewell")
+        @JsonSubTypes.Type(value = QuestionMessage.class, name = "question"),
 })
-
 public abstract class WebSocketMessage {
     private  @Getter @Setter String  type;
+    private @Getter @Setter String session;
 }

@@ -4,11 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-public class GreetingMessage extends WebSocketMessage {
+public class QuestionMessage extends WebSocketMessage {
     private @Getter @Setter String content;
 
-    public GreetingMessage() {
-        this.setType("greeting");
+    public QuestionMessage() {
+        this.setType("question");
     }
 
 }
