@@ -6,6 +6,10 @@ spring:
     port: 5672
     username: guest
     password: guest
+  data:
+    redis:
+      host: localhost
+      port: 6379
 server:
   port: 8081 # for no api gw conflicts for local development
 
