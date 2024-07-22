@@ -1,4 +1,4 @@
-package ar.edu.itba.arquimicro.ampq.util;
+package ar.edu.itba.arquimicro.ampqcontrollers.util;
 
 public class UriPaths {
     public static final String DELIMITER = "/";

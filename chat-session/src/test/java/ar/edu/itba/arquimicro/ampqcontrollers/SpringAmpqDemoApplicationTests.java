@@ -1,4 +1,4 @@
-package ar.edu.itba.arquimicro.ampq;
+package ar.edu.itba.arquimicro.ampqcontrollers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

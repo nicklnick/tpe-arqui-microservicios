@@ -1,4 +1,4 @@
-package ar.edu.itba.arquimicro.services.rest.models;
+package ar.edu.itba.arquimicro.services.models;
 
 import java.util.List;
 

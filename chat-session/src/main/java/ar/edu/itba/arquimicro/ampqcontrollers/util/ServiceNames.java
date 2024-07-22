@@ -1,4 +1,4 @@
-package ar.edu.itba.arquimicro.ampq.util;
+package ar.edu.itba.arquimicro.ampqcontrollers.util;
 
 public class ServiceNames {
     public static final String API_GW = "api_gw";
