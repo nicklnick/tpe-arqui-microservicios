@@ -12,8 +12,8 @@ api:
     repository: #TODO PUSHEAR
   service:
     name: api-chats-svc
-  servicePort: #TODO Ver
-  containerPort: #TODO Ver
+  servicePort: 8080
+  containerPort: 8080
 
 db:
   name: db-chats
