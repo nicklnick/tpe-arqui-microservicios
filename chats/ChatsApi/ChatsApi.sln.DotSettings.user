@@ -20,14 +20,18 @@
     &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatsControllerTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ddf778a5_002D4e26_002D4d48_002Dbf38_002Dddb1dcc1a17c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UnitTest1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ddf778a5_002D4e26_002D4d48_002Dbf38_002Dddb1dcc1a17c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="UnitTest1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatsControllerTests&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatServiceUnitTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fe49ad91_002D17a7_002D4be7_002D9bf8_002D80deac96f71a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddChat_ShouldReturnNull_WhenChatWithSameNameExists #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fe49ad91_002D17a7_002D4be7_002D9bf8_002D80deac96f71a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="AddChat_ShouldReturnNull_WhenChatWithSameNameExists #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::0DF386C7-A064-4C66-8A5C-D3E299450A10::net8.0::Tests.ChatsServiceTests.AddChat_ShouldReturnNull_WhenChatWithSameNameExists&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatsControllerTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatsIntegrationTest.Should_ReturnNoContent_When_NoChatsPresent&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatsIntegrationTest.GetUserChats_Should_ReturnOk_WhenContentFound&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatsIntegrationTest.AddUserChat_Should_ReturnConflict_WhenChatWithGivenNameAlreadyExists&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::663989A8-532D-4EE7-8FA4-3F2D9483B65B::net8.0::TestProject1.ChatsIntegrationTest.AddUserChat_Should_ReturnCreated_WhenChatDoesntExists&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
