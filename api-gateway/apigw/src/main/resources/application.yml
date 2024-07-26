@@ -1,0 +1,19 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  application:
+    name: apigw
+
+role-manager:
+  api: http://localhost:3000
+
+chats:
+  api: http://localhost:5075
+
+message-history:
+  api: http://localhost:5128
+
+

@@ -6,6 +6,7 @@ psycopg2-binary
 langchain_cohere
 langchain_postgres
 pymupdf
+langchain-text-splitters
 # for testing
 httpx
 pytest

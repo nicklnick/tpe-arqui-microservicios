@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: first-container-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: first-container
+  template:
+    metadata:
+      labels:
+        app: first-container
+    spec:
+      containers:
+      - name: first-container
+        image: services/chats-service
+        imagePullPolicy: Never
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-password
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-db
+        - name: DB_CONNECTION
+          value: "Host=postgres-service;Port=5432;Database=$(POSTGRES_DB);Username=$(POSTGRES_USER);Password=$(POSTGRES_PASSWORD);"

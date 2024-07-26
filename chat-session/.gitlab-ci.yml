@@ -5,5 +5,3 @@ include:
       env-image-name: 'CHAT_SESSION'
       environment: 'prod'
       directory-name: 'chat-session'
-      unit-test-command: ''
-      e2e-test-command: ''

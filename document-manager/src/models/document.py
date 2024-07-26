@@ -1,5 +1,6 @@
 import datetime
 
+from pydantic import BaseModel
 from sqlmodel import SQLModel, Field
 from sqlalchemy import Column, String, LargeBinary
 
@@ -15,5 +16,6 @@ class MyDocument(DocumentBase, table=True):
     created_at: datetime.time = Field(default=datetime.datetime.now())
 
 
-class DocumentCreate(DocumentBase):
-    pass
+class DocumentMetadata(BaseModel):
+    id: int
+    title: str

@@ -1,0 +1,48 @@
+name: chats
+# Configure api
+api:
+  name: api-chats
+  env:
+  - name: DB_CONNECTION
+    value: Host=db-chats-svc;Port=5432;Username=postgres;Password=postgres
+  deployment:
+      # replicas: 1 -> parent
+    name: api-chats-deployment
+  image:
+    repository: #TODO PUSHEAR
+  service:
+    name: api-chats-svc
+  servicePort: 8080
+  containerPort: 8080
+
+db:
+  name: db-chats
+  env:
+  - name: POSTGRES_DB
+    value: chats
+  - name: POSTGRES_PASSWORD
+    value: postgres
+  - name: POSTGRES_USER
+    value: postgres
+  statefulSet:
+    # replicas: 1 -> parent
+    name: db-chats-stateful-set
+    volume:
+      mountPath: /var/lib/postgresql/data
+      name: postgresdata
+  image:
+    repository: postgres
+    tag: 16
+  service:
+    name: db-chats-svc
+  pv:
+    name: db-chats-pv
+    path: /data/chats/postgresql
+    accessMode: ReadWriteMany
+    size: 100Mi
+  pvc:
+    name: db-chats-pvc
+    accessMode: ReadWriteMany
+    size: 100Mi
+  servicePort: 5432
+  containerPort: 5432

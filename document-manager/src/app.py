@@ -9,6 +9,8 @@ from fastapi import (
     UploadFile,
     Form,
     BackgroundTasks,
+    Query,
+
 )
 import fitz
 
@@ -27,6 +29,26 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+@app.get("/documents")
+async def get_documents(
+    page: int = Query(1, gt=0),
+    page_size: int = Query(10, gt=0),
+    session=Depends(get_session),
+):
+    offset = (page - 1) * page_size
+    documents = (
+        session.query(MyDocument.id, MyDocument.title)
+        .offset(offset)
+        .limit(page_size)
+        .all()
+    )
+
+    result = [{"id": doc.id, "title": doc.title} for doc in documents]
+
+    return result
+
 
 
 @app.get("/documents/{document_id}")
