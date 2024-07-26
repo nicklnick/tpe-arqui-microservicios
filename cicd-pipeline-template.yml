@@ -48,19 +48,18 @@ build:
   script:
   - export $(cat context.env | xargs)
 
-  - /kaniko/executor  
-    --dockerfile=$[[ inputs.directory-name ]]/Dockerfile 
-    --context=./$[[ inputs.directory-name ]] 
-    --destination=${$[[ inputs.env-image-name ]]_IMAGE_NAME}
+  - /kaniko/executor --dockerfile=$[[ inputs.directory-name ]]/Dockerfile --context=./$[[ inputs.directory-name ]] --destination=${$[[ inputs.env-image-name ]]_IMAGE_NAME}
   needs:
   - job: preparation
     artifacts: true
 
 unit-test:
   stage: test
-  image:
-    name: jess/img:latest
-    entrypoint: [""]
+  services:
+  - docker:19.03.12-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
   tags:
   - test
   script:
@@ -121,9 +120,8 @@ component-test:
 
 e2e-test:
   stage: test
-  # Mega inseguro, cambiar
   services:
-    - docker:19.03.12-dind
+  - docker:19.03.12-dind
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
@@ -135,11 +133,6 @@ e2e-test:
   - cd $[[ inputs.directory-name ]]/.scripts/e2e
   - chmod +x test.sh
   - sh test.sh
-    - export $(cat context.env | xargs)
-
-    - echo "$CI_JOB_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-
-    - docker compose --profile $[[ inputs.directory-name ]] up --abort-on-container-exit --exit-code-from $[[ inputs.directory-name ]]
   needs:
   - job: component-test
   - job: preparation
@@ -180,9 +173,7 @@ deploy-prod:
   - helm dependency update app
   - helm dependency build app
 
-  - helm upgrade 
-    -i arqui-app app 
-    --set $[[ inputs.directory-name ]].api.image.tag=$[[ inputs.environment ]]-${BUILD_ID}
+  - helm upgrade -i arqui-app app --set $[[ inputs.directory-name ]].api.image.tag=$[[ inputs.environment ]]-${BUILD_ID}
   needs:
   - job: deliver-dockerhub
   - job: preparation
