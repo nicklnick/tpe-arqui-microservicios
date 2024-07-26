@@ -32,7 +32,7 @@ public class RabbitMqConsumer : BackgroundService
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
 
-        _channel.QueueDeclare(queue: _configuration["RabbitMQ:QueueName"], durable: true, exclusive: false,
+        _channel.QueueDeclare(queue: "history_messages", durable: true, exclusive: false,
             autoDelete: false, arguments: null);
 
 
@@ -52,7 +52,7 @@ public class RabbitMqConsumer : BackgroundService
 
         };
 
-        _channel.BasicConsume(queue: _configuration["RabbitMQ:QueueName"],
+        _channel.BasicConsume(queue: "history_messages",
             autoAck: false,
             consumer: consumer);
     }

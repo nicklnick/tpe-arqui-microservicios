@@ -27,7 +27,6 @@ using (var scope = app.Services.CreateScope())
     catch (Exception e)
     {
         Console.WriteLine("Error ocurred while running migration");
-        throw;
     }
 }
 
