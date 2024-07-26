@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ChatsApi\ChatsApi.csproj" />
+      <ProjectReference Include="..\src\ChatsApi\ChatsApi.csproj" />
     </ItemGroup>
 
 </Project>

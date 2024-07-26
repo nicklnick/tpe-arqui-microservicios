@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatsApi", "ChatsApi\ChatsApi.csproj", "{873775BE-2EB8-43D2-BADE-EC2EE0814F46}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{663989A8-532D-4EE7-8FA4-3F2D9483B65B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatsApi", "src\ChatsApi\ChatsApi.csproj", "{A9506F22-C51B-4010-AD3D-422DC0A6186D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,13 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{873775BE-2EB8-43D2-BADE-EC2EE0814F46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{873775BE-2EB8-43D2-BADE-EC2EE0814F46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{873775BE-2EB8-43D2-BADE-EC2EE0814F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{873775BE-2EB8-43D2-BADE-EC2EE0814F46}.Release|Any CPU.Build.0 = Release|Any CPU
 		{663989A8-532D-4EE7-8FA4-3F2D9483B65B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{663989A8-532D-4EE7-8FA4-3F2D9483B65B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{663989A8-532D-4EE7-8FA4-3F2D9483B65B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{663989A8-532D-4EE7-8FA4-3F2D9483B65B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9506F22-C51B-4010-AD3D-422DC0A6186D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9506F22-C51B-4010-AD3D-422DC0A6186D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9506F22-C51B-4010-AD3D-422DC0A6186D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9506F22-C51B-4010-AD3D-422DC0A6186D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
