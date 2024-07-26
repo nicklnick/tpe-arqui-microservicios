@@ -10,6 +10,7 @@ from fastapi import (
     Form,
     BackgroundTasks,
     Query,
+
 )
 import fitz
 
@@ -47,6 +48,7 @@ async def get_documents(
     result = [{"id": doc.id, "title": doc.title} for doc in documents]
 
     return result
+
 
 
 @app.get("/documents/{document_id}")
