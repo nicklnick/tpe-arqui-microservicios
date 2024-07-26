@@ -5,6 +5,7 @@ import ar.edu.itba.arquimicro.ampqcontrollers.util.QUEUES_DATA;
 import ar.edu.itba.arquimicro.services.contracts.ICacheService;
 import ar.edu.itba.arquimicro.services.contracts.ILlmService;
 import ar.edu.itba.arquimicro.services.contracts.IMessageHistoryService;
+import ar.edu.itba.arquimicro.services.models.CacheableMessageData;
 import ar.edu.itba.arquimicro.services.models.LlmPayload;
 import ar.edu.itba.arquimicro.services.models.MessageHistory;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -52,9 +53,9 @@ public class InputListener {
         MessageHistory previousMessages = messageHistoryService.getMessageHistory(inputPayload.chatId(), MESSAGES_LIMIT_BACKWARDS);//
 
         //cache messageId => SessionId
-        cacheService.put(messageId,inputPayload.sessionId());
+        cacheService.put(messageId,new CacheableMessageData(inputPayload.sessionId(), inputPayload.chatId()));
 
-        llmService.sendMessageToLlm(new LlmPayload(previousMessages.chatId(),messageId,inputPayload.question(),previousMessages.messages()));
+        llmService.sendMessageToLlm(new LlmPayload(messageId,inputPayload.question(),previousMessages.messages()));
 
 
     }

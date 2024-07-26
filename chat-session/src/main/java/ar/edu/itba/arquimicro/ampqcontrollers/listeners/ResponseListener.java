@@ -4,6 +4,7 @@ package ar.edu.itba.arquimicro.ampqcontrollers.listeners;
 import ar.edu.itba.arquimicro.ampqcontrollers.util.QUEUES_DATA;
 import ar.edu.itba.arquimicro.services.contracts.ICacheService;
 import ar.edu.itba.arquimicro.services.contracts.IMessageHistoryService;
+import ar.edu.itba.arquimicro.services.models.CacheableMessageData;
 import ar.edu.itba.arquimicro.services.models.LlmResponse;
 import ar.edu.itba.arquimicro.services.models.Message;
 import ar.edu.itba.arquimicro.services.models.MessageToHistory;
@@ -19,14 +20,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ResponseListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResponseListener.class);
-    private final RabbitTemplate rabbitTemplate;
 
     private final ObjectMapper mapper = new ObjectMapper();
 
     private final ICacheService cacheService;
     private final IMessageHistoryService messageHistoryService;
-    public ResponseListener(RabbitTemplate rabbitTemplate, ICacheService cacheService, IMessageHistoryService messageHistoryService) {
-        this.rabbitTemplate = rabbitTemplate;
+    public ResponseListener( ICacheService cacheService, IMessageHistoryService messageHistoryService) {
         this.cacheService = cacheService;
         this.messageHistoryService = messageHistoryService;
     }
@@ -39,10 +38,10 @@ public class ResponseListener {
 
         LlmResponse response = mapper.readValue(jsonResponse,LlmResponse.class);
 
-        String sessionId = cacheService.find(response.messageId());
+        CacheableMessageData messageData = cacheService.find(response.messageId());
 
 
-        messageHistoryService.saveMessageToHistory(new MessageToHistory(response.chatId(), response.question(),response.answer()));
+        messageHistoryService.saveMessageToHistory(new MessageToHistory(messageData.chatId(), response.question(),response.answer()));
 
         System.out.println();
 

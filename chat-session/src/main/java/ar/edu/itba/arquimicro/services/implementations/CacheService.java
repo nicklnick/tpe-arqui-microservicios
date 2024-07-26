@@ -1,6 +1,9 @@
 package ar.edu.itba.arquimicro.services.implementations;
 
 import ar.edu.itba.arquimicro.services.contracts.ICacheService;
+import ar.edu.itba.arquimicro.services.models.CacheableMessageData;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -17,13 +20,15 @@ public class CacheService implements ICacheService  {
 
     //maps messageId => sessionId
     private RedisTemplate<String, String> redisTemplate;
-
-    public void put(String messageId, String sessionId) {
-        redisTemplate.opsForValue().set(messageId, sessionId, Duration.ofMinutes(5));
+    private final ObjectMapper mapper = new ObjectMapper();
+    public void put(String messageId, CacheableMessageData messageData) throws JsonProcessingException {
+        String cacheableMessageData = mapper.writeValueAsString(messageData);
+        redisTemplate.opsForValue().set(messageId, cacheableMessageData, Duration.ofMinutes(5));
     }
 
-    public String find(String messageId) {
-        return redisTemplate.opsForValue().get(messageId);
+    public CacheableMessageData find(String messageId) throws JsonProcessingException {
+        String data = redisTemplate.opsForValue().get(messageId);
+        return mapper.readValue(data,CacheableMessageData.class);
     }
 
 
