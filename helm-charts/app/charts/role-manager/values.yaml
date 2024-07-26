@@ -38,7 +38,7 @@ db:
     # replicas: 1 -> parent
     name: db-role-manager-stateful-set
     volume:
-      mountPath: /var/lib/postgresql/data
+      mountPath: /var/lib/role-manager/data
       name: postgresdata
   image:
     repository: postgres

@@ -12,7 +12,7 @@ db:
     # replicas: 1 -> parent
     name: db-embeddings-stateful-set
     volume:
-      mountPath: /var/lib/postgresql/data
+      mountPath: /var/lib/embeddings/data
       name: postgresdata
   image:
     repository: pgvector/pgvector

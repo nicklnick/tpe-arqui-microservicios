@@ -32,3 +32,8 @@ dependencies:
   alias: role-manager
   version: 0.1.0
   repository: "file://charts/role-manager"
+- name: chats
+  alias: chats
+  version: 0.1.0
+  repository: "file://charts/chats"
+
