@@ -1,0 +1,6 @@
+ services:
+  unit-test-llm-manger:
+    build: ../../
+    container_name: unit-test-llm-manager
+    entrypoint: sh -c "pytest src/test/unit/"
+    env_file: ../../.env

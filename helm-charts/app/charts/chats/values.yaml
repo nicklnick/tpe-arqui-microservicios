@@ -6,10 +6,10 @@ api:
   - name: DB_CONNECTION
     value: Host=db-chats-svc;Port=5432;Username=postgres;Password=postgres
   deployment:
-      # replicas: 1 -> parent
+    # replicas: 1 -> parent
     name: api-chats-deployment
   image:
-    repository: #TODO PUSHEAR
+    repository: docker.io/nicklnick/chats
   service:
     name: api-chats-svc
   servicePort: 8080
@@ -28,7 +28,7 @@ db:
     # replicas: 1 -> parent
     name: db-chats-stateful-set
     volume:
-      mountPath: /var/lib/postgresql/data
+      mountPath: /var/lib/chats/data
       name: postgresdata
   image:
     repository: postgres

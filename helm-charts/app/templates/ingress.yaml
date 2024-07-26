@@ -8,17 +8,24 @@ spec:
         - host: "{{ .Values.ingress.host }}"
           http:
               paths:
-                  - path: "{{ .Values.roleManager.api.path }}"
-                    pathType: "{{ .Values.roleManager.api.pathType }}"
+                  - path: "{{ .Values.ingress.paths.roleManager.api.path }}"
+                    pathType: "{{ .Values.ingress.paths.roleManager.api.pathType }}"
                     backend:
                         service:
-                            name: "{{ .Values.roleManager.api.service.name }}"
+                            name: "{{ .Values.ingress.paths.roleManager.api.service.name }}"
                             port:
-                                number: {{ .Values.roleManager.api.service.port }}
-                  - path: "{{ .Values.documentManager.api.path }}"
-                    pathType: "{{ .Values.documentManager.api.pathType }}"
+                                number: {{ .Values.ingress.paths.roleManager.api.service.port }}
+                  - path: "{{ .Values.ingress.paths.documentManager.api.path }}"
+                    pathType: "{{ .Values.ingress.paths.documentManager.api.pathType }}"
                     backend:
                         service:
-                            name: "{{ .Values.documentManager.api.service.name }}"
+                            name: "{{ .Values.ingress.paths.documentManager.api.service.name }}"
                             port:
-                                number: {{ .Values.documentManager.api.service.port }}
+                                number: {{ .Values.ingress.paths.documentManager.api.service.port }}
+                  - path: "{{ .Values.ingress.paths.chats.api.path }}"
+                    pathType: "{{ .Values.ingress.paths.chats.api.pathType }}"
+                    backend:
+                        service:
+                            name: "{{ .Values.ingress.paths.chats.api.service.name }}"
+                            port:
+                                number: {{ .Values.ingress.paths.chats.api.service.port }}

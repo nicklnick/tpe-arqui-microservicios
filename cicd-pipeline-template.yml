@@ -71,8 +71,6 @@ unit-test:
   - sh test.sh
   needs:
   - job: build
-    - job: preparation
-      artifacts: true
   - job: preparation
     artifacts: true
 

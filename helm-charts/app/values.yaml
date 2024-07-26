@@ -1,25 +1,32 @@
+name: app
 ingress:
   name: example-ingress
   host: example.com
   tls:
     enabled: false
     secretName: example-tls
-
-name: app
-roleManager:
-  api:
-    service:
-      name: api-role-manager-svc
-      port: 8080
-    path: /users
-    pathType: Prefix
-documentManager:
-  api:
-    service:
-      name: api-document-manager-svc
-      port: 8000
-    path: /documents
-    pathType: Prefix
+  paths:
+    roleManager:
+      api:
+        service:
+          name: api-role-manager-svc
+          port: 8080
+        path: /users
+        pathType: Prefix
+    documentManager:
+      api:
+        service:
+          name: api-document-manager-svc
+          port: 8000
+        path: /documents
+        pathType: Prefix
+    chats:
+      api:
+        service:
+          name: api-chats-svc
+          port: 8080
+        path: /chats
+        pathType: Prefix
 
 # SUBCHARTS
 role-manager:
@@ -43,6 +50,16 @@ document-manager:
       replicas: 1
 
 embeddings:
+  db:
+    statefulSet:
+      replicas: 1
+
+chats:
+  api:
+    deployment:
+      replicas: 1
+    image:
+      tag: test-noid
   db:
     statefulSet:
       replicas: 1

@@ -11,5 +11,8 @@ dependencies:
 - name: role-manager
   repository: file://charts/role-manager
   version: 0.1.0
-digest: sha256:3677e0e8fedf87afe6d23433c245f91ffcbc2fe6345ae8546eb01f72523cda3f
-generated: "2024-07-02T18:41:59.025618537-03:00"
+- name: chats
+  repository: file://charts/chats
+  version: 0.1.0
+digest: sha256:d0b1ce0dcb62348135056f07c65a01bf8f60acd618f06958c13b2f697fc0418a
+generated: "2024-07-26T11:35:20.021639648-03:00"
