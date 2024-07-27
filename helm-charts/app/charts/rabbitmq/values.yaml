@@ -1,0 +1,24 @@
+name: rabbitmq
+replicas: 3
+
+container:
+  image: rabbitmq:3.8-management
+
+pv:
+  name: rabbitmq-pv
+  path: /data/rabbitmq
+  accessMode: ReadWriteOnce
+  size: 50Mi
+
+pvc:
+  name: data
+  size: 50Mi
+
+service:
+  ports:
+  - name: discovery
+    port: 4369
+    targetPort: 4369
+  - name: amqp
+    port: 5672
+    targetPort: 5672

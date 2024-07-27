@@ -1,3 +1,4 @@
+### INGRESS ###
 name: app
 ingress:
   name: example-ingress
@@ -28,7 +29,7 @@ ingress:
         path: /chats
         pathType: Prefix
 
-# SUBCHARTS
+### SUBCHARTS ###
 role-manager:
   api:
     deployment:

@@ -14,5 +14,8 @@ dependencies:
 - name: chats
   repository: file://charts/chats
   version: 0.1.0
-digest: sha256:d0b1ce0dcb62348135056f07c65a01bf8f60acd618f06958c13b2f697fc0418a
-generated: "2024-07-26T11:35:20.021639648-03:00"
+- name: rabbitmq
+  repository: file://charts/rabbitmq
+  version: 0.1.0
+digest: sha256:8975efa7e93ac1eae0ded8a8e3df59a5724e3603e1ed29adb8795bb485970440
+generated: "2024-07-26T23:34:23.812474453-03:00"
