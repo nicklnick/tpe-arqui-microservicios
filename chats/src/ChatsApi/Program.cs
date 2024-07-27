@@ -2,9 +2,6 @@ using ChatsApi.Models;
 using ChatsApi.ServicesImplementation;
 using ChatsApi.ServicesInterface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,14 +13,12 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<IChatsService, ChatsService>();
 
 
-
-
 // Add your DbContext to the services
 builder.Services.AddDbContext<ChatDbContext>(options => options.UseNpgsql(builder.Configuration.GetValue<string>("DB_CONNECTION")));
 
 var app = builder.Build();
-
 // Apply migrations at startup
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
