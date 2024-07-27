@@ -1,0 +1,27 @@
+# Gradle cache and build output directories
+.gradle
+build
+
+# Eclipse/IntelliJ IDEA project files
+*.iml
+.idea/
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+target/
+
+# Mac OS X metadata
+.DS_Store
+
+# Log files
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# Other IDE-specific files
+.vscode/
+out/
