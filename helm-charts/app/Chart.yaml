@@ -36,4 +36,7 @@ dependencies:
   alias: chats
   version: 0.1.0
   repository: "file://charts/chats"
-
+- name: rabbitmq
+  alias: rabbitmq
+  version: 0.1.0
+  repository: "file://charts/rabbitmq"
