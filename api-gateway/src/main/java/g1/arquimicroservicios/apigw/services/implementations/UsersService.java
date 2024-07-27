@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import g1.arquimicroservicios.apigw.services.contracts.IUsersService;
 import g1.arquimicroservicios.apigw.services.implementations.requestsDtos.RegisterRequestDto;
 import g1.arquimicroservicios.apigw.services.implementations.requestsDtos.SignInRequestDto;
+import g1.arquimicroservicios.apigw.services.implementations.responseDtos.UserSignInResponseDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class UsersService implements IUsersService {
 
             // Create the request
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url + "/users/register"))  // Assuming the URL is stored in the application properties
+                    .uri(URI.create(url + "/api/users/register"))  // Assuming the URL is stored in the application properties
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBodyJson))
                     .build();
@@ -53,7 +54,7 @@ public class UsersService implements IUsersService {
 
 
     @Override
-    public String signIn(String email, String password)
+    public UserSignInResponseDto signIn(String email, String password)
     {
         SignInRequestDto dto = new SignInRequestDto(email,password);
 
@@ -61,15 +62,14 @@ public class UsersService implements IUsersService {
             String requestBodyJson = objectMapper.writeValueAsString(dto);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url + "/users/signIn"))  // Assuming the URL is stored in the application properties
+                    .uri(URI.create(url + "/api/users/signIn"))  // Assuming the URL is stored in the application properties
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBodyJson))
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 201){
-                JsonNode node = objectMapper.readTree(response.body());
-                return node.path("role").asText();
+            if (response.statusCode() == 200){
+                return objectMapper.readValue(response.body(), UserSignInResponseDto.class);
             }
             return null;
         } catch (Exception e) {

@@ -11,4 +11,6 @@ import lombok.Setter;
 public class ApiUserSignInResponseDto {
     private String email;
     private String role;
+    private int userId;
+    private String name;
 }

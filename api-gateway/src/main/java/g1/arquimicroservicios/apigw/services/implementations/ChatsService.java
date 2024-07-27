@@ -27,9 +27,7 @@ public class ChatsService implements IChatsService {
 
     @Override
     public List<ChatsServiceResponseDto> getUserChats(int userId) {
-
         try {
-
             // Create the request
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url + "/api/chats/" + userId)) // Assuming the URL is stored in the application properties
@@ -40,16 +38,10 @@ public class ChatsService implements IChatsService {
             if (response.statusCode() == 204){
                 return Collections.emptyList();
             }
-
             if (response.statusCode() == 200){
-                return objectMapper.readValue(response.body(), new TypeReference<>() {
-                });
+                return objectMapper.readValue(response.body(), new TypeReference<>() {});
             }
-
             return null;//something went wrong
-
-            
-
         } catch (Exception e) {
             return null;//something went wrong...
         }

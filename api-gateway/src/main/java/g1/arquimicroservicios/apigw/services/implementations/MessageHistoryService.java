@@ -42,12 +42,10 @@ public class MessageHistoryService implements IMessageHistoryService {
             if (response.statusCode() == 204){
                 return Collections.emptyList();
             }
-
             if (response.statusCode() == 200){
                 return mapper.readValue(response.body(), new TypeReference<>() {
                 });
             }
-
             return null;
         } catch (Exception e){
             return null;

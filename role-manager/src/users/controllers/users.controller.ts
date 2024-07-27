@@ -3,6 +3,7 @@ import {
   ConflictException,
   Controller,
   Get,
+  HttpCode,
   HttpStatus,
   Inject,
   Post,
@@ -14,11 +15,12 @@ import {
 } from '../services/interface/users.interface';
 import { UserRegisterDto } from '../dtos/userRegisterDto';
 
-@Controller('users')
+@Controller('/api/users')
 export class UsersController {
     
     constructor (@Inject(IUsersServiceID) private readonly userService: IUsersService ){}
 
+    @HttpCode(200)
     @Post("signIn")
     async signIn(@Body() user: UserRequestDto){
         const userData = await this.userService.signIn(user.email,user.password)
@@ -26,6 +28,8 @@ export class UsersController {
             throw new ConflictException();
         }
         return {
+            userId: userData.id,
+            name: userData.name,
             email: userData.email,
             role : userData.role
         }
@@ -39,7 +43,7 @@ export class UsersController {
             throw new ConflictException();
         }
         return {
-            email: inserted.email
+            email: inserted.email,
         }
     }
 
