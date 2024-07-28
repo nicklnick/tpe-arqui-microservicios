@@ -1,17 +1,13 @@
 package g1.arquimicroservicios.apigw.services.implementations;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import g1.arquimicroservicios.apigw.services.contracts.IUsersService;
 import g1.arquimicroservicios.apigw.services.implementations.requestsDtos.RegisterRequestDto;
 import g1.arquimicroservicios.apigw.services.implementations.requestsDtos.SignInRequestDto;
 import g1.arquimicroservicios.apigw.services.implementations.responseDtos.UserSignInResponseDto;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -25,8 +21,12 @@ public class UsersService implements IUsersService {
 
     @Value("${role-manager.api}")
     private String url;
-    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final HttpClient httpClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public UsersService(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     @Override
     public boolean register(String email, String password, String name,String role)

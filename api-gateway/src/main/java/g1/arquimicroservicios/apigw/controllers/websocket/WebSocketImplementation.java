@@ -25,8 +25,6 @@ public class WebSocketImplementation extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> sessionMap = new ConcurrentHashMap<>();
 
 
-
-
     private final RabbitTemplate rabbitTemplate;
 
     public WebSocketImplementation(RabbitTemplate template) {

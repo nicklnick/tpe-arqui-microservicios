@@ -3,7 +3,6 @@ package g1.arquimicroservicios.apigw.services.implementations;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.ReferenceType;
 import g1.arquimicroservicios.apigw.services.contracts.IMessageHistoryService;
 import g1.arquimicroservicios.apigw.services.implementations.responseDtos.MessageHistoryServiceResponseDto;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +22,14 @@ public class MessageHistoryService implements IMessageHistoryService {
 
     @Value("${message-history.api}")
     private String url;
-    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final HttpClient httpClient;
     private final ObjectMapper mapper = new ObjectMapper();
     private static final int OFFSET_CONSTANT = 5;
     private static final int AMOUNT_PER_PAGE = 5;
+
+    public MessageHistoryService(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
 
     public List<MessageHistoryServiceResponseDto> getMessageHistory(int chatId, int page){

@@ -6,7 +6,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,8 +21,13 @@ public class ChatsService implements IChatsService {
 
     @Value("${chats.api}")
     private String url;
-    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final HttpClient httpClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public ChatsService(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
 
     @Override
     public List<ChatsServiceResponseDto> getUserChats(int userId) {
