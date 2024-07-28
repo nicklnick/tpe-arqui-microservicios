@@ -18,4 +18,3 @@ message-history:
 
 document-manager:
   api: http://localhost:2313
-

@@ -1,31 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-    name: "{{ .Values.ingress.name }}"
+  name: "{{ .Values.ingress.name }}"
 spec:
-    ingressClassName: nginx
-    rules:
-        - host: "{{ .Values.ingress.host }}"
-          http:
-              paths:
-                  - path: "{{ .Values.ingress.paths.roleManager.api.path }}"
-                    pathType: "{{ .Values.ingress.paths.roleManager.api.pathType }}"
-                    backend:
-                        service:
-                            name: "{{ .Values.ingress.paths.roleManager.api.service.name }}"
-                            port:
-                                number: {{ .Values.ingress.paths.roleManager.api.service.port }}
-                  - path: "{{ .Values.ingress.paths.documentManager.api.path }}"
-                    pathType: "{{ .Values.ingress.paths.documentManager.api.pathType }}"
-                    backend:
-                        service:
-                            name: "{{ .Values.ingress.paths.documentManager.api.service.name }}"
-                            port:
-                                number: {{ .Values.ingress.paths.documentManager.api.service.port }}
-                  - path: "{{ .Values.ingress.paths.chats.api.path }}"
-                    pathType: "{{ .Values.ingress.paths.chats.api.pathType }}"
-                    backend:
-                        service:
-                            name: "{{ .Values.ingress.paths.chats.api.service.name }}"
-                            port:
-                                number: {{ .Values.ingress.paths.chats.api.service.port }}
+  ingressClassName: nginx
+  rules:
+    - host: "{{ .Values.ingress.host }}"
+      http:
+        {{- if .Values.ingress.paths }}
+        paths:
+          {{- range .Values.ingress.paths }}
+          - path: "{{ .path }}"
+            pathType: "{{ .pathType }}"
+            backend:
+              service:
+                name: "{{ .service.name }}"
+                port:
+                  number: {{ .service.port }}
+          {{- end }}
+        {{- end }}

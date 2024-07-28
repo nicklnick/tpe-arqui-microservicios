@@ -24,6 +24,10 @@ dependencies:
   alias: document-manager
   version: 0.1.0
   repository: "file://charts/document-manager"
+- name: api-gateway
+  alias: api-gateway
+  version: 0.1.0
+  repository: "file://charts/api-gateway"
 - name: embeddings
   alias: embeddings
   version: 0.1.0

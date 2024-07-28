@@ -7,27 +7,21 @@ ingress:
     enabled: false
     secretName: example-tls
   paths:
-    roleManager:
-      api:
-        service:
-          name: api-role-manager-svc
-          port: 8080
-        path: /users
-        pathType: Prefix
-    documentManager:
-      api:
-        service:
-          name: api-document-manager-svc
-          port: 8000
-        path: /documents
-        pathType: Prefix
-    chats:
-      api:
-        service:
-          name: api-chats-svc
-          port: 8080
-        path: /chats
-        pathType: Prefix
+  - service:
+      name: api-gateway-svc
+      port: 8080
+    path: /api/chats
+    pathType: Prefix
+  - service:
+      name: api-gateway-svc
+      port: 8080
+    path: /api/users
+    pathType: Prefix
+  - service:
+      name: api-document-manager-svc
+      port: 8000
+    path: /documents
+    pathType: Prefix
 
 ### SUBCHARTS ###
 role-manager:
@@ -64,3 +58,10 @@ chats:
   db:
     statefulSet:
       replicas: 1
+
+api-gateway:
+  api:
+    deployment:
+      replicas: 1
+    image:
+      tag: test-noid

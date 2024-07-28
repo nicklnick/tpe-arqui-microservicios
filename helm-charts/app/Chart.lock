@@ -5,6 +5,9 @@ dependencies:
 - name: document-manager
   repository: file://charts/document-manager
   version: 0.1.0
+- name: api-gateway
+  repository: file://charts/api-gateway
+  version: 0.1.0
 - name: embeddings
   repository: file://charts/embeddings
   version: 0.1.0
@@ -17,5 +20,5 @@ dependencies:
 - name: rabbitmq
   repository: file://charts/rabbitmq
   version: 0.1.0
-digest: sha256:8975efa7e93ac1eae0ded8a8e3df59a5724e3603e1ed29adb8795bb485970440
-generated: "2024-07-26T23:34:23.812474453-03:00"
+digest: sha256:f7e241a3e4fc4e4dde63935499b7114e7e6756a171dfa33f1f51839c8bb8b6a6
+generated: "2024-07-28T12:22:42.821982143-03:00"

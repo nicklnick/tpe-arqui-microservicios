@@ -1,0 +1,29 @@
+
+# Configure api
+api:
+  name: api-gateway
+  # deployment:
+  #   replicas: 1 -> parent
+  image:
+    repository: docker.io/nicklnick/api-gateway
+    # tag: prod-202406231937 -> parent
+  servicePort: 8080
+  containerPort: 8080
+  env:
+  - name: SPRING_RABBITMQ_HOST
+    value: "rabbitmq"
+  - name: SPRING_RABBITMQ_PORT
+    value: "5672"
+  - name: SPRING_RABBITMQ_USERNAME
+    value: "guest"
+  - name: SPRING_RABBITMQ_PASSWORD
+    value: "guest"
+  - name: SPRING_APPLICATION_NAME
+    value: "apigw"
+  - name: ROLE_MANAGER_API
+    value: "http://api-role-manager-svc:3000"
+  - name: CHATS_API
+    value: "http://api-chats-svc:8080"
+  - name: MESSAGE_HISTORY_API
+    value: "http://api-message-history-svc:8080"
+
