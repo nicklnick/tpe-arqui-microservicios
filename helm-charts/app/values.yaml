@@ -8,19 +8,9 @@ ingress:
     secretName: example-tls
   paths:
   - service:
-      name: api-gateway-svc
+      name: api-gateway
       port: 8080
-    path: /api/chats
-    pathType: Prefix
-  - service:
-      name: api-gateway-svc
-      port: 8080
-    path: /api/users
-    pathType: Prefix
-  - service:
-      name: api-document-manager-svc
-      port: 8000
-    path: /documents
+    path: /api
     pathType: Prefix
 
 ### SUBCHARTS ###

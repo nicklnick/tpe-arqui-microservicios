@@ -45,7 +45,7 @@ public class DocumentManagerService implements IDocumentManagerService {
 
             HttpEntity<Resource> requestEntity = new HttpEntity<>(fileAsResource,headers);
 
-            ResponseEntity<?>  response = restClient.postForEntity(url,requestEntity,Void.class);
+            ResponseEntity<?>  response = restClient.postForEntity(url + "/documents",requestEntity,Void.class);
 
             return response.getStatusCode().is2xxSuccessful();
 

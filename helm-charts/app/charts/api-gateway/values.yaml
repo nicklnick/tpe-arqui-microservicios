@@ -26,4 +26,6 @@ api:
     value: "http://api-chats-svc:8080"
   - name: MESSAGE_HISTORY_API
     value: "http://api-message-history-svc:8080"
+  - name: DOCUMENT_MANAGER_API
+    value: "http://api-document-manager-svc:8000"
 
