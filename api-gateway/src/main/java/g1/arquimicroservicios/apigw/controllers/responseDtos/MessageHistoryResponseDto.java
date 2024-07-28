@@ -11,5 +11,5 @@ import lombok.Setter;
 public class MessageHistoryResponseDto {
     private String question;
     private String answer;
-    private String id;
+    private int id;
 }

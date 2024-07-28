@@ -9,6 +9,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,19 +39,24 @@ public class DocumentManagerService implements IDocumentManagerService {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-            ByteArrayResource fileAsResource = new ByteArrayResource(file.getBytes()){
+
+            ByteArrayResource fileAsResource = new ByteArrayResource(file.getBytes()) {
                 @Override
-                public String getFilename(){
+                public String getFilename() {
                     return file.getOriginalFilename();
                 }
             };
 
-            HttpEntity<Resource> requestEntity = new HttpEntity<>(fileAsResource,headers);
+            // Create a map to hold the parts of the request
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            body.add("file", fileAsResource);
+            body.add("title", file.getOriginalFilename());
 
-            ResponseEntity<?>  response = restClient.postForEntity(url + "/documents",requestEntity,Void.class);
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+            ResponseEntity<?> response = restClient.postForEntity(url + "/documents", requestEntity, Void.class);
 
             return Optional.of(response.getStatusCode().is2xxSuccessful());
-
         } catch (IOException e){
             e.printStackTrace();
             return  Optional.empty();
