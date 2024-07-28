@@ -51,6 +51,7 @@ public class MessageHistoryService implements IMessageHistoryService {
             }
             return null;
         } catch (Exception e){
+            e.printStackTrace();
             return null;
         }
 

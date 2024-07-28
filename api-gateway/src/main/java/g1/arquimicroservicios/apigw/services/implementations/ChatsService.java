@@ -6,8 +6,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -47,8 +49,24 @@ public class ChatsService implements IChatsService {
             }
             return null;//something went wrong
         } catch (Exception e) {
+            e.printStackTrace();
             return null;//something went wrong...
         }
     }
+
+    @Override
+    public Optional<Boolean> createUserChat(int userId, String chatName) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url + "/api/chats/" + userId + "?chatName=" + chatName))
+                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse<?> response = httpClient.send(request,HttpResponse.BodyHandlers.discarding());
+            return Optional.of(response.statusCode() == 201);
+        } catch (Exception e){
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    };
 
 }

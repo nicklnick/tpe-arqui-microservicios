@@ -7,4 +7,6 @@ import g1.arquimicroservicios.apigw.services.implementations.responseDtos.ChatsS
 
 public interface IChatsService {    
     List<ChatsServiceResponseDto> getUserChats(int userId);
+
+    Optional<Boolean> createUserChat(int userId, String chatName);
 }

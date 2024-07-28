@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 
 @AllArgsConstructor
 @RestController
@@ -28,11 +30,17 @@ public class DocumentManagerController {
             return ResponseEntity.badRequest().body("Only pdf files are allowed");
         }
 
-        boolean created = documentManagerService.uploadFile(file);
-        if (!created){
+        Optional<Boolean> maybeCreated = documentManagerService.uploadFile(file);
+
+        if (maybeCreated.isEmpty()){
             return ResponseEntity.internalServerError().build();
         }
 
+        boolean created = maybeCreated.get();
+        if (!created){
+            // TODO NICO  el error seria que el archivo ya exista?
+            return ResponseEntity.internalServerError().build();
+        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
 

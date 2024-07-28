@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Optional;
 
 
 @Service
@@ -29,7 +30,7 @@ public class UsersService implements IUsersService {
     }
 
     @Override
-    public boolean register(String email, String password, String name,String role)
+    public Optional<Boolean> register(String email, String password, String name, String role)
     {
 
         RegisterRequestDto dto = new RegisterRequestDto(email,password,role,name);
@@ -45,9 +46,10 @@ public class UsersService implements IUsersService {
                     .build();
             // Send the request and get the response
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.statusCode() == 201;
+            return Optional.of(response.statusCode() == 201);
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
+            return Optional.empty();
         }
 
     }

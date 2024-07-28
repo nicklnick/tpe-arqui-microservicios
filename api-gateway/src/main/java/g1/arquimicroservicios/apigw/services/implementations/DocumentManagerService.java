@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 @Service
@@ -31,7 +32,7 @@ public class DocumentManagerService implements IDocumentManagerService {
     }
 
     @Override
-    public boolean uploadFile(MultipartFile file) {
+    public Optional<Boolean> uploadFile(MultipartFile file) {
 
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -47,10 +48,11 @@ public class DocumentManagerService implements IDocumentManagerService {
 
             ResponseEntity<?>  response = restClient.postForEntity(url + "/documents",requestEntity,Void.class);
 
-            return response.getStatusCode().is2xxSuccessful();
+            return Optional.of(response.getStatusCode().is2xxSuccessful());
 
         } catch (IOException e){
-            return  false;
+            e.printStackTrace();
+            return  Optional.empty();
         }
 
     }
