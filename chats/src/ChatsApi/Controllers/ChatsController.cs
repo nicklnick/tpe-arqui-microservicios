@@ -27,10 +27,10 @@ public class ChatsController(IChatsService chatsService) : ControllerBase
     }
 
     [HttpPost("{userId:int}")]
-    public async Task<IActionResult> AddUserChat([FromRoute] int userId, [FromQuery] string chatName)
+    public async Task<IActionResult> AddUserChat([FromRoute] int userId, [FromBody] CreateChatDto chatNamePayload)
     {
-        var chat = await chatsService.AddChat(userId, chatName);
-        return chat == null ? Conflict( "Chat with given name already exists") : Created();
+        var chat = await chatsService.AddChat(userId, chatNamePayload.ChatName);
+        return chat == null ? Conflict( "Chat with given name already exists") : CreatedAtAction(nameof(GetUserChats), new { userId = userId }, chat);;
     }
     
 }

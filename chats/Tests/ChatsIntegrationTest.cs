@@ -1,4 +1,5 @@
 using ChatsApi.Controllers;
+using ChatsApi.Controllers.Dtos;
 using ChatsApi.Models;
 using ChatsApi.ServicesImplementation;
 using EntityFrameworkCoreMock;
@@ -60,7 +61,7 @@ public class ChatsIntegrationTest
 
         _contextMock.CreateDbSetMock(m => m.Chats, initialData);
         
-        var result = await GetChatsController().AddUserChat(userId,chatName);
+        var result = await GetChatsController().AddUserChat(userId,new CreateChatDto(chatName));
 
         Assert.IsType<ConflictObjectResult>(result);
         
@@ -76,9 +77,9 @@ public class ChatsIntegrationTest
 
         _contextMock.CreateDbSetMock(m => m.Chats, initialData);
         
-        var result = await GetChatsController().AddUserChat(userId,"chat2");
+        var result = await GetChatsController().AddUserChat(userId,new CreateChatDto("chat2"));
 
-        Assert.IsType<CreatedResult>(result);
+        Assert.IsType<CreatedAtActionResult>(result);
         
     }
 }

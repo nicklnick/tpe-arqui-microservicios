@@ -71,7 +71,7 @@ public class ChatsControllerTests
         _mockChatsService.Setup(service => service.AddChat(userId, chatName)).ReturnsAsync((Chat?)null);
 
         // Act
-        var result = await _controller.AddUserChat(userId, chatName);
+        var result = await _controller.AddUserChat(userId, new CreateChatDto(chatName));
 
         // Assert
         var conflictResult = Assert.IsType<ConflictObjectResult>(result);
@@ -93,10 +93,10 @@ public class ChatsControllerTests
         _mockChatsService.Setup(service => service.AddChat(userId, chatName)).ReturnsAsync(chat);
 
         // Act
-        var result = await _controller.AddUserChat(userId, chatName);
+        var result = await _controller.AddUserChat(userId, new CreateChatDto(chatName));
 
         // Assert
-        Assert.IsType<CreatedResult>(result);
+        Assert.IsType<CreatedAtActionResult>(result);
 
         // Verify
         _mockChatsService.Verify(service => service.AddChat(userId, chatName), Times.Once);

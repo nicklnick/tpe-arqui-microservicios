@@ -4,10 +4,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import g1.arquimicroservicios.apigw.services.implementations.requestsDtos.CreateChatDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -57,11 +59,14 @@ public class ChatsService implements IChatsService {
     @Override
     public Optional<Boolean> createUserChat(int userId, String chatName) {
         try {
+            String json = objectMapper.writeValueAsString(new CreateChatDto(chatName));
+
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url + "/api/chats/" + userId + "?chatName=" + chatName))
-                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .uri(URI.create(url + "/api/chats/" + userId))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
                     .build();
-            HttpResponse<?> response = httpClient.send(request,HttpResponse.BodyHandlers.discarding());
+            HttpResponse<?> response = httpClient.send(request,HttpResponse.BodyHandlers.ofString());
             return Optional.of(response.statusCode() == 201);
         } catch (Exception e){
             e.printStackTrace();

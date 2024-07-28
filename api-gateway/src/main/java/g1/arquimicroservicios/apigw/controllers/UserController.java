@@ -1,6 +1,7 @@
 package g1.arquimicroservicios.apigw.controllers;
 
 
+import g1.arquimicroservicios.apigw.controllers.requestsDtos.ApiUserCreateChatRequest;
 import g1.arquimicroservicios.apigw.controllers.requestsDtos.ApiUserRegisterRequest;
 import g1.arquimicroservicios.apigw.controllers.requestsDtos.ApiUserSignInRequest;
 import g1.arquimicroservicios.apigw.controllers.responseDtos.ApiUserSignInResponseDto;
@@ -69,8 +70,8 @@ public class UserController {
     }
 
     @PostMapping("{userId}/chats")
-    public ResponseEntity<?> createChat(@PathVariable("userId") int userId,@RequestParam(name = "chatName") String chatName) {
-        Optional<Boolean> maybeCreated = chatsService.createUserChat(userId, chatName);
+    public ResponseEntity<?> createChat(@PathVariable("userId") int userId,@RequestBody ApiUserCreateChatRequest payload) {
+        Optional<Boolean> maybeCreated = chatsService.createUserChat(userId, payload.chatName());
         if (maybeCreated.isEmpty()){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
