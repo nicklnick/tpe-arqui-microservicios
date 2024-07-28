@@ -44,7 +44,7 @@ chats:
     deployment:
       replicas: 1
     image:
-      tag: test-noid
+      tag: test-noid-2
   db:
     statefulSet:
       replicas: 1
@@ -54,4 +54,4 @@ api-gateway:
     deployment:
       replicas: 1
     image:
-      tag: test-noid
+      tag: test-noid-2
