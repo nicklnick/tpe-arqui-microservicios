@@ -4,7 +4,7 @@ api:
   name: api-chats
   env:
   - name: DB_CONNECTION
-    value: Host=db-chats-svc;Database=chats;Port=5432;Username=postgres;Password=postgres
+    value: Host=db-chats-svc;Database=Chats;Port=5432;Username=postgres;Password=postgres
   deployment:
     # replicas: 1 -> parent
     name: api-chats-deployment
@@ -19,7 +19,7 @@ db:
   name: db-chats
   env:
   - name: POSTGRES_DB
-    value: chats
+    value: Chats
   - name: POSTGRES_PASSWORD
     value: postgres
   - name: POSTGRES_USER
