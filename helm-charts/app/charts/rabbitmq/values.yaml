@@ -2,7 +2,8 @@ name: rabbitmq
 replicas: 3
 
 container:
-  image: rabbitmq:3.8-management
+  image: rabbitmq
+  tag: 3.8-management
 
 pv:
   name: rabbitmq-pv
@@ -22,3 +23,6 @@ service:
   - name: amqp
     port: 5672
     targetPort: 5672
+
+secret:
+  name: rabbitmq-secret

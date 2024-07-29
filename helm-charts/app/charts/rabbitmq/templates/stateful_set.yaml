@@ -28,7 +28,7 @@ spec:
           mountPath: /etc/rabbitmq/
       containers:
       - name: rabbitmq
-        image: {{ .Values.container.image }}
+        image: "{{ .Values.container.image }}:{{ .Values.container.tag }}"
         ports:
         {{ range .Values.service.ports }}
         - containerPort: {{ .port }}
@@ -61,7 +61,7 @@ spec:
         - name: RABBITMQ_ERLANG_COOKIE
           valueFrom:
             secretKeyRef:
-              name: rabbit-secret
+              name: {{ .Values.secret.name }}
               key: RABBITMQ_ERLANG_COOKIE
         - name: K8S_HOSTNAME_SUFFIX
           value: .rabbitmq.$(RABBIT_POD_NAMESPACE).svc.cluster.local
@@ -73,15 +73,22 @@ spec:
           mountPath: /config/
         - name: plugins-file
           mountPath: /etc/rabbitmq/
+        - name: definitions
+          mountPath: /etc/rabbitmq/definitions.json
       volumes:
       - name: config-file
         emptyDir: {}
       - name: plugins-file
         emptyDir: {}
+      - name: definitions-file
+        emptyDir: {}
       - name: config
         configMap:
           name: rabbitmq-config
           defaultMode: 0755
+      - name: definitions
+        configMap:
+          name: rabbitmq-config
   volumeClaimTemplates:
     - metadata:
         name: {{ .Values.pvc.name }}
