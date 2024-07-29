@@ -24,6 +24,16 @@ def test_get_document_not_found():
     assert response.json() == {"detail": "Document not found"}
 
 
+def test_get_documents_with_0_documents():
+    # Arrange
+
+    # Act
+    response = client.get("/documents")
+
+    # Assert
+    assert response.status_code == 204
+
+
 def test_load_document():
     # Arrange
     with open("/usr/app/src/tests/e2e/sample.pdf", "rb") as f:

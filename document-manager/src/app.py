@@ -10,7 +10,6 @@ from fastapi import (
     Form,
     BackgroundTasks,
     Query,
-
 )
 import fitz
 
@@ -46,9 +45,10 @@ async def get_documents(
     )
 
     result = [{"id": doc.id, "title": doc.title} for doc in documents]
+    if not result:
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     return result
-
 
 
 @app.get("/documents/{document_id}")
@@ -83,4 +83,7 @@ async def load_document(
 
     background_tasks.add_task(process_document_background, pages, document.id)
 
-    return Response(status_code=status.HTTP_201_CREATED)
+    return Response(
+        status_code=status.HTTP_201_CREATED,
+        headers={"Location": f"/documents/{document.id}"},
+    )

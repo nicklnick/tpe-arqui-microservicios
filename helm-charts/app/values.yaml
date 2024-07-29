@@ -29,7 +29,7 @@ document-manager:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-2
+      tag: test-noid-3
   db:
     statefulSet:
       replicas: 1
