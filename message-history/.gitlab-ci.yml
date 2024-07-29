@@ -1,9 +1,7 @@
 include:
-  - local: 'cicd-pipeline-template.yml'
-    inputs:
-      image-name: 'message-history'
-      env-image-name: 'MESSAGE_HISTORY'
-      environment: 'prod'
-      directory-name: 'message-history'
-      unit-test-command: ''
-      e2e-test-command: ''
+- local: 'cicd-pipeline-template.yml'
+  inputs:
+    image-name: 'message-history'
+    env-image-name: 'MESSAGE_HISTORY'
+    environment: 'prod'
+    directory-name: 'message-history'

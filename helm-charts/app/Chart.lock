@@ -17,8 +17,11 @@ dependencies:
 - name: chats
   repository: file://charts/chats
   version: 0.1.0
+- name: message-history
+  repository: file://charts/message-history
+  version: 0.1.0
 - name: rabbitmq
   repository: file://charts/rabbitmq
   version: 0.1.0
-digest: sha256:f7e241a3e4fc4e4dde63935499b7114e7e6756a171dfa33f1f51839c8bb8b6a6
-generated: "2024-07-28T12:22:42.821982143-03:00"
+digest: sha256:8a5e5921eb73679a5e02641548dbc38c0861fc509583a5175dd3070add482348
+generated: "2024-07-29T11:53:59.650859913-03:00"

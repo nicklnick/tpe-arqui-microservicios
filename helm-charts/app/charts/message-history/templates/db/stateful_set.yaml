@@ -30,7 +30,7 @@ spec:
               command:
                 - "pg_isready"
                 - "-d"
-                - "chats"
+                - "db_message_history"
                 - "-U"
                 - "postgres"
             initialDelaySeconds: 5

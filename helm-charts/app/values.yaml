@@ -19,7 +19,7 @@ role-manager:
     deployment:
       replicas: 1
     image:
-      tag: prod-202406231937
+      tag: test-noid
   db:
     statefulSet:
       replicas: 1
@@ -44,7 +44,17 @@ chats:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-2
+      tag: test-noid-3
+  db:
+    statefulSet:
+      replicas: 1
+
+message-history:
+  api:
+    deployment:
+      replicas: 1
+    image:
+      tag: test-noid
   db:
     statefulSet:
       replicas: 1
@@ -54,4 +64,4 @@ api-gateway:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-3
+      tag: test-noid-4

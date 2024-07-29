@@ -40,6 +40,10 @@ dependencies:
   alias: chats
   version: 0.1.0
   repository: "file://charts/chats"
+- name: message-history
+  alias: message-history
+  version: 0.1.0
+  repository: "file://charts/message-history"
 - name: rabbitmq
   alias: rabbitmq
   version: 0.1.0

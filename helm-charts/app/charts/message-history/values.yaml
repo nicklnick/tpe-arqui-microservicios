@@ -1,0 +1,54 @@
+name: chats
+# Configure api
+api:
+  name: api-chats
+  env:
+  - name: DB_CONNECTION
+    value: Host=db-message-history-svc;Database=db_message_history;Port=5432;UserId=postgres;Password=postgres
+  - name: RabbitMQ__Hostname
+    value: rabbitmq
+  - name: RabbitMQ__Username
+    value: guest
+  - name: RabbitMQ__Password
+    value: guest
+  deployment:
+    # replicas: 1 -> parent
+    name: api-message-history-deployment
+  image:
+    repository: docker.io/nicklnick/message-history
+  service:
+    name: api-message-history-svc
+  servicePort: 8080
+  containerPort: 8080
+
+db:
+  name: db-message-history
+  env:
+  - name: POSTGRES_DB
+    value: db_message_history
+  - name: POSTGRES_PASSWORD
+    value: postgres
+  - name: POSTGRES_USER
+    value: postgres
+  statefulSet:
+    # replicas: 1 -> parent
+    name: db-message-history-stateful-set
+    volume:
+      mountPath: /var/lib/chats/data
+      name: postgresdata
+  image:
+    repository: postgres
+    tag: 16
+  service:
+    name: db-message-history-svc
+  pv:
+    name: db-message-history-pv
+    path: /data/chats/postgresql
+    accessMode: ReadWriteMany
+    size: 250Mi
+  pvc:
+    name: db-message-history-pvc
+    accessMode: ReadWriteMany
+    size: 250Mi
+  servicePort: 5432
+  containerPort: 5432

@@ -21,7 +21,7 @@ api:
   - name: SPRING_APPLICATION_NAME
     value: "apigw"
   - name: ROLE_MANAGER_API
-    value: "http://api-role-manager-svc:3000"
+    value: "http://api-role-manager-svc:8080"
   - name: CHATS_API
     value: "http://api-chats-svc:8080"
   - name: MESSAGE_HISTORY_API

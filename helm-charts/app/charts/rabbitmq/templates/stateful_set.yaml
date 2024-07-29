@@ -34,6 +34,14 @@ spec:
         - containerPort: {{ .port }}
           name: {{ .name }}
         {{ end }}
+        readinessProbe:
+          exec:
+            command: [ "rabbitmq-diagnostics", "ping" ]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
         env:
         - name: RABBIT_POD_NAME
           valueFrom:
