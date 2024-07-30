@@ -44,6 +44,10 @@ dependencies:
   alias: message-history
   version: 0.1.0
   repository: "file://charts/message-history"
+- name: llm-manager
+  alias: llm-manager
+  version: 0.1.0
+  repository: "file://charts/llm-manager"
 - name: rabbitmq
   alias: rabbitmq
   version: 0.1.0

@@ -1,0 +1,40 @@
+# Configure api
+api:
+  name: api-llm-manager
+  env:
+  - name: PGVECTOR_HOST
+    value: db-embeddings-svc
+  - name: PGVECTOR_PORT
+    value: "6024"
+  - name: PGVECTOR_DATABASE
+    value: db_embeddings
+  - name: PGVECTOR_USER
+    value: langchain
+  - name: PGVECTOR_PASSWORD
+    value: langchain
+  - name: PGVECTOR_COLLECTION_NAME
+    value: arqui_docs
+  - name: RABBITMQ_HOST
+    value: rabbitmq
+  - name: RABBITMQ_USERNAME
+    value: guest
+  - name: RABBITMQ_PASSWORD
+    value: guest
+  - name: RABBITMQ_PORT
+    value: "5672"
+  - name: RABBITMQ_INPUT_QUEUE
+    value: inputs_queue
+  - name: RABBITMQ_OUTPUT_QUEUE
+    value: response_queue
+  - name: GEMINI_GOOGLE_API_KEY
+    value: AIzaSyBiB5kSil5ao0rw9CAhDq0jINchWqHZRmA
+  deployment:
+    # replicas: 1 -> parent
+    name: api-llm-manager-deployment
+  image:
+    repository: docker.io/nicklnick/llm-manager
+    # tag: test-noid -> parent
+  service:
+    name: api-llm-manager-svc
+  servicePort: 8000
+  containerPort: 8000
