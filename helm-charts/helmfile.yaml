@@ -1,0 +1,98 @@
+repositories:
+- name: istio
+  url: https://istio-release.storage.googleapis.com/charts
+- name: nginx-stable
+  url: https://helm.nginx.com/stable
+
+releases:
+- name: istio-base
+  namespace: istio-system
+  chart: istio/base
+  set:
+  - name: defaultRevision
+    value: default
+
+- name: istiod
+  namespace: istio-system
+  chart: istio/istiod
+  needs:
+  - istio-base
+
+- name: arqui-app
+  chart: ./app
+  needs:
+  - istio-system/istiod
+  installed: true
+
+- name: nginx-ingress
+  namespace: nginx-ingress
+  chart: nginx-stable/nginx-ingress
+  needs:
+  - istio-system/istiod
+
+  installed: true
+
+hooks:
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["create", "namespace", "istio-system"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["create", "namespace", "nginx-ingress"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/istio/istio/release-1.22/samples/addons/kiali.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/istio/istio/release-1.22/samples/addons/prometheus.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/istio/istio/release-1.22/samples/addons/jaeger.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["label", "namespace", "default", "istio-injection=enabled"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/deploy/crds.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/deployments/common/ns-and-sa.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/deployments/rbac/rbac.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["annotate", "serviceaccount", "nginx-ingress", "-n", "nginx-ingress", "meta.helm.sh/release-name=nginx-ingress", "--overwrite"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["annotate", "serviceaccount", "nginx-ingress", "-n", "nginx-ingress", "meta.helm.sh/release-namespace=nginx-ingress", "--overwrite"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["label", "serviceaccount", "nginx-ingress", "-n", "nginx-ingress", "app.kubernetes.io/managed-by=Helm", "--overwrite"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/deployments/common/nginx-config.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/deployments/common/ingress-class.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/deployments/deployment/nginx-ingress.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/deployments/service/nodeport.yaml"]

@@ -1,7 +1,7 @@
 ### INGRESS ###
 name: app
 ingress:
-  name: example-ingress
+  name: nginx-ingress
   host: example.com
   tls:
     enabled: false
