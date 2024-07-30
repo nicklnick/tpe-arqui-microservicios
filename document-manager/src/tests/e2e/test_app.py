@@ -17,7 +17,7 @@ def test_get_document_not_found():
     # Arrange
 
     # Act
-    response = client.get("/documents/999")
+    response = client.get("/api/documents/999")
 
     # Assert
     assert response.status_code == 404
@@ -28,7 +28,7 @@ def test_get_documents_with_0_documents():
     # Arrange
 
     # Act
-    response = client.get("/documents")
+    response = client.get("/api/documents")
 
     # Assert
     assert response.status_code == 204
@@ -41,13 +41,14 @@ def test_load_document():
 
     # Act
     response = client.post(
-        "/documents",
+        "/api/documents",
         files={"file": ("sample.pdf", io.BytesIO(file_content), "application/pdf")},
         data={"title": "Test Document"},
     )
 
     # Assert
     assert response.status_code == 201
+    assert response.headers["Location"] == "/api/documents/1"
 
 
 def test_get_document():
@@ -55,7 +56,7 @@ def test_get_document():
     document_id = 1
 
     # Act
-    response = client.get(f"/documents/{document_id}")
+    response = client.get(f"/api/documents/{document_id}")
 
     # Assert
     assert response.status_code == 200
