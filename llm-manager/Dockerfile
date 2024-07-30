@@ -6,7 +6,8 @@ RUN apk update && apk add --no-cache \
     build-base \
     libpq \
     libpq-dev \
-    gcc
+    gcc \
+    curl
 
 COPY requirements.txt .
 

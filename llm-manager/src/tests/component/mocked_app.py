@@ -1,7 +1,10 @@
 from unittest.mock import patch, MagicMock, AsyncMock
 
-from faststream import FastStream, apply_types
-from faststream.rabbit import RabbitBroker
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+
+from faststream import apply_types
+from faststream.rabbit.fastapi import RabbitRouter
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
@@ -43,19 +46,18 @@ def configure_mock_provide_ai_models_provider(mock_provide_ai_models_provider):
 
     mock_provide_ai_models_provider.return_value = mock_ai_models_provider
 
-def get_rabbit_broker():
+def get_rabbit_router() -> [RabbitRouter,RabbitMQSettings]:
     settings = RabbitMQSettings()
-    return RabbitBroker(settings.build_connection_url()), settings
+    return RabbitRouter(settings.build_connection_url()), settings
 
 
-broker, rabbit_settings = get_rabbit_broker()
-app = FastStream(broker)
+router, rabbit_settings = get_rabbit_router()
 
 MOCKED_RESPONSE = 'Paris y torre eiffel'
 
 @apply_types
-@broker.subscriber(rabbit_settings.input_queue)
-@broker.publisher(rabbit_settings.output_queue)
+@router.subscriber(rabbit_settings.input_queue)
+@router.publisher(rabbit_settings.output_queue)
 async def handle_msg(msg: InputMessage) -> ResponseMessage:
     with patch('src.dependencies.provide_vector_store') as mock_provide_vector_store, \
             patch('src.dependencies.provide_pgvector_engine') as mock_provide_pgvector_engine, \
@@ -74,3 +76,18 @@ async def handle_msg(msg: InputMessage) -> ResponseMessage:
         response: ResponseMessage = await service.process_input(msg)
 
         return response
+
+@router.after_startup
+async def health_set(app: FastAPI):
+    global healthy
+    healthy= True
+@router.get("/health")
+async def health():
+    global healthy
+    if not healthy:
+        return JSONResponse(status_code=503,content={"status": "unhealthy"})
+    else:
+        return JSONResponse(status_code=200,content={"status": "healthy"})
+
+app = FastAPI(lifespan=router.lifespan_context)
+app.include_router(router)

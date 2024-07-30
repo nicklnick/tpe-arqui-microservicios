@@ -11,14 +11,15 @@ services:
       - RABBITMQ_INPUT_QUEUE=test_inputs_queue
       - RABBITMQ_OUTPUT_QUEUE=test_response_queue
     depends_on:
-      - mocked-llm-manager
+      mocked-llm-manager:
+        condition: service_healthy
     networks:
       - rabbit-internal-network
 
   mocked-llm-manager:
     build: ../../
     container_name: mocked-llm-manager
-    entrypoint: ["faststream", "run", "src.tests.component.mocked_app:app"]
+    entrypoint: ["fastapi", "run", "src/tests/component/mocked_app.py"]
     environment:
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_USERNAME=guest
@@ -31,6 +32,12 @@ services:
         condition: service_healthy
     networks:
       - rabbit-internal-network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000/health || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
 
   rabbitmq:
     image: rabbitmq:3-management
