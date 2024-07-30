@@ -59,6 +59,13 @@ message-history:
     statefulSet:
       replicas: 1
 
+llm-manager:
+  api:
+    deployment:
+      replicas: 1
+    image:
+      tag: test-noid
+
 api-gateway:
   api:
     deployment:
