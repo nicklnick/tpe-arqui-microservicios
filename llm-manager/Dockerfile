@@ -1,7 +1,6 @@
 FROM python:3.9-alpine
 
 WORKDIR /usr/app
-COPY requirements.txt .
 
 RUN apk update && apk add --no-cache \
     build-base \
@@ -9,8 +8,10 @@ RUN apk update && apk add --no-cache \
     libpq-dev \
     gcc
 
+COPY requirements.txt .
+
 RUN pip install -U --no-cache-dir -r requirements.txt
 COPY app.py .
 COPY ./src ./src
 
-ENTRYPOINT ["faststream", "run", "app:app", "--log-level", "debug"]
+ENTRYPOINT ["faststream", "run", "app:app"]

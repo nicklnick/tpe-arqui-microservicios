@@ -1,0 +1,53 @@
+services:
+  test:
+    build: ../../
+    container_name: test-component
+    entrypoint: sh -c "pytest src/tests/component/test_client.py"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_INPUT_QUEUE=test_inputs_queue
+      - RABBITMQ_OUTPUT_QUEUE=test_response_queue
+    depends_on:
+      - mocked-llm-manager
+    networks:
+      - rabbit-internal-network
+
+  mocked-llm-manager:
+    build: ../../
+    container_name: mocked-llm-manager
+    entrypoint: ["faststream", "run", "src.tests.component.mocked_app:app"]
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_INPUT_QUEUE=test_inputs_queue
+      - RABBITMQ_OUTPUT_QUEUE=test_response_queue
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - rabbit-internal-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: component-test-rabbitmq
+    networks:
+      - rabbit-internal-network
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+networks:
+  rabbit-internal-network:
+    internal: true

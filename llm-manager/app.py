@@ -1,4 +1,4 @@
-from faststream import FastStream, Depends, apply_types
+from faststream import FastStream, apply_types
 from faststream.rabbit import RabbitBroker
 
 from src.config import RabbitMQSettings

@@ -1,14 +1,11 @@
-from unittest.mock import MagicMock
-
-from faststream import apply_types
-
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
 from langchain_core.vectorstores import VectorStore
 from langchain_postgres import PGVector
-from sqlalchemy.ext.asyncio import AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
-from langchain_core.documents import Document
+from src.config import PGVectorSettings
+from src.constants import PGVECTOR_COLLECTION
 from src.externals.GeminiAIModelsProvider import GeminiAIModelsProvider
 from src.externals.interfaces import AIModelsProvider
 
@@ -28,28 +25,16 @@ def provide_chat_model(model_provider: AIModelsProvider) -> BaseChatModel:
 
 
 def provide_pgvector_engine():
-    #settings = PGVectorSettings()
-    #return create_async_engine(settings.build_connection_url(), echo=True)
-    return MagicMock(spec=AsyncEngine)
+    settings = PGVectorSettings()
+    return create_async_engine(settings.build_connection_url(), echo=True)
 
 def provide_vector_store(engine: AsyncEngine,
                          embeddings: Embeddings) -> VectorStore:
-    # return PGVector(
-    #     embeddings=embeddings,
-    #     connection=engine,
-    #     collection_name=PGVECTOR_COLLECTION
-    # )
-
-    mock_pgvector = MagicMock(spec=PGVector)
-    mock_retriever = MagicMock()
-    mock_retriever.retrieve.return_value = [
-        Document(page_content="La capital de Francia es Paris"),
-        Document(page_content="Buenos Aires es la capital de Argentina")
-    ]
-
-    mock_pgvector.as_retriever.return_value = mock_retriever
-    return mock_pgvector
-
+     return PGVector(
+         embeddings=embeddings,
+         connection=engine,
+         collection_name=PGVECTOR_COLLECTION
+    )
 
 def provide_llm_service() -> LlmService:
     ai_models_provider = provide_ai_models_provider()
