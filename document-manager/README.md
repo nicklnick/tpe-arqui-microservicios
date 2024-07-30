@@ -8,7 +8,7 @@ This API allows you to manage documents, including listing documents, retrieving
 
 Retrieve a list of documents with pagination.
 
--   **URL**: `/documents`
+-   **URL**: `/api/documents`
 -   **Method**: `GET`
 -   **Query Parameters**:
     -   `page` (integer, default: 1): Page number.
@@ -27,27 +27,28 @@ Retrieve a list of documents with pagination.
             }
         ]
         ```
+    -   **204 No Content**: No documents found.
+
+### Upload a Document
+
+Upload a new document.
+
+-   **URL**: `/api/documents`
+-   **Method**: `POST`
+-   **Form Data**:
+    -   `title` (string): Title of the document.
+    -   `file` (file): PDF file to be uploaded.
+-   **Response**:
+    -   **201 Created**: Document successfully uploaded, with the location of the new document in the `Location` header.
 
 ### Get Document by ID
 
 Retrieve a document by its ID.
 
--   **URL**: `/documents/{document_id}`
+-   **URL**: `/api/documents/{document_id}`
 -   **Method**: `GET`
 -   **Path Parameters**:
     -   `document_id` (integer): The unique identifier of the document.
 -   **Response**:
     -   **200 OK**: Successful operation returning the PDF document.
     -   **404 Not Found**: Document not found.
-
-### Upload a Document
-
-Upload a new document.
-
--   **URL**: `/documents`
--   **Method**: `POST`
--   **Form Data**:
-    -   `title` (string): Title of the document.
-    -   `file` (file): PDF file to be uploaded.
--   **Response**:
-    -   **201 Created**: Document successfully uploaded.

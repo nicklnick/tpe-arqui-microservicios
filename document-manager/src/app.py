@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-@app.get("/documents")
+@app.get("/api/documents")
 async def get_documents(
     page: int = Query(1, gt=0),
     page_size: int = Query(10, gt=0),
@@ -51,7 +51,7 @@ async def get_documents(
     return result
 
 
-@app.get("/documents/{document_id}")
+@app.get("/api/documents/{document_id}")
 async def get_document(document_id: int, session=Depends(get_session)):
     document = session.get(MyDocument, document_id)
     if not document:
@@ -64,7 +64,7 @@ async def get_document(document_id: int, session=Depends(get_session)):
     return Response(content=doc.write(), media_type="application/pdf", status_code=200)
 
 
-@app.post("/documents")
+@app.post("/api/documents")
 async def load_document(
     background_tasks: BackgroundTasks,
     title: str = Form(...),
@@ -85,5 +85,5 @@ async def load_document(
 
     return Response(
         status_code=status.HTTP_201_CREATED,
-        headers={"Location": f"/documents/{document.id}"},
+        headers={"Location": f"/api/documents/{document.id}"},
     )
