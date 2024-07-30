@@ -17,4 +17,4 @@ message-history:
   api: http://localhost:5128
 
 document-manager:
-  api: http://localhost:2313
+  api: http://localhost:8000

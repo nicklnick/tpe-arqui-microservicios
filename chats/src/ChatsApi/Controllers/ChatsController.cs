@@ -11,7 +11,6 @@ namespace ChatsApi.Controllers;
 public class ChatsController(IChatsService chatsService) : ControllerBase
 {
 
-
     [HttpGet("{userId:int}")]
     public async Task<IActionResult> GetUserChats([FromRoute] int userId)
     {
@@ -20,10 +19,8 @@ public class ChatsController(IChatsService chatsService) : ControllerBase
         {
             return NoContent();
         }
-
         var dtoList = userChats.Select(chat => new ChatDto(chat.ChatId, chat.ChatName)).ToList();
         return Ok(dtoList);
-
     }
 
     [HttpPost("{userId:int}")]

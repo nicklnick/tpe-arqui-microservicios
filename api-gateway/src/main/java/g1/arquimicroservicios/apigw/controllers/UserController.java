@@ -10,6 +10,7 @@ import g1.arquimicroservicios.apigw.controllers.responseDtos.MessageHistoryRespo
 import g1.arquimicroservicios.apigw.services.contracts.IChatsService;
 import g1.arquimicroservicios.apigw.services.contracts.IMessageHistoryService;
 import g1.arquimicroservicios.apigw.services.contracts.IUsersService;
+import g1.arquimicroservicios.apigw.services.implementations.genericServiceResponse.ServiceResponse;
 import g1.arquimicroservicios.apigw.services.implementations.responseDtos.ChatsServiceResponseDto;
 import g1.arquimicroservicios.apigw.services.implementations.responseDtos.MessageHistoryServiceResponseDto;
 import g1.arquimicroservicios.apigw.services.implementations.responseDtos.UserSignInResponseDto;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -29,7 +31,7 @@ public class UserController {
     private final IUsersService service;
 
 
-    //signIn
+    //Register
     @PostMapping()
     public ResponseEntity<?> response(@RequestBody ApiUserRegisterRequest userRegisterRequest) {
         Optional<Boolean> maybeRegisterSuccess = service.register(userRegisterRequest.getEmail(), userRegisterRequest.getPassword(), userRegisterRequest.getName(), userRegisterRequest.getRole());
@@ -43,7 +45,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    //Register
+    //SignIn
     @GetMapping()
     public ResponseEntity<ApiUserSignInResponseDto> signInResponse(@RequestBody ApiUserSignInRequest userSignInRequest) {
         UserSignInResponseDto maybeUser = service.signIn(userSignInRequest.getEmail(), userSignInRequest.getPassword());
@@ -71,16 +73,12 @@ public class UserController {
 
     @PostMapping("{userId}/chats")
     public ResponseEntity<?> createChat(@PathVariable("userId") int userId,@RequestBody ApiUserCreateChatRequest payload) {
-        Optional<Boolean> maybeCreated = chatsService.createUserChat(userId, payload.chatName());
-        if (maybeCreated.isEmpty()){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        ServiceResponse<Integer,HttpStatus> maybeCreated = chatsService.createUserChat(userId, payload.chatName());
+        if (maybeCreated.httpStatusResponse().is2xxSuccessful()){
+            return ResponseEntity.status(HttpStatus.CREATED).headers(headers -> headers.set("Location","/api/users/" + userId + "/chats/" +maybeCreated.value()))
+                    .body(Map.of("id",maybeCreated.value()));
         }
-        boolean created = maybeCreated.get();
-        if (!created){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Chat with given name already exists");
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return  ResponseEntity.status(maybeCreated.httpStatusResponse()).build();
     }
 
 

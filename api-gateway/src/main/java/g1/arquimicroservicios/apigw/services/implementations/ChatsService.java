@@ -9,8 +9,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import g1.arquimicroservicios.apigw.services.implementations.genericServiceResponse.ServiceResponse;
 import g1.arquimicroservicios.apigw.services.implementations.requestsDtos.CreateChatDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import g1.arquimicroservicios.apigw.services.contracts.IChatsService;
 import g1.arquimicroservicios.apigw.services.implementations.responseDtos.ChatsServiceResponseDto;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 @Service
 public class ChatsService implements IChatsService {
@@ -57,7 +62,7 @@ public class ChatsService implements IChatsService {
     }
 
     @Override
-    public Optional<Boolean> createUserChat(int userId, String chatName) {
+    public ServiceResponse<Integer, HttpStatus> createUserChat(int userId, String chatName) {
         try {
             String json = objectMapper.writeValueAsString(new CreateChatDto(chatName));
 
@@ -66,11 +71,16 @@ public class ChatsService implements IChatsService {
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
                     .build();
-            HttpResponse<?> response = httpClient.send(request,HttpResponse.BodyHandlers.ofString());
-            return Optional.of(response.statusCode() == 201);
-        } catch (Exception e){
+            HttpResponse<String> response = httpClient.send(request,HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 201){
+                JsonNode jsonNode = objectMapper.readTree(response.body());
+                int chatId =  jsonNode.get("chatId").asInt();
+                return new ServiceResponse<>(chatId, HttpStatus.OK);
+            }
+            return new ServiceResponse<>(null, HttpStatus.valueOf(response.statusCode()));
+        } catch (Exception e ){
             e.printStackTrace();
-            return Optional.empty();
+            return new ServiceResponse<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     };
 

@@ -26,3 +26,5 @@
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode
 api-gateway/.idea/misc.xml
 api-gateway/.idea/vcs.xml
+api-gateway/.idea/.name
+api-gateway/build.gradle

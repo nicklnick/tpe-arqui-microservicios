@@ -1,0 +1,56 @@
+version: "3"
+
+services:
+    api-document-manager:
+        image: nicklnick/document-manager:test-noid-4
+        env_file:
+            - .env
+        ports:
+            - "8000:8000"
+        depends_on:
+            db-document-manager:
+                condition: service_healthy
+            db-embeddings:
+                condition: service_healthy
+        networks:
+            - default
+            - isolated_db_document_manager
+            - isolated_db_embeddings
+
+    db-document-manager:
+        image: "postgres:13"
+        environment:
+            - POSTGRES_DB=db_document_manager
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - "5432:5432"
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -d db_document_manager -U postgres"]
+            interval: 1s
+            timeout: 5s
+            retries: 10
+        networks:
+            - isolated_db_document_manager
+
+    db-embeddings:
+        image: pgvector/pgvector:pg16
+        environment:
+            - POSTGRES_DB=db_embeddings
+            - POSTGRES_USER=langchain
+            - POSTGRES_PASSWORD=langchain
+        ports:
+            - "6024:5432"
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -d db_embeddings -U langchain"]
+            interval: 1s
+            timeout: 5s
+            retries: 10
+        networks:
+            - isolated_db_embeddings
+
+networks:
+    isolated_db_document_manager:
+        internal: true
+    isolated_db_embeddings:
+        internal: true
