@@ -1,8 +1,8 @@
 from pydantic_settings import BaseSettings
 
+
 class GeminiSettings(BaseSettings):
     google_api_key: str
-    model: str
 
     class Config:
         env_prefix = "GEMINI_"
@@ -10,11 +10,18 @@ class GeminiSettings(BaseSettings):
 
 class RabbitMQSettings(BaseSettings):
     host: str
-    queue: str
+    username: str
+    password: str
+    port: int
+    input_queue: str
+    output_queue: str
 
     class Config:
         env_prefix = "RABBITMQ_"
         env_file = ".env"
+
+    def build_connection_url(self) -> str:
+        return f"amqp://{self.username}:{self.password}@{self.host}:{self.port}/"
 
 class PGVectorSettings(BaseSettings):
     host: str
@@ -28,12 +35,5 @@ class PGVectorSettings(BaseSettings):
         env_prefix = "PGVECTOR_"
         env_file = ".env"
 
-class Settings(BaseSettings):
-    gemini: GeminiSettings()
-    rabbitmq: RabbitMQSettings()
-    pgvector: PGVectorSettings()
-
-gemini_settings = GeminiSettings()
-rabbitmq_settings = RabbitMQSettings()
-pgvector = PGVectorSettings()
-settings = Settings(gemini=gemini_settings, rabbitmq=rabbitmq_settings, pgvector=pgvector)
+    def build_connection_url(self) -> str:
+        return f"postgresql+psycopg://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"

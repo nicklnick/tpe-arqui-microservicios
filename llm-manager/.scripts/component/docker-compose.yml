@@ -2,8 +2,14 @@ services:
   test:
     build: ../../
     container_name: test-component
-    entrypoint: sh -c "pytest src/test/component/test.py"
-    env_file: ../../.env
+    entrypoint: sh -c "pytest src/tests/component/test_client.py"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_INPUT_QUEUE=test_inputs_queue
+      - RABBITMQ_OUTPUT_QUEUE=test_response_queue
     depends_on:
       - mocked-llm-manager
     networks:
@@ -12,8 +18,14 @@ services:
   mocked-llm-manager:
     build: ../../
     container_name: mocked-llm-manager
-    entrypoint: sh -c "python -m src.test.component.mocked_app"
-    env_file: ../../.env
+    entrypoint: ["faststream", "run", "src.tests.component.mocked_app:app"]
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_INPUT_QUEUE=test_inputs_queue
+      - RABBITMQ_OUTPUT_QUEUE=test_response_queue
     depends_on:
       rabbitmq:
         condition: service_healthy
