@@ -16,7 +16,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue processInput() {
-        return new Queue(QUEUES_DATA.PROCESS_INPUT_QUEUE,false);
+        return new Queue(QUEUES_DATA.PROCESS_INPUT_QUEUE,true);
     }
 
     @Bean
