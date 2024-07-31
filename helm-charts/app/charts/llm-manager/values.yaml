@@ -23,9 +23,9 @@ api:
   - name: RABBITMQ_PORT
     value: "5672"
   - name: RABBITMQ_INPUT_QUEUE
-    value: inputs_queue
+    value: send_llm
   - name: RABBITMQ_OUTPUT_QUEUE
-    value: response_queue
+    value: receive_llm
   - name: GEMINI_GOOGLE_API_KEY
     value: AIzaSyBiB5kSil5ao0rw9CAhDq0jINchWqHZRmA
   deployment:
