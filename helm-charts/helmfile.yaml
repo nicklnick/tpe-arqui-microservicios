@@ -1,0 +1,55 @@
+repositories:
+- name: istio
+  url: https://istio-release.storage.googleapis.com/charts
+
+releases:
+- name: istio-base
+  namespace: istio-system
+  chart: istio/base
+  set:
+  - name: defaultRevision
+    value: default
+
+- name: istiod
+  namespace: istio-system
+  chart: istio/istiod
+  needs:
+  - istio-base
+  wait: true
+
+- name: istio-ingressgateway
+  namespace: istio-ingress
+  chart: istio/gateway
+  needs:
+  - istio-system/istiod
+
+- name: arqui-app
+  chart: ./app
+  needs:
+  - istio-system/istiod
+  installed: true
+
+hooks:
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["create", "namespace", "istio-system"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/istio/istio/release-1.22/samples/addons/kiali.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/istio/istio/release-1.22/samples/addons/prometheus.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["apply", "-f", "https://raw.githubusercontent.com/istio/istio/release-1.22/samples/addons/jaeger.yaml"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["label", "namespace", "default", "istio-injection=enabled"]
+
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["create", "namespace", "istio-ingress"]

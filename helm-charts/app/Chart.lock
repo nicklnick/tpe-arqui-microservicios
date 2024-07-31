@@ -1,7 +1,4 @@
 dependencies:
-- name: ingress-nginx
-  repository: https://kubernetes.github.io/ingress-nginx
-  version: 4.10.1
 - name: document-manager
   repository: file://charts/document-manager
   version: 0.1.0
@@ -26,5 +23,5 @@ dependencies:
 - name: rabbitmq
   repository: file://charts/rabbitmq
   version: 0.1.0
-digest: sha256:002a4f463edfba8e25558f9b5413b778903dd01ae590aa433d4b573ef261569c
-generated: "2024-07-30T16:09:01.408128357-03:00"
+digest: sha256:f9fec7a2ead4a6a0f8884005181880b9a8e7e23dd9028d3cc49f76e5a73f16c5
+generated: "2024-07-31T10:13:31.984963403-03:00"
