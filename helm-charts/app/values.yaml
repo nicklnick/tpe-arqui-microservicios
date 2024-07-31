@@ -51,7 +51,7 @@ message-history:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-2
+      tag: test-noid-3
   db:
     statefulSet:
       replicas: 1
@@ -61,7 +61,7 @@ llm-manager:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-2
+      tag: test-noid-3
 
 api-gateway:
   api:
@@ -69,3 +69,13 @@ api-gateway:
       replicas: 1
     image:
       tag: test-noid-5
+
+chat-session:
+  api:
+    deployment:
+      replicas: 1
+    image:
+      tag: test-noid-1
+  db:
+    statefulSet:
+      replicas: 1

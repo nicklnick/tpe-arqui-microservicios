@@ -1,0 +1,60 @@
+# Configure api
+api:
+  name: api-chat-session
+  env:
+  - name: JAVA_VERSION
+    value: "21"
+  - name: SPRING_APPLICATION_NAME
+    value: spring-chat-session
+  - name: SPRING_RABBITMQ_HOST
+    value: rabbitmq
+  - name: SPRING_RABBITMQ_PORT
+    value: 5672
+  - name: SPRING_RABBITMQ_USERNAME
+    value: guest
+  - name: SPRING_RABBITMQ_PASSWORD
+    value: guest
+  - name: SPRING_DATA_REDIS_HOST
+    value: redis-chat-session-svc
+  - name: SPRING_DATA_REDIS_PORT
+    value: 6379
+  - name: SERVER_PORT
+    value: 8080
+  - name: MESSAGE_HISTORY_API
+    value: api-message-history-svc
+  deployment:
+    # replicas: 1 -> parent
+    name: api-chat-session-deployment
+  image:
+    repository: docker.io/nicklnick/chat-session
+    # tag: test-noid -> parent
+  service:
+    name: api-chat-session-svc
+  servicePort: 8080
+  containerPort: 8080
+
+# Configure db (redis)
+db:
+  name: redis-chat-session
+  statefulSet:
+    # replicas: 1 -> parent
+    name: redis-chat-session-stateful-set
+    volume:
+      mountPath: /data
+      name: redisdata
+  image:
+    repository: redis
+    tag: 6.2
+  service:
+    name: redis-chat-session-svc
+  pv:
+    name: redis-chat-session-pv
+    path: /data/redis
+    accessMode: ReadWriteMany
+    size: 100Mi
+  pvc:
+    name: redis-chat-session-pvc
+    accessMode: ReadWriteMany
+    size: 250Mi
+  servicePort: 6379
+  containerPort: 6379

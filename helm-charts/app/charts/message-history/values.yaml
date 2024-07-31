@@ -34,7 +34,7 @@ db:
     # replicas: 1 -> parent
     name: db-message-history-stateful-set
     volume:
-      mountPath: /var/lib/chats/data
+      mountPath: /var/lib/message-history/data
       name: postgresdata
   image:
     repository: postgres
@@ -43,7 +43,7 @@ db:
     name: db-message-history-svc
   pv:
     name: db-message-history-pv
-    path: /data/chats/postgresql
+    path: /data/message-history/postgresql
     accessMode: ReadWriteMany
     size: 250Mi
   pvc:

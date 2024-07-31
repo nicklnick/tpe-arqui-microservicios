@@ -20,8 +20,11 @@ dependencies:
 - name: llm-manager
   repository: file://charts/llm-manager
   version: 0.1.0
+- name: chat-session
+  repository: file://charts/chat-session
+  version: 0.1.0
 - name: rabbitmq
   repository: file://charts/rabbitmq
   version: 0.1.0
-digest: sha256:f9fec7a2ead4a6a0f8884005181880b9a8e7e23dd9028d3cc49f76e5a73f16c5
-generated: "2024-07-31T10:13:31.984963403-03:00"
+digest: sha256:35b7777d9ffdc3b5ca7f3a9c54ecdffac2bc3b27b3eca9d3f60a7e70a2f3c0d8
+generated: "2024-07-31T13:19:47.486644675-03:00"
