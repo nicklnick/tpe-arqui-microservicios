@@ -14,10 +14,13 @@ class LlmService:
     MAX_DOCS_FETCH = 5
 
     SYSTEM_PROMPT = (
-        "Eres un asistente para tareas de pregunta-respuesta."
-        "Utiliza los siguientes documentos como contexto para tu respuesta."
-        "Si no encuentas la respuesta en el contexto, di que no sabes la respuesta.\n\n"
+        "Eres un asistente para tareas de pregunta-respuesta. "
+        "Utiliza los siguientes documentos como contexto para tu respuesta. "
+        "Si no encuentras la respuesta en el contexto, di explícitamente 'No tengo suficiente información para responder esta pregunta'.\n\n"
+        "Si busca la respuesta por fuera de los documentos del contexto, explicitalo"
+        "INICIO CONTEXTO:"
         "{context}"
+        "FIN CONTEXTO"
     )
 
     CONTEXT_SYSTEM_PROMPT = (
