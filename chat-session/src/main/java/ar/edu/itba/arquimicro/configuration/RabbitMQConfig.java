@@ -21,17 +21,17 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue receiveLlm() {
-        return new Queue(QUEUES_DATA.RECEIVE_LLM,false);
+        return new Queue(QUEUES_DATA.RECEIVE_LLM,true);
     }
 
     @Bean
     public Queue llmQueue() {
-        return new Queue(QUEUES_DATA.SEND_LLM_DATA.SEND_LLM_QUEUE, false);
+        return new Queue(QUEUES_DATA.SEND_LLM_DATA.SEND_LLM_QUEUE, true);
     }
 
     @Bean
     public Queue messageHistoryQueue() {
-        return new Queue(QUEUES_DATA.SEND_MESSAGE_HISTORY_DATA.SEND_MESSAGE_HISTORY_QUEUE, false);
+        return new Queue(QUEUES_DATA.SEND_MESSAGE_HISTORY_DATA.SEND_MESSAGE_HISTORY_QUEUE, true);
     }
 
     @Bean

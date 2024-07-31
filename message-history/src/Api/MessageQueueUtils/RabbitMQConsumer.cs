@@ -32,12 +32,12 @@ public class RabbitMqConsumer : BackgroundService
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
 
-        _channel.QueueDeclare(queue: "history_messages", durable: false, exclusive: false,
+        _channel.QueueDeclare(queue: "history_messages", durable: true, exclusive: false,
             autoDelete: false, arguments: null);
 
 
         var consumer = new EventingBasicConsumer(_channel);
-        
+                
         consumer.Received += async (model, ea) =>
         {
             var body = ea.Body.ToArray();
