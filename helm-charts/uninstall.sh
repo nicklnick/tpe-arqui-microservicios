@@ -13,5 +13,4 @@ kubectl label namespace default istio-injection
 
 # Remove Istio System Namespace (Optional)
 kubectl delete namespace istio-system
-kubectl delete namespace nginx-ingress
-kubectl delete serviceaccount nginx-ingress -n nginx-ingress
+kubectl delete namespace istio-ingress

@@ -1,11 +1,8 @@
 ### INGRESS ###
 name: app
 ingress:
-  name: nginx-ingress
+  name: istio-gateway
   host: example.com
-  tls:
-    enabled: false
-    secretName: example-tls
   paths:
   - service:
       name: api-gateway

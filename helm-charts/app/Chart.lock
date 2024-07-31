@@ -21,4 +21,4 @@ dependencies:
   repository: file://charts/rabbitmq
   version: 0.1.0
 digest: sha256:ce9e0150b9744565fbbf22596f905bbbba559b9613da51c66f0af4e3e68eecbb
-generated: "2024-07-29T21:35:29.732603613-03:00"
+generated: "2024-07-30T17:53:15.124534923-03:00"
