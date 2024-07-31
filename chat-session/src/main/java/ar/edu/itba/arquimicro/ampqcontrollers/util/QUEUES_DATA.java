@@ -12,19 +12,16 @@ public interface QUEUES_DATA {
 
     interface SEND_MESSAGE_HISTORY_DATA {
         String SEND_MESSAGE_HISTORY_QUEUE = "history_messages";
-
         String SEND_MESSAGE_HISTORY_ROUTING_KEY = "send_message_history_routing_key";
     }
 
 
+
     // from llm manager
     String RECEIVE_LLM = "receive_llm";
-
     // to llm manager
     // to message history
-    String SAVE_RESPONSE = "save_response";
     // to api gw
-    String SEND_RESPONSE_TO_USER = "send_response_to_user";
-
+    String FANOUT_EXCHANGE_RESPONSE_LLM = "fanout_exchange_response_llm";
 
 }

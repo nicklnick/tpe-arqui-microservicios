@@ -39,9 +39,8 @@ public class InputListener {
     // Receive input from api gw
     // sends data to llm manager,
     @RabbitListener(queues = QUEUES_DATA.PROCESS_INPUT_QUEUE)
-    public void receiveInput(String input, String chatId) throws JsonProcessingException {
+    public void receiveInput(String input) throws JsonProcessingException {
         // Recibir input
-        LOGGER.info("Received [{}] for chat [{}] from [{}] queue", input, chatId, QUEUES_DATA.PROCESS_INPUT_QUEUE);
 
         //generate message id for llm request, also redis key
         String messageId = generateMessageId();

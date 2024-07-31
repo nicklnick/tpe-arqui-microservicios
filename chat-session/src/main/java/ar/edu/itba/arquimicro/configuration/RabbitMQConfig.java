@@ -15,13 +15,23 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     @Bean
+    public Queue processInput() {
+        return new Queue(QUEUES_DATA.PROCESS_INPUT_QUEUE,false);
+    }
+
+    @Bean
+    public Queue receiveLlm() {
+        return new Queue(QUEUES_DATA.RECEIVE_LLM,false);
+    }
+
+    @Bean
     public Queue llmQueue() {
-        return new Queue(QUEUES_DATA.SEND_LLM_DATA.SEND_LLM_QUEUE, true);
+        return new Queue(QUEUES_DATA.SEND_LLM_DATA.SEND_LLM_QUEUE, false);
     }
 
     @Bean
     public Queue messageHistoryQueue() {
-        return new Queue(QUEUES_DATA.SEND_MESSAGE_HISTORY_DATA.SEND_MESSAGE_HISTORY_QUEUE, true);
+        return new Queue(QUEUES_DATA.SEND_MESSAGE_HISTORY_DATA.SEND_MESSAGE_HISTORY_QUEUE, false);
     }
 
     @Bean
