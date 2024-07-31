@@ -24,6 +24,15 @@ spec:
   - {{ .Values.ingress.name }}
   http:
   - match:
+    - uri:
+        exact: "/api/ws"
+    route:
+    - destination:
+        host: api-gateway
+        port:
+          number: 8080
+    websocketUpgrade: true
+  - match:
     {{- range .Values.ingress.paths }}
     - uri:
         prefix: "{{ .path }}"
@@ -33,4 +42,3 @@ spec:
         port:
           number: {{ .service.port }}
     {{- end }}
-

@@ -44,6 +44,10 @@ dependencies:
   alias: llm-manager
   version: 0.1.0
   repository: "file://charts/llm-manager"
+- name: chat-session
+  alias: chat-session
+  version: 0.1.0
+  repository: "file://charts/chat-session"
 - name: rabbitmq
   alias: rabbitmq
   version: 0.1.0
