@@ -1,7 +1,7 @@
 name: chats
 # Configure api
 api:
-  name: api-chats
+  name: api-message-history
   env:
   - name: DB_CONNECTION
     value: Host=db-message-history-svc;Database=db_message_history;Port=5432;UserId=postgres;Password=postgres
