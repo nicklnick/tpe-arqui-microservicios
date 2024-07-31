@@ -22,8 +22,8 @@ api:
     value: langchain
   - name: PGVECTOR_PASSWORD
     value: langchain
-  - name: COHERE_API_KEY
-    value: 67R9m15IQFIoLIiCWAk5uyJ5JVIqPfuApiJOlNhc
+  - name: GOOGLE_API_KEY
+    value: AIzaSyBiB5kSil5ao0rw9CAhDq0jINchWqHZRmA
   deployment:
     # replicas: 1 -> parent
     name: api-document-manager-deployment

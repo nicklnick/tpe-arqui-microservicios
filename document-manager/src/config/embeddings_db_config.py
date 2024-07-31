@@ -1,9 +1,11 @@
 from dotenv import load_dotenv
-from langchain_cohere import CohereEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_postgres import PGVector
 from langchain_postgres.vectorstores import PGVector
 from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings
+
+GOOGLE_EMBEDDINGS_MODEL = "models/embedding-001"
 
 
 class EmbeddingsSettings(BaseSettings):
@@ -13,6 +15,7 @@ class EmbeddingsSettings(BaseSettings):
     PGVECTOR_USER: str = "langchain"
     PGVECTOR_PASSWORD: str = "langchain"
     PGVECTOR_URL: str = ""
+    GOOGLE_API_KEY: str = ""
 
     class Config:
         case_sensitive = True
@@ -32,7 +35,9 @@ embeddings_settings.PGVECTOR_URL = PostgresDsn.build(
 # See docker command above to launch a postgres instance with pgvector enabled.
 connection = embeddings_settings.PGVECTOR_URL
 collection_name = "arqui_docs"
-embeddings = CohereEmbeddings()
+embeddings = GoogleGenerativeAIEmbeddings(
+    google_api_key=embeddings_settings.GOOGLE_API_KEY, model=GOOGLE_EMBEDDINGS_MODEL
+)
 
 vectorstore = PGVector(
     embeddings=embeddings,

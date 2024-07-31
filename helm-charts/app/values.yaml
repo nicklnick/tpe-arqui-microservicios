@@ -26,7 +26,7 @@ document-manager:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-5
+      tag: test-noid-7
   db:
     statefulSet:
       replicas: 1
@@ -75,7 +75,7 @@ chat-session:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-3
+      tag: test-noid-4
   db:
     statefulSet:
       replicas: 1
