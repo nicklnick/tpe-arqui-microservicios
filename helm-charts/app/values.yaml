@@ -16,7 +16,7 @@ role-manager:
     deployment:
       replicas: 1
     image:
-      tag: test-noid
+      tag: test-noid-2
   db:
     statefulSet:
       replicas: 1
@@ -26,7 +26,7 @@ document-manager:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-3
+      tag: test-noid-5
   db:
     statefulSet:
       replicas: 1
@@ -41,7 +41,7 @@ chats:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-3
+      tag: test-noid-4
   db:
     statefulSet:
       replicas: 1
@@ -51,7 +51,7 @@ message-history:
     deployment:
       replicas: 1
     image:
-      tag: test-noid
+      tag: test-noid-2
   db:
     statefulSet:
       replicas: 1
@@ -61,11 +61,11 @@ llm-manager:
     deployment:
       replicas: 1
     image:
-      tag: test-noid
+      tag: test-noid-2
 
 api-gateway:
   api:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-4
+      tag: test-noid-5
