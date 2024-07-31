@@ -21,7 +21,7 @@ api:
   - name: SERVER_PORT
     value: 8080
   - name: MESSAGE_HISTORY_API
-    value: api-message-history-svc
+    value: http://api-message-history-svc:8080
   deployment:
     # replicas: 1 -> parent
     name: api-chat-session-deployment
@@ -51,10 +51,10 @@ db:
     name: redis-chat-session-pv
     path: /data/redis
     accessMode: ReadWriteMany
-    size: 100Mi
+    size: 50Mi
   pvc:
     name: redis-chat-session-pvc
     accessMode: ReadWriteMany
-    size: 250Mi
+    size: 50Mi
   servicePort: 6379
   containerPort: 6379

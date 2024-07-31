@@ -1,7 +1,7 @@
 import json
 
 from faststream import FastStream, apply_types
-from faststream.rabbit import RabbitBroker, RabbitMessage
+from faststream.rabbit import RabbitBroker, RabbitMessage, RabbitQueue
 
 from src.config import RabbitMQSettings
 from src.models.InputMessage import InputMessage
@@ -18,9 +18,12 @@ def get_rabbit_broker():
 broker, rabbit_settings = get_rabbit_broker()
 app = FastStream(broker)
 
+input_queue = RabbitQueue(name = rabbit_settings.input_queue, durable = True)
+output_queue = RabbitQueue(name = rabbit_settings.output_queue, durable = True)
+
 @apply_types
-@broker.subscriber(rabbit_settings.input_queue)
-@broker.publisher(rabbit_settings.output_queue)
+@broker.subscriber(input_queue)
+@broker.publisher(output_queue)
 async def handle_msg(msg: RabbitMessage) -> ResponseMessage:
 
     # Decode the byte string to a regular string
