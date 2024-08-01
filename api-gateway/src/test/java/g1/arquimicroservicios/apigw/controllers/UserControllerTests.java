@@ -95,7 +95,7 @@ class UserControllerTests {
         UserSignInResponseDto responseDto = new UserSignInResponseDto(1, "Test User", "test@example.com","Student");
         when(userService.signIn(anyString(), anyString())).thenReturn(responseDto);
 
-        mockMvc.perform(get("/api/users")
+        mockMvc.perform(post("/api/users/signIn")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"test@example.com\",\"password\":\"password\"}"))
                 .andExpect(status().isOk())
@@ -109,7 +109,7 @@ class UserControllerTests {
     void testSignIn_Failure() throws Exception {
         when(userService.signIn(anyString(), anyString())).thenReturn(null);
 
-        mockMvc.perform(get("/api/users")
+        mockMvc.perform(post("/api/users/signIn")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"test@example.com\",\"password\":\"password\"}"))
                 .andExpect(status().isForbidden());
