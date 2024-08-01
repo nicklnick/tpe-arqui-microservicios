@@ -23,7 +23,6 @@ import java.util.UUID;
 public class InputListener {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    private static final Logger LOGGER = LoggerFactory.getLogger(InputListener.class);
 
     private static final int MESSAGES_LIMIT_BACKWARDS = 5;
     private final IMessageHistoryService messageHistoryService;

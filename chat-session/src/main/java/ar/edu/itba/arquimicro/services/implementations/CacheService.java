@@ -28,6 +28,9 @@ public class CacheService implements ICacheService  {
 
     public CacheableMessageData find(String messageId) throws JsonProcessingException {
         String data = redisTemplate.opsForValue().get(messageId);
+        if (data == null){
+            throw new IllegalArgumentException("Cache data missing or expired");
+        }
         return mapper.readValue(data,CacheableMessageData.class);
     }
 

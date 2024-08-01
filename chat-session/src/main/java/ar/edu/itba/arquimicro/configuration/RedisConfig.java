@@ -20,7 +20,7 @@ public class RedisConfig {
 
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory factory =  new JedisConnectionFactory();
+        JedisConnectionFactory factory = new JedisConnectionFactory();
         factory.setHostName(hostname);
         factory.setPort(port);
         return factory;
