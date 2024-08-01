@@ -37,13 +37,14 @@ describe('UsersController', () => {
   describe('signIn', () => {
     it('should return user data if signIn is successful', async () => {
       const userDto: UserRequestDto = { email: 'test@example.com', password: 'password' };
-      const userResponse = { id: '1', email: 'test@example.com', role: Role.STUDENT };
+      const userResponse = { id: 1, email: 'test@example.com', role: Role.STUDENT , name : "test"};
 
       mockUserService.signIn.mockResolvedValue(userResponse);
 
       const result = await controller.signIn(userDto);
+      console.log(result)
 
-      expect(result).toEqual({ email: 'test@example.com', role: Role.STUDENT });
+      expect(result).toEqual( { userId: 1, email: 'test@example.com', role: Role.STUDENT , name : "test" });
       expect(mockUserService.signIn).toHaveBeenCalledWith('test@example.com', 'password');
     });
 

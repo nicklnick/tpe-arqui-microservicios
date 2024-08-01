@@ -53,14 +53,14 @@ describe('UsersController (Integration)', () => {
 
   describe('signIn', () => {
     it('should return user data if signIn is successful', async () => {
-      const user = { id: '1', email: 'test@example.com', password: '2893b25fdf2461076486ce95b25a12bd:4f488f779ff511d610c0d938452d316fb385b72905cec7201705ee4f0efc3b40879a44d7713715c5e33ee9cdf676134bea7b00875d030c6f251c6c18dfd266cb', name: 'Test User', role: Role.STUDENT };
+      const user = { id: 1, email: 'test@example.com', password: '2893b25fdf2461076486ce95b25a12bd:4f488f779ff511d610c0d938452d316fb385b72905cec7201705ee4f0efc3b40879a44d7713715c5e33ee9cdf676134bea7b00875d030c6f251c6c18dfd266cb', name: 'Test User', role: Role.STUDENT };
       const userDto: UserRequestDto = { email: 'test@example.com', password: 'sranucci' };
 
       mockUserRepository.findOneBy.mockResolvedValue(user);
 
       const result = await controller.signIn(userDto);
 
-      expect(result).toEqual({  email: user.email, role: user.role });
+      expect(result).toEqual({  email: user.email, role: user.role , name: "Test User", userId: 1});
     });
 
     it('should throw ConflictException if user is not found', async () => {
