@@ -11,7 +11,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "{{ .Values.ingress.host }}"
+    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -19,7 +19,7 @@ metadata:
   name: {{ .Values.ingress.name }}
 spec:
   hosts:
-  - "{{ .Values.ingress.host }}"
+  - "*"
   gateways:
   - {{ .Values.ingress.name }}
   http:
