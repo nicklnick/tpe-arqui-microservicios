@@ -1,10 +1,5 @@
 #!/bin/bash
-
 cd ../../
 
-dotnet test --filter Tests.MessageHistoryServiceTests
-if [ $? -eq 0 ]; then
-  dotnet test --filter Tests.MessageHistoryControllerTests
-else
-  exit 1
-fi
+docker build . -t microservicios/message-history-test-unit -f Dockerfile.unit
+docker run --rm microservicios/message-history-test-unit

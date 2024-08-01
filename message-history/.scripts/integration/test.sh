@@ -1,4 +1,5 @@
 #!/bin/bash
 cd ../../
 
-dotnet test --filter Tests.MessageHistoryIntegrationTests
+docker build . -t microservicios/message-history-test-integration -f Dockerfile.integration
+docker run --rm microservicios/message-history-test-integration
