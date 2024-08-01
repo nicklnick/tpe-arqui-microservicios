@@ -35,6 +35,10 @@ using (var scope = app.Services.CreateScope())
         var logger = services.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "An error occurred while migrating the database.");
         throw;
+
+
+
+        
     }
 }
 
