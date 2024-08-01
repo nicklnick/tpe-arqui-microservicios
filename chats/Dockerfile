@@ -19,5 +19,6 @@ COPY --from=build /app/src/Api/out ./
 # Expose the port the app runs on
 EXPOSE 8080
 
+
 # Set the entry point to run the app
 ENTRYPOINT ["dotnet", "ChatsApi.dll"]

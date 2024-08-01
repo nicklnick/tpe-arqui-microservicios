@@ -1,4 +1,5 @@
 #!/bin/bash
 cd ../../
 
-dotnet test --filter TestProject1.ChatsIntegrationTest
+sudo docker build . -t microservicios/chats-test-unit -f Dockerfile.unit
+sudo docker run --rm -it microservicios/chats-test-unit
