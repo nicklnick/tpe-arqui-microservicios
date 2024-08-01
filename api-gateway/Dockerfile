@@ -16,11 +16,11 @@ RUN groupadd -r spring && useradd -r -g spring spring
 RUN mkdir /app && chown -R spring:spring /app
 
 # Copy the built artifact from the build stage
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/application.jar
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/
 RUN chown -R spring:spring /app
 
 # Switch to the non-root user
 USER spring
 
 WORKDIR /app
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT ["java", "-jar", "apigw-0.0.1-SNAPSHOT.jar"]
