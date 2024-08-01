@@ -68,7 +68,7 @@ api-gateway:
     deployment:
       replicas: 1
     image:
-      tag: test-noid-6
+      tag: test-noid-8
 
 chat-session:
   api:

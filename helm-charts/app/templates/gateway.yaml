@@ -36,9 +36,22 @@ spec:
     {{- range .Values.ingress.paths }}
     - uri:
         prefix: "{{ .path }}"
+    {{- end }}
     route:
+    {{- range .Values.ingress.paths }}
     - destination:
         host: "{{ .service.name }}"
         port:
           number: {{ .service.port }}
     {{- end }}
+      corsPolicy:
+        allowOrigins:
+        - regex: ".*"
+        allowMethods:
+        - POST
+        - GET
+        - OPTIONS
+        allowHeaders:
+        - "Content-Type"
+        - "Authorization"
+        allowCredentials: true
