@@ -47,7 +47,7 @@ public class UserController {
     }
 
     //SignIn
-    @GetMapping()
+    @PostMapping("signIn")
     public ResponseEntity<ApiUserSignInResponseDto> signInResponse(@RequestBody ApiUserSignInRequest userSignInRequest) {
         UserSignInResponseDto maybeUser = service.signIn(userSignInRequest.getEmail(), userSignInRequest.getPassword());
         if (maybeUser == null) {
