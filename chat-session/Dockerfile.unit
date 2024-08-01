@@ -1,0 +1,21 @@
+# Stage 1: Build the artifact
+FROM maven:3.9.8-amazoncorretto-21
+
+
+
+# Set the working directory to the project directory
+WORKDIR /home/maven/src
+
+# Copy only the Maven wrapper and the POM file first
+COPY mvnw .
+COPY .mvn/ .mvn/
+COPY pom.xml .
+
+# Download dependencies
+RUN ./mvnw dependency:resolve
+
+# Copy the rest of the source code
+COPY ./src ./src
+
+# Run tests
+CMD ./mvnw test

@@ -1,7 +1,29 @@
-# Stage 1: Build the artifact
+# # Stage 1: Build the artifact
+# FROM gradle:8.9.0-jdk21-alpine AS build
+# # Set the working directory to the project directory
+# WORKDIR /home/gradle/src
+# COPY ./ ./
+# # Build the project
+# RUN ./gradlew build -x test
+
+
+# Stage 1: Build the project and run tests
 FROM gradle:8.9.0-jdk21-alpine AS build
+
 # Set the working directory to the project directory
 WORKDIR /home/gradle/src
-COPY ./ ./
-# Build the project
-RUN ./gradlew build -x test
+
+# Copy only the Gradle wrapper and the build files first
+COPY gradlew .
+COPY gradle/ gradle/
+COPY build.gradle .
+COPY settings.gradle .
+
+# Download dependencies
+RUN ./gradlew dependencies --no-daemon
+
+# Copy the rest of the source code
+COPY ./src ./src
+
+
+CMD ./gradlew test --no-daemon
