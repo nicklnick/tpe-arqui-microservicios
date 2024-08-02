@@ -66,9 +66,9 @@ llm-manager:
 api-gateway:
   api:
     deployment:
-      replicas: 1
+      replicas: 2
     image:
-      tag: test-noid-8
+      tag: test-noid-10
 
 chat-session:
   api:
