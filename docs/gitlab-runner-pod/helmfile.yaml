@@ -1,0 +1,38 @@
+# In order to run the Gitlab runner as a pod execute this helmfile
+repositories:
+- name: gitlab
+  url: https://charts.gitlab.io
+
+releases:
+- name: gitlab-runner
+  chart: gitlab/gitlab-runner
+  set:
+  # https://docs.gitlab.com/runner/install/kubernetes.html#configuring-gitlab-runner-using-the-helm-chart
+  - name: gitlabUrl
+    value: https://gitlab.com
+  - name: runnerToken
+    value: glrt-iHP5iGD2eL67nesoJrfK
+  - name: rbac.create
+    value: true
+  - name: rbac.serviceAccount.name
+    value: default
+
+
+hooks:
+# You can also create the namespace with a hook
+- events: ["prepare"]
+  command: "kubectl"
+  args: ["create", "namespace", "gitlab-runner"]
+  # You can also create the cluster role with a hook
+- events: ["postsync"]
+  command: "kubectl"
+  args: ["apply", "-f", "istio-crbac.yaml"]
+- events: ["postsync"]
+  command: "kubectl"
+  args: ["apply", "-f", "pv-rbac.yaml"]
+- events: ["postsync"]
+  command: "kubectl"
+  args: ["apply", "-f", "rabbitmq-rbac.yaml"]
+- events: ["postsync"]
+  command: "kubectl"
+  args: ["apply", "-f", "secret-rbac.yaml"]

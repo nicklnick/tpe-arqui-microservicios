@@ -1,0 +1,23 @@
+# clusterrole-istio.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: istio-clusterrole
+rules:
+- apiGroups: ["networking.istio.io"]
+  resources: ["gateways", "virtualservices"]
+  verbs: ["get", "list", "watch", "patch", "create", "delete"]
+---
+# clusterrolebinding-istio.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: istio-clusterrolebinding
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: istio-clusterrole
+  apiGroup: rbac.authorization.k8s.io

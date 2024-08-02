@@ -1,0 +1,54 @@
+# role-rabbitmq.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: rabbitmq-role
+  namespace: default
+rules:
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["roles"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rabbitmq-rolebinding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: Role
+  name: rabbitmq-role
+  apiGroup: rbac.authorization.k8s.io
+---
+# clusterrole-rabbitmq.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: rabbitmq-clusterrole
+rules:
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["roles", "rolebindings"]
+  verbs: ["get", "list", "watch", "patch", "create", "delete"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "statefulsets"]
+  verbs: ["get", "list", "watch", "patch", "create", "delete"]
+---
+# clusterrolebinding-rabbitmq.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: rabbitmq-clusterrolebinding
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: rabbitmq-clusterrole
+  apiGroup: rbac.authorization.k8s.io
+
+
+
