@@ -49,18 +49,13 @@ class ResponseListenerTests {
         int chatId = 42;
         String question = "What is the answer to life, the universe, and everything?";
         String answer = "42";
-
         LlmResponse response = new LlmResponse(messageId, question, answer);
         String jsonResponse = mapper.writeValueAsString(response);
-
         CacheableMessageData messageData = new CacheableMessageData(sessionId, chatId);
-
         when(cacheService.find(anyString())).thenReturn(messageData);
         doNothing().when(messageHistoryService).saveMessageToHistory(any(MessageToHistory.class));
         doNothing().when(apiGatewayService).sendQuestionResponse(any(InputResponsePayload.class));
-
         responseListener.receiveResponse(jsonResponse);
-
         ArgumentCaptor<MessageToHistory> messageToHistoryCaptor = ArgumentCaptor.forClass(MessageToHistory.class);
         ArgumentCaptor<InputResponsePayload> inputResponsePayloadCaptor = ArgumentCaptor.forClass(InputResponsePayload.class);
 

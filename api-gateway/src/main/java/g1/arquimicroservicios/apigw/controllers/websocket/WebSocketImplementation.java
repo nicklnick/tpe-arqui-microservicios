@@ -15,6 +15,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,7 +26,7 @@ public class WebSocketImplementation extends TextWebSocketHandler {
 
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final Map<String, WebSocketSession> sessionMap = new ConcurrentHashMap<>();
+    private final Map<String, WebSocketSession> sessionMap = new HashMap<>();
 
 
     private final RabbitTemplate rabbitTemplate;
@@ -37,14 +38,18 @@ public class WebSocketImplementation extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        sessionMap.put(session.getId(),session);
+        synchronized (sessionMap){
+            sessionMap.put(session.getId(),session);
+        }
         System.out.println("WebSocket connection established: " + session.getId());
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         // Remove session from the map when the connection is close
-        sessionMap.remove(session.getId());
+        synchronized (sessionMap){
+            sessionMap.remove(session.getId());
+        }
         System.out.println("WebSocket connection closed: " + session.getId());
     }
 
@@ -71,14 +76,17 @@ public class WebSocketImplementation extends TextWebSocketHandler {
     @RabbitListener(queues = "#{llmConsumerQueue.name}")
     public void rabbitMQReceiver(String llmJsonResponse) throws IOException{
         QuestionAnswerDto response = objectMapper.readValue(llmJsonResponse, QuestionAnswerDto.class);
-        if (sessionMap.containsKey(response.sessionId())){
-            WebSocketSession wsConnection = sessionMap.get(response.sessionId());
-            String answerToUserQuestion = objectMapper.writeValueAsString(response);
-            wsConnection.sendMessage(new TextMessage(answerToUserQuestion));
-            System.out.println("this message was destinied for me!");
-        } else {
-            System.out.println("this message was destinied for another worker");
+        synchronized (sessionMap){
+            if (sessionMap.containsKey(response.sessionId())){
+                WebSocketSession wsConnection = sessionMap.get(response.sessionId());
+                String answerToUserQuestion = objectMapper.writeValueAsString(response);
+                wsConnection.sendMessage(new TextMessage(answerToUserQuestion));
+                System.out.println("this message was destinied for me!");
+            } else {
+                System.out.println("this message was destinied for another worker");
+            }
         }
+
     }
 
 
