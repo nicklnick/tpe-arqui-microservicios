@@ -23,7 +23,7 @@ api:
   - name: PGVECTOR_PASSWORD
     value: langchain
   - name: GOOGLE_API_KEY
-    value: AIzaSyBiB5kSil5ao0rw9CAhDq0jINchWqHZRmA
+    value: # COMPLETE
   deployment:
     # replicas: 1 -> parent
     name: api-document-manager-deployment

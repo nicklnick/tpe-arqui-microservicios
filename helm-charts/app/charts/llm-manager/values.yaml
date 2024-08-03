@@ -27,7 +27,7 @@ api:
   - name: RABBITMQ_OUTPUT_QUEUE
     value: receive_llm
   - name: GEMINI_GOOGLE_API_KEY
-    value: AIzaSyBiB5kSil5ao0rw9CAhDq0jINchWqHZRmA
+    value: # COMPLETE
   deployment:
     # replicas: 1 -> parent
     name: api-llm-manager-deployment

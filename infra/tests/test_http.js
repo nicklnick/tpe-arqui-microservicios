@@ -2,9 +2,9 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 const PROTOCOL = "http";
-const CLUSTER_FQDN = "ec2-44-214-107-128.compute-1.amazonaws.com";
-const PORT = 31699;
-const ENDPOINT = "/api/users";
+const CLUSTER_FQDN = "ec2-54-165-16-24.compute-1.amazonaws.com";
+const PORT = 32150;
+const ENDPOINT = "/api/users/1/chats";
 
 // Define your options with multiple scenarios
 export let options = {
@@ -31,7 +31,7 @@ export default function () {
 
     let res = http.get(url, { headers: headers });
     check(res, {
-        "is status 400": (r) => r.status === 400,
+        "is status 200": (r) => r.status === 200,
     });
     sleep(1);
 }

@@ -2,8 +2,8 @@ import ws from "k6/ws";
 import { check, sleep } from "k6";
 
 const PROTOCOL = "ws";
-const CLUSTER_FQDN = "ec2-44-214-107-128.compute-1.amazonaws.com";
-const PORT = 31699;
+const CLUSTER_FQDN = "ec2-54-165-16-24.compute-1.amazonaws.com";
+const PORT = 32150;
 const ENDPOINT = "/api/ws";
 
 // Define questions and chat IDs for testing
